@@ -1,0 +1,88 @@
+
+.tooltip { 
+	position: relative; 
+	display: inline-block; 
+	border-bottom: 1px dotted black; 
+}
+
+.tooltip .tooltiptext { 
+	visibility: hidden; 
+	width: 200px; background-color: #555; 
+	color: #fff; 
+	text-align: center; 
+	border-radius: 6px; 
+	padding: 5px 0; 
+	position: absolute; 
+	z-index: 1; 
+	bottom: 125%; 
+	left: 50%; 
+	margin-left: -60px; 
+	opacity: 0; 
+	transition: opacity 0.3s; 
+}
+
+.tooltip .tooltiptext::after { 
+	content: ""; 
+	position: absolute; 
+	top: 100%; 
+	left: 50%; 
+	margin-left: -5px; 
+	border-width: 5px; 
+	border-style: solid; 
+	border-color: #555 transparent transparent transparent; 
+}
+
+.tooltip:hover .tooltiptext { 
+	visibility: visible; 
+	opacity: 1; 
+}
+
+
+/* Menu Items */
+ul.menuitems {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: -webkit-sticky;
+  position: sticky;
+  top:0;
+}
+
+ul.menuitems li {
+  float: left;
+}
+
+ul.menuitems li a {
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul.menuitems li a:hover {
+  text-decoration: underline;
+  /*
+  background-color: #111;
+  color: #eee;
+  */
+}
+
+ul.menuitems li.menupage {
+  float: right;
+}
+
+ul.menuitems li.menupage a {
+  background-color: #111;
+  color: #eee;
+}
+
+ul.listlinks  {
+  -webkit-column-count: 3; /* Chrome, Safari, Opera */
+  -moz-column-count: 3; /* Firefox */
+  column-count: 3;
+}
+
+ul.listlinks li { 
+  text-decoration: none;
+}
