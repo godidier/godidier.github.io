@@ -1,4 +1,4 @@
-title: Building a Simple TORCS AI Agent (2/10): Acceleration
+title: Building a Simple TORCS AI Agent (2/11): Acceleration
 date: 2018-12-08 15:21
 category: Games
 authors: Didier Gohourou

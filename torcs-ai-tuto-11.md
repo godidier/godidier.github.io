@@ -1,9 +1,9 @@
-title: Building a Simple TORCS AI Agent (6/11): Recovering
-date: 2018-12-11 15:00
+title: Building a Simple TORCS AI Agent (11/11): Wrap Up
+date: 2018-12-16 15:00
 category: Games
 authors: Didier Gohourou
-summary: Getting back on track after getting off track or getting stuck.
-slug: torcs-ai-tuto-6
+summary: What is next ?
+slug: torcs-ai-tuto-11
 lang: en
 
 

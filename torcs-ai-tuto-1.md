@@ -1,4 +1,4 @@
-title: Building a Simple TORCS AI Agent (1/10): Getting Started
+title: Building a Simple TORCS AI Agent (1/11): Getting Started
 date: 2018-12-07 15:00
 category: Games
 authors: Didier Gohourou
@@ -111,8 +111,55 @@ $ make install
 $ make datainstall
 ```
 
+## Environment Variables
+
+Because we want to develop AI module for the game, we need to point the game 
+librairies to our compiler when will be using `Makefile` for compilation. 
+For that we set environment variables. 
+
+```shell
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+export TORCS_BASE=/usr/src/torcs/torcs-1.2.4
+export MAKE_DEFAULT=$TORCS_BASE/Make-default.mk
+```
+
+To avoid setting up those variable before every development session, we can add 
+the above lines to your shell's rc file like _~/.bashrc_ if you are using a bash 
+terminal. You can run :
+
+```shell
+source ~/.bashrc
+```
+
+for the changes to take effect.
+
+
+Remember if you have any trouble, you can try lookin at the 
+[Download/Installation](http://torcs.sourceforge.net/index.php?name=Sections&op=viewarticle&artid=3) page instructions, or the installation instructions of the 
+[TORCS Robot Tutorial](http://www.berniw.org/tutorials/robot/tutorial.html), on 
+which this tutorial is based, or contact the [torcs-users](torcs-users@lists.sourceforge.net) mailing list.
+
 # Gameplay 
 
-connecting a controller
+**Discipline Equals Freedom !** After all this setup hassle, I recommend that you 
+play the game. Familiarize yourself with it: the menu, the controls, etc.
 
-etc.
+You can lauch the game from the terminal. 
+
+```shell
+torcs
+```
+
+Tip: If you are on Linux and interested in playing with a Playstation controller,
+look [here](https://gameimps.com/ps3-controller-linux-usb-290) for how to use 
+`xboxdrv` to connect your Playsation controller with a better support. 
+It's also valid for Xbox controllers (Which are usually well supported).
+
+
+# Moving Forward
+
+Now that the setup is done, let's do what we came here for, start building an 
+AI agent!
+
+* [Next: Acceleration]({filename}torcs-ai-tuto-2.md)
+

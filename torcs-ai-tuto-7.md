@@ -1,8 +1,8 @@
-title: Building a Simple TORCS AI Agent (7/10): Pit Stops
-date: 2018-12-13 15:00
+title: Building a Simple TORCS AI Agent (7/11): Collision avoidance and Overtaking
+date: 2018-12-12 15:00
 category: Games
 authors: Didier Gohourou
-summary: Stopping at the pit to refuel and repair damages
+summary: Taking into account opponents in a race.
 slug: torcs-ai-tuto-7
 lang: en
 

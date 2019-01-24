@@ -3,16 +3,16 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="../theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="../">
+  <link rel="stylesheet" type="text/css" href="../theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/hatena-bookmark-icon.css">
   <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 
@@ -27,7 +27,7 @@
 
   <title>
     [GTR]
-&ndash; Building a Simple TORCS AI Agent (1/10): Getting Started  </title>
+&ndash; Building a Simple TORCS AI Agent (1/11): Getting Started  </title>
 
 </head>
 
@@ -35,20 +35,20 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
+        <a href="..">[GTR]  <br/> Godidier's Technical Report</a>
       </div>
       <p>
-        <a href="https://godidier.github.io/archives.html"><i class="fab fas-archive"></i> Archive</a>
+        <a href="../archives.html"><i class="fab fas-archive"></i> Archive</a>
       </p>
 	  <ul class="menuitems">   
-          <li><a href="https://godidier.github.io/#">Here</a></li>
-          <li><a href="https://godidier.github.io/#">And there</a></li>
+          <li><a href="../#">Here</a></li>
+          <li><a href="../#">And there</a></li>
 	  </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html">Building a Simple TORCS AI Agent (1/10): Getting Started</a></h1>
+    <h1><a href="../drafts/torcs-ai-tuto-1.html">Building a Simple TORCS AI Agent (1/11): Getting Started</a></h1>
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: 金 07 12月 2018</p>
@@ -64,16 +64,16 @@ A quick disclaimer: this series is <del>highly</del> Inspired from the robot tut
 
 <h1>Content</h1>
 <ol>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html">Getting started</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-2.html">Acceleration</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-3.html">Brakes and Gears</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Steering and Trajectory</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-5.html">Recovering</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-6.html">Collision Avoidance and Overtaking</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Pit Stops</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-8.html">Tuning and Customization</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Multiple Cars Handling</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-10.html">Wrap Up</a></li>
+<li><a href="../drafts/torcs-ai-tuto-1.html">Getting started</a></li>
+<li><a href="../drafts/torcs-ai-tuto-2.html">Acceleration</a></li>
+<li><a href="../drafts/torcs-ai-tuto-3.html">Brakes and Gears</a></li>
+<li><a href="../drafts/torcs-ai-tuto-4.html">Steering and Trajectory</a></li>
+<li><a href="../drafts/torcs-ai-tuto-5.html">Recovering</a></li>
+<li><a href="../drafts/torcs-ai-tuto-6.html">Collision Avoidance and Overtaking</a></li>
+<li><a href="../drafts/torcs-ai-tuto-7.html">Pit Stops</a></li>
+<li><a href="../drafts/torcs-ai-tuto-8.html">Tuning and Customization</a></li>
+<li><a href="../drafts/torcs-ai-tuto-9.html">Multiple Cars Handling</a></li>
+<li><a href="../drafts/torcs-ai-tuto-10.html">Wrap Up</a></li>
 </ol>
 <h1>Installation</h1>
 <p>Let's install the game!</p>
@@ -149,9 +149,46 @@ $ make datainstall
 </pre></div>
 
 
+<h2>Environment Variables</h2>
+<p>Because we want to develop AI module for the game, we need to point the game 
+librairies to our compiler when will be using <code>Makefile</code> for compilation. 
+For that we set environment variables. </p>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:/usr/local/lib
+<span class="nb">export</span> <span class="nv">TORCS_BASE</span><span class="o">=</span>/usr/src/torcs/torcs-1.2.4
+<span class="nb">export</span> <span class="nv">MAKE_DEFAULT</span><span class="o">=</span><span class="nv">$TORCS_BASE</span>/Make-default.mk
+</pre></div>
+
+
+<p>To avoid setting up those variable before every development session, we can add 
+the above lines to your shell's rc file like <em>~/.bashrc</em> if you are using a bash 
+terminal. You can run :</p>
+<div class="highlight"><pre><span></span><span class="nb">source</span> ~/.bashrc
+</pre></div>
+
+
+<p>for the changes to take effect.</p>
+<p>Remember if you have any trouble, you can try lookin at the 
+<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> page instructions, or the installation instructions of the 
+<a href="http://www.berniw.org/tutorials/robot/tutorial.html">TORCS Robot Tutorial</a>, on 
+which this tutorial is based, or contact the <a href="torcs-users@lists.sourceforge.net">torcs-users</a> mailing list.</p>
 <h1>Gameplay</h1>
-<p>connecting a controller</p>
-<p>etc.</p>
+<p><strong>Discipline Equals Freedom !</strong> After all this setup hassle, I recommend that you 
+play the game. Familiarize yourself with it: the menu, the controls, etc.</p>
+<p>You can lauch the game from the terminal. </p>
+<div class="highlight"><pre><span></span>torcs
+</pre></div>
+
+
+<p>Tip: If you are on Linux and interested in playing with a Playstation controller,
+look <a href="https://gameimps.com/ps3-controller-linux-usb-290">here</a> for how to use 
+<code>xboxdrv</code> to connect your Playsation controller with a better support. 
+It's also valid for Xbox controllers (Which are usually well supported).</p>
+<h1>Moving Forward</h1>
+<p>Now that the setup is done, let's do what we came here for, start building an 
+AI agent!</p>
+<ul>
+<li><a href="../drafts/torcs-ai-tuto-2.html">Next: Acceleration</a></li>
+</ul>
   </div>
 
 </article>
@@ -160,11 +197,11 @@ $ make datainstall
   </main>
     <footer>
       <div class="author__logo">
-          <img src="https://godidier.github.io/theme/images/logo.png" alt="logo">
+          <img src="../theme/images/logo.png" alt="logo">
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <a href="../pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">
@@ -207,10 +244,10 @@ $ make datainstall
       </section>
 	  <section >
 		<ul class="listlinks">
-          <li><a href="https://godidier.github.io/#">About</a></li>
-          <li><a href="https://godidier.github.io/http://python.org/">Python.org</a></li>
-          <li><a href="https://godidier.github.io/http://jinja.pocoo.org/">Jinja2</a></li>
-          <li><a href="https://godidier.github.io/#">You can modify those links in your config file</a></li>
+          <li><a href="../#">About</a></li>
+          <li><a href="../http://python.org/">Python.org</a></li>
+          <li><a href="../http://jinja.pocoo.org/">Jinja2</a></li>
+          <li><a href="../#">You can modify those links in your config file</a></li>
 		</ul>
 	  </section>
       <div class="ending-message">

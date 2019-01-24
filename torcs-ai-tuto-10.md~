@@ -1,9 +1,9 @@
-title: Building a Simple TORCS AI Agent (6/11): Recovering
-date: 2018-12-11 15:00
+title: Building a Simple TORCS AI Agent (10/10): Multiple cars Handling
+date: 2018-12-15 15:00
 category: Games
 authors: Didier Gohourou
-summary: Getting back on track after getting off track or getting stuck.
-slug: torcs-ai-tuto-6
+summary: Handle multiple cars with a single AI agent code base.
+slug: torcs-ai-tuto-10
 lang: en
 
 

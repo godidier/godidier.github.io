@@ -122,7 +122,11 @@ In this chapter of the series, we implement basic steering and acceleration.
 All in the AI agent main cpp file represented by `gtr.cpp`. Let's check the 
 content of the file.
 
-Open the file with your favourite text editor, one with syntax highlighting should be enough. The file start with some standard C language header files. Then we have some TORCS header files that includes the necessary data structures and functions for the implementation of our agent. Note: those file are accessible via ` $TORCS_BASE/export/include`.
+Open the file with your favourite text editor, one with syntax highlighting should 
+be enough. The file start with some standard C language header files. Then we have 
+some TORCS header files that includes the necessary data structures and functions 
+for the implementation of our agent. Note: those file are accessible via 
+` $TORCS_BASE/export/include`.
 
 * tgf.h : Generic gaming API utilities
 * track.h : Structure and loader of tracks
@@ -217,7 +221,9 @@ the tangent line to the segment where the car currently is. It is obtained via
 the function `RtTrackSideTgAngleL(&(car->_trPos))` from `robottools.h`.  
 * The angle formed by the middle line of the starting segment of the track and 
 the **yaw** direction of the car. <del>I am not talking about yawning tho.</del> 
-This is obtained via `car->yaw`.
+This is obtained via `car->yaw`. A yaw rotation is a movement around the yaw 
+axis. The 3 axes of a car, plane have specific names: roll, pitch and yaw.
+![Rotational Axis]({static}/images/2018-12/rotational-movements.svg)
 * The distance between the car and the middle line of the segment where the car is.
  This is obtained via `car->_trkPos.toMiddle`, which is positive if the car is to 
 the left of the middle line and negative if the car is to the rigth of the middle 
