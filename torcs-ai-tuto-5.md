@@ -58,7 +58,7 @@ of the car. The figure below give an idea of what goes on.
 
 ![Steering trajectory]({static}/images/2019-01/steering-heuristic.png)
 
-Although the overall path of the car will be greatly improved, we have to note 
+Although the overall path of the car will improve greatly, we have to note 
 that we are still far away from a good trajectory, since we cannot take a turn 
 with the biggest possible radius, starting and ending onthe middle of the track.
 
