@@ -3,17 +3,17 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="../theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="../">
-  <link rel="stylesheet" type="text/css" href="../theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="../theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="../theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="../theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="../theme/css/hatena-bookmark-icon.css">
-  <link rel="stylesheet" type="text/css" href="/static/custom.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="static/custom.css">
 
 
   <meta charset="utf-8" />
@@ -35,20 +35,20 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="..">[GTR]  <br/> Godidier's Technical Report</a>
+        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
       </div>
       <p>
-        <a href="../archives.html"><i class="fab fas-archive"></i> Archive</a>
+        <a href="https://godidier.github.io/archives.html"><i class="fab fas-archive"></i> Archive</a>
       </p>
 	  <ul class="menuitems">   
-          <li><a href="../#">Here</a></li>
-          <li><a href="../#">And there</a></li>
+          <li><a href="https://godidier.github.io/#">Here</a></li>
+          <li><a href="https://godidier.github.io/#">And there</a></li>
 	  </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="../drafts/torcs-ai-tuto-3.html">Building a Simple TORCS AI Agent (3/11): Brakes and Gears</a></h1>
+    <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-3.html">Building a Simple TORCS AI Agent (3/11): Brakes and Gears</a></h1>
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: 日 09 12月 2018</p>
@@ -59,14 +59,14 @@
 game TORCS. In this chapter, we will learn to break, change gears and drive
 faster.</p>
 <ul>
-<li><a href="../drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
-<li><a href="../drafts/torcs-ai-tuto-2.html">Previous: Acceleration</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-2.html">Previous: Acceleration</a></li>
 <li><a href="#">Brakes and Gears</a><ul>
 <li><a href="#">Title</a></li>
 <li><a href="#">Title</a></li>
 </ul>
 </li>
-<li><a href="../drafts/torcs-ai-tuto-4.html">Next: Steering and Trajectory</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Next: Steering and Trajectory</a></li>
 </ul>
 <h1>Accelerating the right way</h1>
 <p>Maybe you are expecting that because we will learn to brake, we can set the 
@@ -84,7 +84,7 @@ sensitivity of a vehicle to steering. Oversteer is what occurs when a car turns
 (steers) by more than the amount commanded by the driver. Conversely, understeer 
 is what occurs when a car steers less than the amount commanded by the driver. </p>
 </blockquote>
-<p><img alt="Understeer and Oversteer" src="../images/2018-12/understeer-oversteer.png"></p>
+<p><img alt="Understeer and Oversteer" src="https://godidier.github.io/images/2018-12/understeer-oversteer.png"></p>
 <p>So we need to know what amount of speed we can apply to safely pass a turn.
 We will resort to an equation from physics. <del>Stay with me</del>. </p>
 <div class="math">$$ {mv^2 \over r} = {mg\mu} $$</div>
@@ -112,7 +112,7 @@ from "flying out," keeping it moving instead with a uniform speed along a
 circular path. </p>
 </blockquote>
 <p>Let's picture what we are talking about.</p>
-<p><img alt="Centrifugal and Centripetal forces" src="../images/2018-12/centrifugal-centripetal.png"></p>
+<p><img alt="Centrifugal and Centripetal forces" src="https://godidier.github.io/images/2018-12/centrifugal-centripetal.png"></p>
 <p>We find the appropriate speed by expressing <span class="math">\(v\)</span> from the equation above, which 
 yield:</p>
 <div class="math">$$ v = \sqrt{g \mu r} $$</div>
@@ -462,11 +462,11 @@ oscillating the gear up and down.</p>
   </main>
     <footer>
       <div class="author__logo">
-          <img src="../theme/images/logo.png" alt="logo">
+          <img src="https://godidier.github.io/theme/images/logo.png" alt="logo">
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="../pages/about.html">Didier Gohourou</a>
+          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">
@@ -509,10 +509,10 @@ oscillating the gear up and down.</p>
       </section>
 	  <section >
 		<ul class="listlinks">
-          <li><a href="../#">About</a></li>
-          <li><a href="../http://python.org/">Python.org</a></li>
-          <li><a href="../http://jinja.pocoo.org/">Jinja2</a></li>
-          <li><a href="../#">You can modify those links in your config file</a></li>
+          <li><a href="https://godidier.github.io/#">About</a></li>
+          <li><a href="https://godidier.github.io/http://python.org/">Python.org</a></li>
+          <li><a href="https://godidier.github.io/http://jinja.pocoo.org/">Jinja2</a></li>
+          <li><a href="https://godidier.github.io/#">You can modify those links in your config file</a></li>
 		</ul>
 	  </section>
       <div class="ending-message">

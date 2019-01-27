@@ -3,17 +3,17 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="../theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="../">
-  <link rel="stylesheet" type="text/css" href="../theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="../theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="../theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="../theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="../theme/css/hatena-bookmark-icon.css">
-  <link rel="stylesheet" type="text/css" href="/static/custom.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="static/custom.css">
 
 
   <meta charset="utf-8" />
@@ -35,20 +35,20 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="..">[GTR]  <br/> Godidier's Technical Report</a>
+        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
       </div>
       <p>
-        <a href="../archives.html"><i class="fab fas-archive"></i> Archive</a>
+        <a href="https://godidier.github.io/archives.html"><i class="fab fas-archive"></i> Archive</a>
       </p>
 	  <ul class="menuitems">   
-          <li><a href="../#">Here</a></li>
-          <li><a href="../#">And there</a></li>
+          <li><a href="https://godidier.github.io/#">Here</a></li>
+          <li><a href="https://godidier.github.io/#">And there</a></li>
 	  </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="../drafts/torcs-ai-tuto-2.html">Building a Simple TORCS AI Agent (2/11): Acceleration</a></h1>
+    <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-2.html">Building a Simple TORCS AI Agent (2/11): Acceleration</a></h1>
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: 土 08 12月 2018</p>
@@ -59,9 +59,9 @@
 game TORCS. In this chapter, we will generate the base code of the AI agent, 
 make it drive slowly, and reorganize the code for easier implementation.</p>
 <ul>
-<li><a href="../drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
-<li><a href="../drafts/torcs-ai-tuto-1.html">Previous: Getting Started</a></li>
-<li><a href="../drafts/torcs-ai-tuto-3.html">Next: Brakes and Gears</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html">Previous: Getting Started</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-3.html">Next: Brakes and Gears</a></li>
 </ul>
 <h1>Generate the AI agent base code</h1>
 <p>To start building our AI agent, we will use a tool called <code>robotgen</code>, to create 
@@ -238,7 +238,7 @@ tTrack is defined in $TORCS_BASE/export/include/track.h.</p>
 </blockquote>
 <p>The image below from <a href="https://en.wikipedia.org/wiki/Speed_Dreams#Tracks">Wikipedia</a>
 give an illustration of the quote above.</p>
-<p><img alt="Track Segment section" src="../images/2018-12/Speed_Dreams_Track_Subsegments-Sections_animation.gif"></p>
+<p><img alt="Track Segment section" src="https://godidier.github.io/images/2018-12/Speed_Dreams_Track_Subsegments-Sections_animation.gif"></p>
 <p>The goal of our simple steering function is to make the car follow the middle of 
 track. For that, we steer the front wheel parallel to the track, and we add a 
 correction value if we are not in the middle of the track.</p>
@@ -251,7 +251,7 @@ the function <code>RtTrackSideTgAngleL(&amp;(car-&gt;_trPos))</code> from <code>
 the <strong>yaw</strong> direction of the car. <del>I am not talking about yawning tho.</del> 
 This is obtained via <code>car-&gt;yaw</code>. A yaw rotation is a movement around the yaw 
 axis. The 3 axes of a car, plane have specific names: roll, pitch and yaw.
-<img alt="Rotational Axis" src="../images/2018-12/rotational-movements.svg"></li>
+<img alt="Rotational Axis" src="https://godidier.github.io/images/2018-12/rotational-movements.svg"></li>
 <li>The distance between the car and the middle line of the segment where the car is.
  This is obtained via <code>car-&gt;_trkPos.toMiddle</code>, which is positive if the car is to 
 the left of the middle line and negative if the car is to the rigth of the middle 
@@ -286,7 +286,7 @@ All of this is implemented within the <code>drive</code> function that will look
 
 <p>The picture below try to give you a better intuition of what is going on with the 
 angles, and the algorithm above.</p>
-<p><img alt="Steering Angles" src="../images/2018-12/steering-angles.svg"></p>
+<p><img alt="Steering Angles" src="https://godidier.github.io/images/2018-12/steering-angles.svg"></p>
 <h1>Test drive</h1>
 <p>add video</p>
 <h1>Restructuring the code</h1>
@@ -603,9 +603,9 @@ this <a href="#">repository</a>.</p>
 <p>That's it for this chapter!... And yes we have a working agent! But let's be 
 honest it is kind of lame. So let's make him faster, break, and change gears.</p>
 <ul>
-<li><a href="../drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
-<li><a href="../drafts/torcs-ai-tuto-1.html">Previous: Getting Started</a></li>
-<li><a href="../drafts/torcs-ai-tuto-3.html">Next: Brakes and Gears</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html">Previous: Getting Started</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-3.html">Next: Brakes and Gears</a></li>
 </ul>
   </div>
 
@@ -615,11 +615,11 @@ honest it is kind of lame. So let's make him faster, break, and change gears.</p
   </main>
     <footer>
       <div class="author__logo">
-          <img src="../theme/images/logo.png" alt="logo">
+          <img src="https://godidier.github.io/theme/images/logo.png" alt="logo">
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="../pages/about.html">Didier Gohourou</a>
+          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">
@@ -662,10 +662,10 @@ honest it is kind of lame. So let's make him faster, break, and change gears.</p
       </section>
 	  <section >
 		<ul class="listlinks">
-          <li><a href="../#">About</a></li>
-          <li><a href="../http://python.org/">Python.org</a></li>
-          <li><a href="../http://jinja.pocoo.org/">Jinja2</a></li>
-          <li><a href="../#">You can modify those links in your config file</a></li>
+          <li><a href="https://godidier.github.io/#">About</a></li>
+          <li><a href="https://godidier.github.io/http://python.org/">Python.org</a></li>
+          <li><a href="https://godidier.github.io/http://jinja.pocoo.org/">Jinja2</a></li>
+          <li><a href="https://godidier.github.io/#">You can modify those links in your config file</a></li>
 		</ul>
 	  </section>
       <div class="ending-message">
