@@ -8,6 +8,7 @@ lang: en
 
 
 This is the beginning of a series on how to build an AI agent for the game TORCS (The Open Racing Cars Simulation). TORCS is an open source video game...
+...[History of TORCS from little AI game to Speed Dreams]...
 
 # Why bother ? 
 
