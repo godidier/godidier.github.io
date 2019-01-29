@@ -10,26 +10,54 @@ lang: en
 This is the beginning of a series on how to build an AI agent for the game TORCS (The Open Racing Cars Simulation). TORCS is an open source video game...
 ...[History of TORCS from little AI game to Speed Dreams]...
 
+<p id="why"></p>
 # Why bother ? 
 
-Writing an AI for a racing game ? Maybe you already have your own motivation, you like racing, you might like computer science an AI, you are an enthusiast programmer etc. But above all this series aim to give clear fundamentals on the task...
-Or just maybe you are like me... you have plenty of time to waste! Even then, it is a wise place to waste it.
-A quick disclaimer: this series is <del>highly</del> Inspired from the robot tutorial included in the game. You might also want to check that in case you want a different perspective... Don't look at me like that!
+Writing an AI for a racing game ? Maybe you already have your own motivation, you 
+like racing, you might like computer science an AI, you are an enthusiast 
+programmer etc. But above all this series aim to give clear fundamentals on the 
+task... Or just maybe you are like me... you have plenty of time to waste! 
+Even then, it is a wise place to waste it.
+
+A quick disclaimer: this series is <del>highly</del> Inspired from the robot 
+tutorial included in the game. You might also want to check that in case you 
+want a different perspective... <del>Don't look at me like that!</del> 
+You should be careful though, because there are some differences in the progression 
+and the code.
+
+<p id="prerequisites"></p>
+# Pre-requisites
+
+This tutorial assumes that you have some basic C++ knowledge, and that you have
+some experience with high school mathematics and physics.
+
+Nevertheless, I will do my best to be as clear as possible and give pointers 
+for further readings, to those interested in learning more.
+
+On a side note, I strongly encougare you to code along with the tutorial by 
+yourself. Sure you can copy-paste the code to go fast, but you will miss 
+the mistakes that make you learn and understand concepts far better. 
+When you make mistakes or things go sideways, try to re-analyse the code and the 
+explanations thoroughly and try again. This way you will come up with a deeper 
+understanding of how things works. This will enable you to improve the code 
+beyond the tutorial, and easily translate your knowledge elsewhere.
 
 <p id="table_of_contents"></p>
 # Content
 
-1.  [Getting started]({filename}torcs-ai-tuto-1.md)
-2.  [Acceleration]({filename}torcs-ai-tuto-2.md)
-3.  [Brakes and Gears]({filename}torcs-ai-tuto-3.md)
-4.  [Steering and Trajectory]({filename}torcs-ai-tuto-4.md)
-5.  [Recovering]({filename}torcs-ai-tuto-5.md)
-6.  [Collision Avoidance and Overtaking]({filename}torcs-ai-tuto-6.md)
-7.  [Pit Stops]({filename}torcs-ai-tuto-7.md)
-8.  [Tuning and Customization]({filename}torcs-ai-tuto-8.md)
-9.  [Multiple Cars Handling]({filename}torcs-ai-tuto-9.md)
-10. [Wrap Up]({filename}torcs-ai-tuto-10.md)
+1.	[Getting started]({filename}torcs-ai-tuto-1.md)
+2.	[Acceleration]({filename}torcs-ai-tuto-2.md)
+3.	[Brakes and Gears]({filename}torcs-ai-tuto-3.md)
+4.	[Aerodynamics and Stability Controls]({filename}torcs-ai-tuto-5.md)
+5.	[Steering and Trajectory]({filename}torcs-ai-tuto-4.md)
+6.	[Recovering]({filename}torcs-ai-tuto-5.md)
+7.	[Collision Avoidance and Overtaking]({filename}torcs-ai-tuto-6.md)
+8.	[Pit Stops]({filename}torcs-ai-tuto-7.md)
+9.	[Tuning and Customization]({filename}torcs-ai-tuto-8.md)
+10.	[Multiple Cars Handling]({filename}torcs-ai-tuto-9.md)
+11.	[Wrap Up]({filename}torcs-ai-tuto-10.md)
 
+<p id="installation"></p>
 # Installation 
 
 Let's install the game!

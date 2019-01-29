@@ -57,10 +57,33 @@
   <div class="article__text">
     <p>This is the beginning of a series on how to build an AI agent for the game TORCS (The Open Racing Cars Simulation). TORCS is an open source video game...
 ...[History of TORCS from little AI game to Speed Dreams]...</p>
+<p id="why"></p>
+
 <h1>Why bother ?</h1>
-<p>Writing an AI for a racing game ? Maybe you already have your own motivation, you like racing, you might like computer science an AI, you are an enthusiast programmer etc. But above all this series aim to give clear fundamentals on the task...
-Or just maybe you are like me... you have plenty of time to waste! Even then, it is a wise place to waste it.
-A quick disclaimer: this series is <del>highly</del> Inspired from the robot tutorial included in the game. You might also want to check that in case you want a different perspective... Don't look at me like that!</p>
+<p>Writing an AI for a racing game ? Maybe you already have your own motivation, you 
+like racing, you might like computer science an AI, you are an enthusiast 
+programmer etc. But above all this series aim to give clear fundamentals on the 
+task... Or just maybe you are like me... you have plenty of time to waste! 
+Even then, it is a wise place to waste it.</p>
+<p>A quick disclaimer: this series is <del>highly</del> Inspired from the robot 
+tutorial included in the game. You might also want to check that in case you 
+want a different perspective... <del>Don't look at me like that!</del> 
+You should be careful though, because there are some differences in the progression 
+and the code.</p>
+<p id="prerequisites"></p>
+
+<h1>Pre-requisites</h1>
+<p>This tutorial assumes that you have some basic C++ knowledge, and that you have
+some experience with high school mathematics and physics.</p>
+<p>Nevertheless, I will do my best to be as clear as possible and give pointers 
+for further readings, to those interested in learning more.</p>
+<p>On a side note, I strongly encougare you to code along with the tutorial by 
+yourself. Sure you can copy-paste the code to go fast, but you will miss 
+the mistakes that make you learn and understand concepts far better. 
+When you make mistakes or things go sideways, try to re-analyse the code and the 
+explanations thoroughly and try again. This way you will come up with a deeper 
+understanding of how things works. This will enable you to improve the code 
+beyond the tutorial, and easily translate your knowledge elsewhere.</p>
 <p id="table_of_contents"></p>
 
 <h1>Content</h1>
@@ -68,6 +91,7 @@ A quick disclaimer: this series is <del>highly</del> Inspired from the robot tut
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html">Getting started</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-2.html">Acceleration</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-3.html">Brakes and Gears</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-5.html">Aerodynamics and Stability Controls</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Steering and Trajectory</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-5.html">Recovering</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-6.html">Collision Avoidance and Overtaking</a></li>
@@ -76,6 +100,8 @@ A quick disclaimer: this series is <del>highly</del> Inspired from the robot tut
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Multiple Cars Handling</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-10.html">Wrap Up</a></li>
 </ol>
+<p id="installation"></p>
+
 <h1>Installation</h1>
 <p>Let's install the game!</p>
 <p>TORCS can be installed via binaries but we are here to implement AI agent for the 

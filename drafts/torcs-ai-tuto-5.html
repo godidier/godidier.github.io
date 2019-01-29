@@ -63,13 +63,159 @@ thus our speed as well.</p>
 <p>First, let's introduce two classes to simplify our calculations in computing 
 steering angles and specific distances. </p>
 <h2>The Vector Class</h2>
-<p>The first utility class <code>V2D</code>, represent a two dimensional vector. It implement 
-useful operations that can be applied to a vector such as: addition, substraction, 
-scalar multiplication and dot product. Additional implemented functions are 
-normalization, rotation around a center and computing the length of the vector.</p>
+<p>The first utility class <code>Vector2D</code>, represent a two dimensional vector. It 
+implement useful operations that can be applied to a vector such as: addition, 
+substraction, scalar multiplication and dot product. Additional implemented 
+functions are normalization, rotation around a center and computing the length 
+of the vector.</p>
 <p>Let's create a folder named <em>linalg</em> within our project. Within this folder 
-create a file named <em>v2d.h</em>. Implement the following listing in the created file.</p>
-<div class="highlight"><pre><span></span>
+create a file named <em>vector2d.h</em>. Implement the following listing in the created 
+file.</p>
+<div class="highlight"><pre><span></span><span class="cp">#ifndef _VECTOR2D_</span>
+<span class="cp">#define _VECTOR2D_</span>
+
+<span class="k">class</span> <span class="nc">Vector2D</span> 
+<span class="p">{</span>
+
+    <span class="k">public</span><span class="o">:</span> 
+        <span class="n">Vector2D</span><span class="p">()</span> <span class="p">{}</span>
+        <span class="n">Vector2D</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">src</span><span class="p">.</span><span class="n">x</span><span class="p">;</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="n">src</span><span class="p">.</span><span class="n">y</span><span class="p">;</span> <span class="p">}</span>
+        <span class="n">Vector2D</span><span class="p">(</span><span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="n">Vector2D</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">);</span>       <span class="c1">// assignement</span>
+        <span class="n">Vector2D</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>  <span class="c1">// addition</span>
+        <span class="n">Vector2D</span> <span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>                 <span class="c1">// negation</span>
+        <span class="n">Vector2D</span> <span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>  <span class="c1">// substraction</span>
+        <span class="n">Vector2D</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="kt">float</span> <span class="n">scalar</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>   <span class="c1">// scalar mutliplication</span>
+        <span class="kt">float</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span> <span class="c1">// dot product</span>
+        <span class="k">friend</span> <span class="n">Vector2D</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="kt">float</span> <span class="n">scalar</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">);</span>
+
+
+        <span class="kt">float</span> <span class="nf">Length</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+        <span class="kt">void</span> <span class="nf">Normalize</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+        <span class="kt">float</span> <span class="nf">Distance</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">point</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="nf">Cosine</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="n">point1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector2D</span> <span class="n">point2</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+        <span class="n">Vector2D</span> <span class="nf">Rotate</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">center</span><span class="p">,</span> <span class="kt">float</span> <span class="n">arc</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+        <span class="kt">float</span> <span class="n">x</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Assignement. assigns the value of src to this</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span><span class="o">&amp;</span> <span class="n">Vector2D</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">src</span><span class="p">.</span><span class="n">x</span><span class="p">;</span> 
+    <span class="n">y</span> <span class="o">=</span> <span class="n">src</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * vector addition. Add *this to src.</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span> <span class="n">Vector2D</span><span class="o">::</span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Vector2D</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">src</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">src</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Negation of *this</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span> <span class="n">Vector2D</span><span class="o">::</span><span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Vector2D</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * vector substraction. compute *this - src.</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span> <span class="n">Vector2D</span><span class="o">::</span><span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Vector2D</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">src</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">src</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Multiply with a scalar</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span> <span class="n">Vector2D</span><span class="o">::</span><span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="kt">float</span> <span class="n">scalar</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Vector2D</span><span class="p">(</span><span class="n">scalar</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">scalar</span> <span class="o">*</span> <span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Dot Product</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="kt">float</span> <span class="n">Vector2D</span><span class="o">::</span><span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span> <span class="k">const</span> 
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">src</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">src</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Multiply a scalar with a vector</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="kt">float</span> <span class="n">scalar</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">src</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Vector2D</span><span class="p">(</span><span class="n">scalar</span> <span class="o">*</span> <span class="n">src</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">scalar</span> <span class="o">*</span> <span class="n">src</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Length of the vector</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="kt">float</span> <span class="n">Vector2D</span><span class="o">::</span><span class="n">Length</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Normalize the vector</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">Vector2D</span><span class="o">::</span><span class="n">Normalize</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">l</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">Length</span><span class="p">();</span>
+    <span class="n">x</span> <span class="o">/=</span> <span class="n">l</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">/=</span> <span class="n">l</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Distance between *this and point</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="kt">float</span> <span class="n">Vector2D</span><span class="o">::</span><span class="n">Distance</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">point</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">point</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Cosine of the angle between vectors *this-point1 and *this-point2</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="kt">float</span> <span class="n">Vector2D</span><span class="o">::</span><span class="n">Cosine</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="n">point1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector2D</span> <span class="n">point2</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Vector2D</span> <span class="n">l1</span> <span class="o">=</span> <span class="n">point1</span> <span class="o">-</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="n">Vector2D</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">point2</span> <span class="o">-</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">l1</span> <span class="o">*</span> <span class="n">l2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">l1</span><span class="p">.</span><span class="n">Length</span><span class="p">()</span> <span class="o">*</span> <span class="n">l2</span><span class="p">.</span><span class="n">Length</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Rotate the vector by &#39;arc&#39; radians around the point &#39;center&#39;</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span> <span class="n">Vector2D</span><span class="o">::</span><span class="n">Rotate</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">center</span><span class="p">,</span> <span class="kt">float</span> <span class="n">arc</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Vector2D</span> <span class="n">d</span>  <span class="o">=</span> <span class="o">*</span><span class="k">this</span> <span class="o">-</span> <span class="n">center</span><span class="p">;</span> 
+    <span class="kt">float</span> <span class="n">sina</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">arc</span><span class="p">),</span> <span class="n">cosa</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">arc</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">center</span> <span class="o">+</span> <span class="n">Vector2D</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">cosa</span> <span class="o">-</span> <span class="n">d</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">sina</span><span class="p">,</span> 
+                   <span class="n">d</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">sina</span> <span class="o">+</span> <span class="n">d</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">cosa</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif</span>
 </pre></div>
 
 
@@ -82,7 +228,59 @@ points and straights.</p>
 on the straight and the other the direction.</p>
 <p>Let's create a file named <em>straight.h</em> within the <em>linalg</em> folder. Add the 
 following code in the newly created file.</p>
-<div class="highlight"><pre><span></span>
+<div class="highlight"><pre><span></span><span class="cp">#ifndef _STRAIGHT_</span>
+<span class="cp">#define _STRAIGHT_</span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;vector2d.h&quot;</span><span class="cp"></span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Represent an eucludean vector</span>
+<span class="cm"> */</span>
+<span class="k">class</span> <span class="nc">Straight</span> 
+<span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span> 
+        <span class="n">Straight</span><span class="p">()</span> <span class="p">{}</span>
+        <span class="n">Straight</span><span class="p">(</span><span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="n">direction_x</span><span class="p">,</span> <span class="kt">float</span> <span class="n">direction_y</span><span class="p">)</span> 
+        <span class="p">{</span> 
+            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> 
+            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span> 
+            <span class="n">direction</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">direction_x</span><span class="p">;</span> 
+            <span class="n">direction</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">direction_y</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">Straight</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">point</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">direction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="o">-&gt;</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span><span class="p">;</span>
+            <span class="k">this</span><span class="o">-&gt;</span><span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">Vector2D</span> <span class="n">Intersection</span><span class="p">(</span><span class="k">const</span> <span class="n">Straight</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="nf">Distance</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+        <span class="n">Vector2D</span> <span class="n">point</span><span class="p">;</span>
+        <span class="n">Vector2D</span> <span class="n">direction</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Intersection point *this and s</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="n">Vector2D</span> <span class="n">Straight</span><span class="o">::</span><span class="n">Intersection</span><span class="p">(</span><span class="k">const</span> <span class="n">Straight</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">t</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">direction</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">point</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">point</span><span class="p">.</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">direction</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="p">(</span><span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">s</span><span class="p">.</span><span class="n">point</span><span class="p">.</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">direction</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">s</span><span class="p">.</span><span class="n">direction</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">direction</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">s</span><span class="p">.</span><span class="n">direction</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">point</span> <span class="o">+</span> <span class="n">s</span><span class="p">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Distance of point s from straight *this</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span> <span class="kt">float</span> <span class="n">Straight</span><span class="o">::</span><span class="n">Distance</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector2D</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">)</span> <span class="k">const</span> 
+<span class="p">{</span>
+    <span class="n">Vector2D</span> <span class="n">d1</span> <span class="o">=</span> <span class="n">s</span> <span class="o">-</span> <span class="n">p</span><span class="p">;</span>
+    <span class="n">Vector2D</span> <span class="n">d3</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">-</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">d1</span> <span class="o">*</span> <span class="n">direction</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">d3</span><span class="p">.</span><span class="n">Length</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#endif </span><span class="c1">// _STRAIGHT_</span>
 </pre></div>
 
 
@@ -96,12 +294,97 @@ of the car. The figure below give an idea of what goes on.</p>
 that we are still far away from a good trajectory, since we cannot take a turn 
 with the biggest possible radius, starting and ending onthe middle of the track.</p>
 <h2>Finding the target point</h2>
-<div class="highlight"><pre><span></span>
+<p>To get the target point, we use the position of our car and the geometry of the 
+track. We first pick a distance at <code>look_ahead</code> meters from our car. We place a 
+point at the middle of the start of the track segment that is at the distance 
+we designated (Note the abbreviation:<code>TR_SL</code> for start left coner, <code>TR_SR</code> for 
+start right, <code>TR_EL</code> for End Left and <code>TR_ER</code> for end right). If the point 
+is on a straight, the target point is formed by adding a scaled direction vector
+otherwise, the target point is formed by applying a rotation to the point.</p>
+<p>Here is the method to find the target point we add to <em>carcontroller.cpp</em></p>
+<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Find a target point ahead of the car toward which the wheels will steer</span>
+<span class="cm"> */</span>
+<span class="n">Vector2D</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetTargetPoint</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">tTrackSeg</span><span class="o">*</span> <span class="n">segment</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">look_ahead</span> <span class="o">=</span> <span class="n">LOOK_AHEAD_CONST</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">*</span> <span class="n">LOOK_AHEAD_FACTOR</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">length</span> <span class="o">=</span> <span class="n">DistanceFromCarToSegmentEnd</span><span class="p">();</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">length</span> <span class="o">&lt;</span> <span class="n">look_ahead</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">length</span> <span class="o">+=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>  
+    <span class="p">}</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">look_ahead</span> <span class="o">-</span> <span class="n">length</span> <span class="o">+</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">target_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">x</span> <span class="o">+</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SR</span><span class="p">].</span><span class="n">x</span><span class="p">)</span> 
+            <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">target_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">y</span> <span class="o">+</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SR</span><span class="p">].</span><span class="n">y</span><span class="p">)</span> 
+            <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span>
+    <span class="n">Vector2D</span> <span class="nf">target</span><span class="p">(</span><span class="n">target_x</span><span class="p">,</span> <span class="n">target_y</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">TR_STR</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">float</span> <span class="n">direction_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">x</span> <span class="o">-</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">x</span><span class="p">)</span>
+            <span class="o">/</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">direction_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">y</span> <span class="o">-</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">y</span><span class="p">)</span>
+            <span class="o">/</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+        <span class="n">Vector2D</span> <span class="nf">direction</span><span class="p">(</span><span class="n">direction_x</span><span class="p">,</span> <span class="n">direction_y</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">target</span> <span class="o">+</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">length</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">Vector2D</span> <span class="n">center</span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">center</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">center</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>  
+        <span class="kt">float</span> <span class="n">arc</span> <span class="o">=</span> <span class="n">length</span> <span class="o">/</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">arcsign</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">TR_RGT</span><span class="p">)</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">arc</span> <span class="o">*=</span> <span class="n">arcsign</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">target</span><span class="p">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">arc</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
-<p>(Note the difference between the <code>look_ahead</code> variables)</p>
 <h2>Heading toward the target point</h2>
+<p>Let's update the <code>GetSteering()</code> method to steer the wheels toward the target point</p>
+<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetSteering</span><span class="p">(</span><span class="kt">float</span> <span class="n">car_angle</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">target_angle</span><span class="p">;</span>
+    <span class="n">Vector2D</span> <span class="n">target</span> <span class="o">=</span> <span class="n">GetTargetPoint</span><span class="p">();</span>
+
+    <span class="n">target_angle</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_pos_Y</span><span class="p">,</span> <span class="n">target</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_pos_X</span><span class="p">)</span> 
+            <span class="o">-</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span>
+    <span class="n">target_angle</span> <span class="o">=</span> <span class="n">remainder</span><span class="p">(</span><span class="n">target_angle</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">target_angle</span> <span class="o">/</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Finishing the Implementation</h2>
+<p>Let's define the new constants at the start of <em>carcontroller.cpp</em></p>
+<div class="highlight"><pre><span></span><span class="c1">// ...</span>
+<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">LOOK_AHEAD_CONST</span> <span class="o">=</span> <span class="mf">17.0</span><span class="p">;</span> <span class="c1">// [m]</span>
+<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">LOOK_AHEAD_FACTOR</span> <span class="o">=</span> <span class="mf">0.33</span><span class="p">;</span> <span class="c1">// [1/s]</span>
+</pre></div>
+
+
+<p>We also update <em>carcontroller.h</em> by including the <code>Vector2D</code> header, and 
+declaring the new class members.</p>
+<div class="highlight"><pre><span></span><span class="c1">// ...</span>
+<span class="cp">#include</span> <span class="cpf">&quot;linalg/vector2d.h&quot;</span><span class="cp"></span>
+
+<span class="c1">// ... </span>
+<span class="k">class</span> <span class="nc">CarController</span> <span class="p">{</span>
+
+    <span class="k">public</span><span class="o">:</span> 
+        <span class="c1">// ...</span>
+        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">LOOK_AHEAD_CONST</span><span class="p">;</span>
+        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">LOOK_AHEAD_FACTOR</span><span class="p">;</span>
+        <span class="c1">// ...</span>
+
+    <span class="k">private</span><span class="o">:</span> 
+        <span class="c1">// ...</span>
+        <span class="n">Vector2D</span> <span class="n">GetTargetPoint</span><span class="p">();</span>
+        <span class="c1">// ...</span>
+</pre></div>
+
+
+<h3>Test Drive</h3>
+<p>[times]</p>
   </div>
 
 </article>
