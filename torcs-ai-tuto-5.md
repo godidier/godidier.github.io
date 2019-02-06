@@ -22,7 +22,7 @@ steering angles and specific distances.
 The first utility class `Vector2D`, represent a two dimensional vector. It 
 implement useful operations that can be applied to a vector such as: addition, 
 substraction, scalar multiplication and dot product. Additional implemented 
-functions are normalization, rotation around a center and computing the length 
+functions are normalization, rotation around a center and computation of the length 
 of the vector.
 
 Let's create a folder named _linalg_ within our project. Within this folder 
@@ -186,7 +186,7 @@ The second utiliy class `Straight`, represent some kind of
 We will use it to find intersection points among straights, and distances between 
 points and straights.
 
-As you might see the `Straigth` class contains two `Vector2D`. One hold a point 
+As you might see the `Straight` class contains two `Vector2D`. One hold a point 
 on the straight and the other the direction.
 
 Let's create a file named _straight.h_ within the _linalg_ folder. Add the 
@@ -269,7 +269,8 @@ with the biggest possible radius, starting and ending onthe middle of the track.
 To get the target point, we use the position of our car and the geometry of the 
 track. We first pick a distance at `look_ahead` meters from our car. We place a 
 point at the middle of the start of the track segment that is at the distance 
-we designated (Note the abbreviation:`TR_SL` for start left coner, `TR_SR` for 
+we designated (Note in the code you will see below, the abbreviation for the 
+four sides of a track segment:`TR_SL` for start left coner, `TR_SR` for 
 start right, `TR_EL` for End Left and `TR_ER` for end right). If the point 
 is on a straight, the target point is formed by adding a scaled direction vector
 otherwise, the target point is formed by applying a rotation to the point.
@@ -360,7 +361,7 @@ class CarController {
 		// ...
 		Vector2D GetTargetPoint();
 		// ...
-		
+};
 ```
 
 

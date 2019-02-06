@@ -21,10 +21,12 @@ us and we go off-course... We will end up being _stuck_!
 But **NO MORE** ! In this chapter, we will implement a recovery strategy to get out 
 of an accident and out of being stuck.
 
+<p id="basic_recovery"></p>
 # A Basic Recovery Strategy
 
 
 
-# Improving the Recovery Strategy
+<p id="better_recovery"></p>
+# A Better Recovery Strategy
 
 
