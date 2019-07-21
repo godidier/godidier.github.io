@@ -203,7 +203,7 @@ the game.
 > length and a radius, everyting is measured in the middle of the track. 
 > All segments connect tangentially to the next and previous segments, so the 
 > middle line is smooth. There is much more data available, the structure 
-> tTrack is defined in $TORCS_BASE/export/include/track.h.
+> tTrack is defined in $TORCS\_BASE/export/include/track.h.
 
 The image below from [Wikipedia](https://en.wikipedia.org/wiki/Speed_Dreams#Tracks)
 give an illustration of the quote above.

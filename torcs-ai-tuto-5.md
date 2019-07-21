@@ -369,3 +369,190 @@ class CarController {
 
 [times]
 
+<p id="going_faster"></p>
+# Going Faster
+
+We will modify `CarController::GetAllowedSpeed(...)`, to pass short turns faster. 
+We consider short turns, turns with a small angle (see the figure below). 
+We will use a heuristic, which is just a an approach to reach an immediate goal 
+(going fast in short turns in our case), without worrying too much about 
+optimization, logic, or rationality.
+
+![Illustration of short turns in contrast to long turns]({filename}#)
+
+In our heuristic approximation, we take the outside radius of the first segment 
+of the turn `segment->radius + segment->width/2.0`, and we divide it by the 
+square root of the angle (represented by `arc`) of the turn. Remember this is 
+a heuristic and don't try to make full sense of why it works. An interesting 
+advantage of this approach is the growing acceleration toward the end of a turn.
+
+Here is the code of the new version of `CarController::GetAllowedSpeed(...)`.
+
+```cpp
+float  CarController::GetAllowedSpeed(tTrackSeg* segment)
+{
+	if (segment->type == TR_STR){
+		return FLT_MAX; // Max float number 
+	} else {
+		float arc = 0.0; 
+		tTrackSeg *seg = segment;
+		while(seg->type == segment->type && arc < PI/2.0){
+			arc += seg->arc;
+			seg = seg->next;
+		}
+		arc /= PI/2.0; // normalizing the turn angle
+		float mu = segment->surface->kFriction;
+		float r = (segment->radius + segment->width/2.0) / sqrt(arc);
+		return sqrt((mu * G * r) / (1.0 - MIN(1.0, r * CA * mu / full_car_mass)));
+	}
+}
+```
+
+[Test drive and times]
+
+Incidentally, this heuristic may lead the car to slightly go off track on some 
+turns. We are about to fix that behavior.
+
+
+<p id="going_faster"></p>
+# Staying on the track
+
+Now let's correct the unwanted behavior the car might have to slightly go off 
+track due to the previously implemented heuristic, by introducing a marging around 
+the middle of the track. 
+We will readjust our acceleration depending whether we are in the inside or the 
+outside of a turn. When we are far away form the middle at the outside of a turn, 
+we set our acceleration to zero. In contrast when we are inside, we can accelerate 
+further, because the centrifugal force pushes the car outside.
+
+Let's add a method that implement that. A filter for our acceleration depending 
+on our position on the track.
+
+```cpp
+/**
+ * Acceleration filter according to the position on the track, 
+ * to keep the car on the track.
+ */
+float CarController::FilterTrack(float acceleration)
+{
+	tTrackSeg* seg = car->_trkPos.seg;
+	if (car->_speed_x < MAX_UNSTUCK_SPEED) 
+		return acceleration;
+	if(seg->type == TR_STR){
+		float to_middle = fabs(car->_trkPos.toMiddle);
+		float safe_width = seg->width / WIDTH_DIV;
+		if (to_middle > safe_width)
+			return 0.0;
+		else 
+			return acceleration;
+	} else {
+		float sign = (seg->type == TR_RGT) ? -1 : 1;
+		if (car->_trkPos.toMiddle * sign > 0.0){ // inside a turn
+			return acceleration;
+		} else {
+			float to_middle = fabs(car->_trkPos.toMiddle);
+			float safe_width = seg->width / WIDTH_DIV;
+			if (to_middle > safe_width)
+				return 0.0;
+			else 
+				return acceleration;
+		}
+	}
+}
+```
+
+We define the newly added constant at the top of _carcontroller.cpp_ .
+
+```cpp
+const float CarController::WIDTH_DIV = 4.0; // [-]
+const float CarController::MAX_UNSTUCK_SPEED = 5.0; // [m/s]
+```
+WIDTH\_DIV is a constant by which we divide the width of the track to get a safe 
+width, and MAX\_UNSTUCK\_SPEED is a speed limit (it will also be useful in coming 
+chapter). 
+
+We apply the filter at the end of the `CarController::GetAcceleration()` method, 
+before `FilterTCL` is applied.
+
+```cpp
+float CarController::GetAcceleration()
+{
+	// ...
+	acceleration = FilterTrack(acceleration);
+	acceleration = FilterTCL(acceleration);
+	return acceleration;
+}
+```
+
+We can finally declare the new methods and constants in _carcontroller.h_.
+
+```cpp
+class CarController {
+
+	public: 
+		// ...
+		static const float WIDTH_DIV;
+		static const float MAX_UNSTUCK_SPEED;
+		
+	private:
+		// ...
+		float FilterTrack(float acceleration);
+
+		// ...
+};
+```
+[Test drive and Time]
+
+Our AI agent start to be competitive right? 
+
+# A quick discussion on trajectories
+
+"...But it is nothing near having a perfect trajectory..." 
+
+I can almost hear you! 
+
+So how can we manage to have great, near perfect trajectory ? How to find the 
+optimal trajectory ? Like most people, I am still looking for that. Finding 
+a perfect trajectory in three dimensions seems to be a NP problem. NP stands 
+for non-deterministic polynomial time, and basically means that we are not sure 
+if there is a correct (optimal) solution, but if it does, we can make sure of it 
+fairly quickly. A solution in 2D might also work since most track are pretty flat. 
+I invite your to search the web for papers or other resources about the subject, 
+but here we will discuss approach that are not perfect but might work well.
+
+## Heuristic Trajectories
+
+
+
+## Geometric Trajectories
+
+
+## Soft Computing and Machine Learning Approaches 
+
+Soft computing denote techniques that yield (imprecise) solutions to 
+computationally hard tasks, including NP problems. Those approaches are tolerant 
+of uncertainty and imprecisions. We will explore how we can make use of some of 
+them such as Fuzzy Logic, Evolutionary Computation and Machine Learning to improve 
+our trajectories around tracks.
+
+### Fuzzy Logic
+
+Fuzzy Logic is...
+In our ... it will not be used to directly define a trajectory on a track, but 
+it can be use to define breaking areas, how hard we accelerate and brake, which 
+will improve our pace on a trajectory, and thus around a track.
+
+For example...
+
+### Evolutionary Computing
+
+
+### Machine Learning
+
+There are a plethora of Machine Learning techniques that can be applied to find a 
+good trajectories
+
+
+
+
+
