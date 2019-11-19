@@ -57,9 +57,54 @@
     </p>
   </div>
   <div class="article__text">
-    <h1>Title</h1>
-<p>text text text text text text text text text text text text text text text text
- text text text text text text text text text text text text text text text text</p>
+    <ul>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
+</ul>
+<h1>Introduction</h1>
+<p>During the race, our car consumes fuel, and is likely to endure damages 
+over time. In longer races, we might not be able to drive any further 
+if our fuel tank is empty (the fuel value get to 0), or the car damages 
+exceed a certain threshold (10000 damages points). To stay in the race, we 
+might want to go to the pit stop to refuel and repair the car periodically, 
+according to a strategy. In this chapter we will learn how to send our car 
+to te pit stop for reparation and refuel. </p>
+<p>But how does the pit stop works in TORCS ? Here are the steps to do a pit 
+stop in TORCS. </p>
+<ol>
+<li>The AI agent decides to go to the pit. </li>
+<li>The AI agent enters the pit and drive into the pit lane with respect to 
+the speed limit</li>
+<li>The AI agent drive to its pit and stups there</li>
+<li>Once the agent (is about to) stops in its pit, the simulation captures the 
+car and ask for how much damage point to repairs and the amount of refuel</li>
+<li>The TORCS simulation repairs and refuel the car, then release it</li>
+<li>The car drive to the pit exit in respect to the speed limit</li>
+<li>The AI agent can continue racing</li>
+</ol>
+<p>From the above step we can detect the item to implement for pit stops.</p>
+<ul>
+<li>A strategy to decide if we need a pit stop</li>
+<li>A path to drive into, within and out of the pit lane</li>
+<li>An additional brake filter to stop in the pit</li>
+<li>A callback to tell the simulation (TORCS) how much repairs and fuel we need</li>
+</ul>
+<p>Note that in TORCS there is no tyre wear, so no need to worry about our 
+tyres, and there un pit available per car so no need to verify if there is 
+a pit available before going to pit stop.</p>
+<p>We will start by defining the spline class that will help us trace our path 
+to the pit stop, then we will define a Pit class where we will implement 
+helpers methods to achieve what we defined earlier.</p>
+<h1>The Spline</h1>
+<h1>The Pit Class</h1>
+<h1>The Pit strategy</h1>
+<h1>The Pit Brake filter</h1>
+<ul>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
+</ul>
   </div>
 
 </article>

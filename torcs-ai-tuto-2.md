@@ -14,6 +14,7 @@ make it drive slowly, and reorganize the code for easier implementation.
 * [Previous: Getting Started]({filename}torcs-ai-tuto-1.md)
 * [Next: Brakes and Gears]({filename}torcs-ai-tuto-3.md)
 
+<p id="ai_base_code"></p>
 # Generate the AI agent base code
 
 To start building our AI agent, we will use a tool called `robotgen`, to create 

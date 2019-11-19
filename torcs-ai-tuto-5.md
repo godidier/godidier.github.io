@@ -270,7 +270,7 @@ To get the target point, we use the position of our car and the geometry of the
 track. We first pick a distance at `look_ahead` meters from our car. We place a 
 point at the middle of the start of the track segment that is at the distance 
 we designated (Note in the code you will see below, the abbreviation for the 
-four sides of a track segment:`TR_SL` for start left coner, `TR_SR` for 
+four vertices (points) of a track segment:`TR_SL` for start left coner, `TR_SR` for 
 start right, `TR_EL` for End Left and `TR_ER` for end right). If the point 
 is on a straight, the target point is formed by adding a scaled direction vector
 otherwise, the target point is formed by applying a rotation to the point.
