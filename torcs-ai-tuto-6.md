@@ -7,6 +7,10 @@ slug: torcs-ai-tuto-6
 lang: en
 
 
+* [Table of Contents]({filename}torcs-ai-tuto-1.md#table_of_contents)
+* [Previous: Steering and Trajectory]({filename}torcs-ai-tuto-5.md)
+* [Next: Collision avoidance and Overtaking]({filename}torcs-ai-tuto-7.md)
+
 <p id="introduction"></p>
 # Introduction
 

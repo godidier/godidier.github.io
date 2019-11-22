@@ -5,10 +5,14 @@ authors: Didier Gohourou
 summary: Getting to setup and know TORCS
 slug: torcs-ai-tuto-1
 lang: en
+status: published
 
 
-This is the beginning of a series on how to build an AI agent for the game TORCS (The Open Racing Cars Simulation). TORCS is an open source video game...
-...[History of TORCS from little AI game to Speed Dreams]...
+This is the beginning of a series on how to build an AI agent for the game 
+TORCS (The Open Racing Cars Simulation). TORCS is an open source video game.
+You can checkout the Wikipedia page of the game for a 
+[History of TORCS](https://en.wikipedia.org/wiki/TORCS) from little AI game 
+to Speed Dreams and others.
 
 <p id="why"></p>
 # Why bother ? 

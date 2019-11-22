@@ -58,7 +58,7 @@
   </div>
   <div class="article__text">
     <ul>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
 </ul>
@@ -97,11 +97,62 @@ a pit available before going to pit stop.</p>
 to the pit stop, then we will define a Pit class where we will implement 
 helpers methods to achieve what we defined earlier.</p>
 <h1>The Spline</h1>
+<h2>A spline ?</h2>
+<p>In the last section you have seen that we need to find somehow a path into our pit. I decided to show you an implementation which uses "cubic" splines to create the path. Cubic splines are interpolating polynomials between given base points, such that the function itself and the first derivative is smooth. We need a smooth path because our car can not follow a path with "cracks". First I will show you the implementation of the spline algorithm, after that we will prepare the base points. </p>
+<h2>Spline implementation</h2>
+<p>If you want to know how the following algorithm works, you can look it up here. In a nutshell, you query for a given parameter ("x") the value of the spline function ("y"). The algorithm searches first the interval in which "x" falls, then it applies the interpolation to compute y(x). Now let's have a look on the spline.h file (create it in the bt directory). </p>
+<p>The SplinePoint class holds the data for each base point of the spline. For the interpolation algorithm we need to define also the slope at (x,y). </p>
+<p>The Spline class provides just two methods. The constructor to initialize the number of base points (dim) and a pointer to an array of SplinePoints. </p>
+<div class="highlight"><pre><span></span><span class="n">Spline</span><span class="o">::</span><span class="n">Spline</span><span class="p">(</span><span class="kt">int</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">SplinePoint</span> <span class="o">*</span><span class="n">spline_points</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">spline_points</span> <span class="o">=</span> <span class="n">spline_points</span> <span class="p">;</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">dimension</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The second method finally computes the spline values. Here follows the implementation, put it into spline.cpp. </p>
+<p>First the algorithm searches for the interval in which the parameter z falls. </p>
+<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">Spline</span><span class="o">::</span><span class="n">Evaluate</span><span class="p">(</span><span class="kt">float</span> <span class="n">z</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">t</span><span class="p">,</span> <span class="n">a0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">h</span><span class="p">;</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">dimension</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">do</span> <span class="p">{</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">z</span><span class="p">)</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="k">else</span> <span class="n">b</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">while</span> <span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="n">b</span><span class="p">);</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="n">h</span> <span class="o">=</span> <span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">X</span> <span class="o">-</span> <span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">;</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">)</span> <span class="o">/</span> <span class="n">h</span><span class="p">;</span>
+    <span class="n">a0</span> <span class="o">=</span> <span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Y</span><span class="p">;</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">Y</span> <span class="o">-</span> <span class="n">a0</span><span class="p">;</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">-</span> <span class="n">h</span><span class="o">*</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">s</span><span class="p">;</span>
+    <span class="n">a3</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">S</span> <span class="o">-</span> <span class="n">a1</span><span class="p">;</span> <span class="n">a3</span> <span class="o">-=</span> <span class="n">a2</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">a0</span> <span class="o">+</span> <span class="p">(</span><span class="n">a1</span> <span class="o">+</span> <span class="p">(</span><span class="n">a2</span> <span class="o">+</span> <span class="n">a3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">t</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Finally you need to add spline.cpp to the Makefile. Change </p>
+<div class="highlight"><pre><span></span>SOURCES     = <span class="cp">${</span><span class="n">ROBOT</span><span class="cp">}</span>.cpp carcontroller.cpp opponent.cpp spline.cpp
+</pre></div>
+
+
 <h1>The Pit Class</h1>
+<p>Eggsplain pitstop process ...</p>
+<p>The following picture shows the path to and out of the pit. Like you can see we need the base points p0 to p6 to be able to compute the path. Our x-axis is the middle line along the track, so the slope in the base points is zero (parallel to the track). </p>
+<p>[TODO show pic]</p>
+<p>We compute the base points of the spline in the constructor of a new class, put it into a new file and save it as pit.cpp. That we don't need to change the constructor all the time I will present you the final result. We will discuss all the new variables later in detail, at the moment we just focus on the base points. The header file will follow later. </p>
+<p>Let's prepare the header file for the pit class. It contains the definition 
+of the functionality to decide if we want to pit (the strategy), to compute 
+the pit path (into, within and out of the pit) and some utility functions. 
+Put the following code into a new file named <em>pit.h</em>. </p>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
 <h1>The Pit strategy</h1>
 <h1>The Pit Brake filter</h1>
 <ul>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
 </ul>

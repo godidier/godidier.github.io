@@ -5,6 +5,7 @@ authors: Didier Gohourou
 summary: Making the car accelerate slightly and steering basically.
 slug: torcs-ai-tuto-2
 lang: en
+status: published
 
 This is the second chapter of a tutorial for building an AI agent for the racing 
 game TORCS. In this chapter, we will generate the base code of the AI agent, 
@@ -266,7 +267,7 @@ angles, and the algorithm above.
 
 # Test drive 
 
-add video
+[Video Link]
 
 # Restructuring the code
 
@@ -589,7 +590,7 @@ float CarController::CurrentCarAngle(tSituation* situation)
 
 Compile and run it to ensure that everything went smoothly. If not and you are 
 on the edge of tearing of your hairs out of your head, please download or clone 
-this [repository](#).
+this [source code](#).
 
 That's it for this chapter!... And yes we have a working agent! But let's be 
 honest it is kind of lame. So let's make him faster, break, and change gears.

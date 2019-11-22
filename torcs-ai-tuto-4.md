@@ -13,9 +13,6 @@ faster.
 
 * [Table of Contents]({filename}torcs-ai-tuto-1.md#table_of_contents)
 * [Previous: Brakes and Gears]({filename}torcs-ai-tuto-3.md)
-* [Aerodynamics and Stability Controls](#)
-	* [Title](#)
-	* [Title](#)
 * [Next: Steering and Trajectory]({filename}torcs-ai-tuto-5.md)
 
 # Aerodynamics
@@ -507,4 +504,9 @@ and add the new class member declaration in _carcontroller.h_.
 
 ### Test Drive
 
+[Video Link]
 
+
+* [Table of Contents]({filename}torcs-ai-tuto-1.md#table_of_contents)
+* [Previous: Brakes and Gears]({filename}torcs-ai-tuto-3.md)
+* [Next: Steering and Trajectory]({filename}torcs-ai-tuto-5.md)

@@ -5,6 +5,7 @@ authors: Didier Gohourou
 summary: Increasing the pace by braking and changing gears
 slug: torcs-ai-tuto-3
 lang: en
+status: published
 
 
 This is the third chapter of a tutorial for building an AI agent for the racing 
@@ -13,9 +14,6 @@ faster.
 
 * [Table of Contents]({filename}torcs-ai-tuto-1.md#table_of_contents)
 * [Previous: Acceleration]({filename}torcs-ai-tuto-2.md)
-* [Brakes and Gears](#)
-	* [Title](#)
-	* [Title](#)
 * [Next: Steering and Trajectory]({filename}torcs-ai-tuto-4.md)
 
 # Accelerating the right way
@@ -390,6 +388,8 @@ And declare them in _carcontroller.h_
 
 Let's do another test drive
 
-[insert video]
+[Video Link]
 
-[Add prev, next vids]
+* [Table of Contents]({filename}torcs-ai-tuto-1.md#table_of_contents)
+* [Previous: Acceleration]({filename}torcs-ai-tuto-2.md)
+* [Next: Steering and Trajectory]({filename}torcs-ai-tuto-4.md)

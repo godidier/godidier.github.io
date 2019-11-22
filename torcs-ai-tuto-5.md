@@ -6,11 +6,14 @@ summary: Improving the overall trajectory of the car with a better steering.
 slug: torcs-ai-tuto-5
 lang: en
 
+* [Table of Contents]({filename}torcs-ai-tuto-1.md#table_of_contents)
+* [Previous: Aerodynamics and Stability Controls]({filename}torcs-ai-tuto-4.md)
+* [Next: Recovering]({filename}torcs-ai-tuto-6.md)
+
 This is the fifth chapter of a tutorial for building an AI agent for the racing 
 game TORCS. In this chapter, we improve the steering angle of our AI Agent. We will 
 use an heuristic approach to increase the radius of our car's path in turns, 
 thus our speed as well.
-
 
 # Utility classes
 
@@ -507,7 +510,7 @@ Our AI agent start to be competitive right?
 
 # A quick discussion on trajectories
 
-"...But it is nothing near having a perfect trajectory..." 
+"...But our ai robot is far from having a perfect trajectory..." 
 
 I can almost hear you! 
 
@@ -522,7 +525,12 @@ but here we will discuss approach that are not perfect but might work well.
 
 ## Heuristic Trajectories
 
-
+Like you have seen heuristic means to find a trajectory with some reasonable 
+ideas. So we improve our trajectory with adding this and that, improvement x 
+causes problem y and so forth... The problem with heuristics is that they may 
+work great on some tracks but also horribly fail on some other tracks or dislike 
+certain features. You can build quite a good robot with this method, but there 
+will be always problems with some track features. 
 
 ## Geometric Trajectories
 
@@ -552,7 +560,6 @@ For example...
 There are a plethora of Machine Learning techniques that can be applied to find a 
 good trajectories
 
-
-
-
-
+* [Table of Contents]({filename}torcs-ai-tuto-1.md#table_of_contents)
+* [Previous: Aerodynamics and Stability Controls]({filename}torcs-ai-tuto-4.md)
+* [Next: Recovering]({filename}torcs-ai-tuto-6.md)
