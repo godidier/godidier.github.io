@@ -53,7 +53,7 @@
     <h1><a href="https://godidier.github.io/torcs-ai-tuto-3.html">Building a Simple TORCS AI Agent (3/11): Brakes and Gears</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sun 09 December 2018</p>
+    <p class="article__meta__post-date">Posted on: 日 09 12月 2018</p>
     </p>
   </div>
   <div class="article__text">
@@ -63,7 +63,7 @@ faster.</p>
 <ul>
 <li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
 <li><a href="https://godidier.github.io/torcs-ai-tuto-2.html">Previous: Acceleration</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Next: Steering and Trajectory</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Next: Aerodynamics and Stability Controls</a></li>
 </ul>
 <h1>Accelerating the right way</h1>
 <p>Maybe you are expecting that because we will learn to brake, we can set the 
@@ -121,26 +121,24 @@ surfaces, the current load, the shape of the patch, the temperature, etc.</p>
 <p>With our result, let's create a function that returns the appropriate (allowed) 
 speed on a segment of the track. We declare it in <em>carcontroller.h</em> within the 
 <code>CarController</code> class interface. </p>
-<div class="highlight"><pre><span></span><span class="kt">float</span>  <span class="n">CarController</span><span class="o">::</span><span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">tTrackSeg</span><span class="o">*</span> <span class="n">segment</span><span class="p">);</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w">  </span><span class="nf">CarController::GetAllowedSpeed</span><span class="p">(</span><span class="n">tTrackSeg</span><span class="o">*</span><span class="w"> </span><span class="n">segment</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
 
 <p>and define it in <em>carcontroller.cpp</em>. </p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Compute the allowed speed on a segment.</span>
-<span class="cm"> * */</span>
-<span class="kt">float</span>  <span class="n">CarController</span><span class="o">::</span><span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">tTrackSeg</span><span class="o">*</span> <span class="n">segment</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">TR_STR</span><span class="p">){</span>
-        <span class="k">return</span> <span class="n">FLT_MAX</span><span class="p">;</span> <span class="c1">// Max float number </span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="kt">float</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">surface</span><span class="o">-&gt;</span><span class="n">kFriction</span><span class="p">;</span>
-        <span class="kt">float</span> <span class="n">r</span> <span class="o">=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nf">sqrt</span><span class="p">(</span><span class="n">mu</span> <span class="o">*</span> <span class="n">G</span> <span class="o">*</span> <span class="n">r</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="cm"> * */</span><span class="w"></span>
+<span class="kt">float</span><span class="w">  </span><span class="nf">CarController::GetAllowedSpeed</span><span class="p">(</span><span class="n">tTrackSeg</span><span class="o">*</span><span class="w"> </span><span class="n">segment</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_STR</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">;</span><span class="w"> </span><span class="c1">// Max float number </span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">surface</span><span class="o">-&gt;</span><span class="n">kFriction</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">r</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p><code>TR_STR</code> is a straight segment, there is also <code>TR_RGT</code> for a right curve and 
 <code>TR_LFT</code> for a left curve, from <em>track.h</em>.</p>
@@ -179,36 +177,33 @@ $$</div>
 if with our current speed we can accelerate to the max without stepping over 
 the allowed speed of the segment, we go full throttle. Else, we compute the 
 right amount of  of throttle to apply on the accelerator pedal.</p>
-<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetAcceleration</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="kt">float</span> <span class="n">acceleration</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">allowed_speed</span> <span class="o">=</span> <span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">allowed_speed</span> <span class="o">&gt;</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">+</span> <span class="n">ACCELERATION_MARGIN</span><span class="p">){</span>
-        <span class="n">acceleration</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="kt">float</span> <span class="n">gear_ratio</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearRatio</span><span class="p">[</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearOffset</span><span class="p">];</span>
-        <span class="kt">float</span> <span class="n">rpm_redline</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_enginerpmRedLine</span><span class="p">;</span>
-        <span class="kt">float</span> <span class="n">wheel_radius</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">);</span>
-        <span class="n">acceleration</span> <span class="o">=</span> <span class="p">(</span><span class="n">allowed_speed</span> <span class="o">*</span> <span class="n">gear_ratio</span> <span class="o">/</span> <span class="n">wheel_radius</span><span class="p">)</span> <span class="o">/</span> <span class="n">rpm_redline</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">acceleration</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetAcceleration</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">acceleration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">allowed_speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">allowed_speed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ACCELERATION_MARGIN</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">acceleration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">gear_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearRatio</span><span class="p">[</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearOffset</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">rpm_redline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_enginerpmRedLine</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">wheel_radius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">acceleration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">allowed_speed</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">gear_ratio</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">wheel_radius</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">rpm_redline</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">acceleration</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>We finish this part by defining the constants G (gravity) and FULL_THROTTLE 
 in <em>carcontroller.cpp</em>.</p>
-<div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">G</span> <span class="o">=</span> <span class="mf">9.81</span><span class="p">;</span> <span class="c1">// [m/s^2]</span>
-<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">ACCELERATION_MARGIN</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="c1">// [m/s]</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">G</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">9.81</span><span class="p">;</span><span class="w"> </span><span class="c1">// [m/s^2]</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">ACCELERATION_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// [m/s]</span>
+</code></pre></div>
 
 <p>and we define them in <em>carcontroller.h</em> among the public element of the 
 <code>CarController</code> class.</p>
-<div class="highlight"><pre><span></span>        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">G</span><span class="p">;</span>
-        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">ACCELERATION_MARGIN</span><span class="p">;</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">G</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ACCELERATION_MARGIN</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
 
 <h1>Braking Basics</h1>
 <h2>Checking the distance</h2>
@@ -242,22 +237,21 @@ of the car, up to a given distance. The lookahead mechanism will start with the
 distance from the car to the end of the current segment. Let's implement a utility 
 function to get this initial distance. </p>
 <p>in <em>carcontroller.cpp</em> add</p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Measure the distance from the current position of the car </span>
 <span class="cm"> * to the end of the segment the car is on.</span>
-<span class="cm"> */</span>
-<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">DistanceFromCarToSegmentEnd</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">auto</span> <span class="n">car_position</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">;</span>
-    <span class="k">auto</span> <span class="n">segment</span> <span class="o">=</span> <span class="n">car_position</span><span class="p">.</span><span class="n">seg</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">TR_STR</span><span class="p">){</span>
-        <span class="k">return</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">-</span> <span class="n">car_position</span><span class="p">.</span><span class="n">toStart</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">arc</span> <span class="o">-</span> <span class="n">car_position</span><span class="p">.</span><span class="n">toStart</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::DistanceFromCarToSegmentEnd</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">car_position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_position</span><span class="p">.</span><span class="n">seg</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_STR</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car_position</span><span class="p">.</span><span class="n">toStart</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">arc</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car_position</span><span class="p">.</span><span class="n">toStart</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>As you might see, if the segement is a straight, we simply do a substraction else 
 the arc of the radius comes into play.</p>
@@ -276,72 +270,68 @@ if the required distance we need to brake to match the allowed speed of that
 turn is greater than the distance we currently are (looking ahead) to that turn. 
 If so we apply the brake. For every other conditions, we do not brake.</p>
 <p>Here is the implementation of basic braking in <em>carcontroller.cpp</em></p>
-<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetBrake</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="kt">float</span> <span class="n">brake</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="n">tTrackSeg</span><span class="o">*</span> <span class="n">segment</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">speed</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">allowed_speed</span> <span class="o">=</span> <span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">segment</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">surface</span><span class="o">-&gt;</span><span class="n">kFriction</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">look_ahead_distance_max</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">G</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">look_ahead_distance</span> <span class="o">=</span> <span class="n">DistanceFromCarToSegmentEnd</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetBrake</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">brake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">tTrackSeg</span><span class="o">*</span><span class="w"> </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">allowed_speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">segment</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">surface</span><span class="o">-&gt;</span><span class="n">kFriction</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">look_ahead_distance_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mf">2.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">look_ahead_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DistanceFromCarToSegmentEnd</span><span class="p">();</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">allowed_speed</span> <span class="o">&lt;</span> <span class="n">speed</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">brake</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="n">segment</span> <span class="o">=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">look_ahead_distance</span> <span class="o">&lt;</span> <span class="n">look_ahead_distance_max</span><span class="p">){</span>
-        <span class="n">allowed_speed</span> <span class="o">=</span> <span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">segment</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">allowed_speed</span> <span class="o">&lt;</span> <span class="n">speed</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kt">float</span> <span class="n">brake_distance</span> <span class="o">=</span> 
-                    <span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">G</span><span class="p">);</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">brake_distance</span> <span class="o">&gt;</span> <span class="n">look_ahead_distance</span><span class="p">){</span>
-                <span class="n">brake</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span> 
-        <span class="n">look_ahead_distance</span> <span class="o">+=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
-        <span class="n">segment</span> <span class="o">=</span> <span class="n">segment</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">brake</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">allowed_speed</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">speed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">brake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">look_ahead_distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">look_ahead_distance_max</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">allowed_speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAllowedSpeed</span><span class="p">(</span><span class="n">segment</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">allowed_speed</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">speed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">brake_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="w">                    </span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mf">2.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">brake_distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">look_ahead_distance</span><span class="p">){</span><span class="w"></span>
+<span class="w">                </span><span class="n">brake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span>
+<span class="w">        </span><span class="n">look_ahead_distance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <h2>Updating related methods</h2>
 <p>Let's make an update in the <code>Drive</code> method such that we accelerate only if we 
 are not braking.</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">Drive</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span> <span class="n">situation</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">memset</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span> <span class="c1">// reset the values</span>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::Drive</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">memset</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span><span class="w"> </span><span class="c1">// reset the values</span>
 
-    <span class="kt">float</span> <span class="n">car_angle</span> <span class="o">=</span> <span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span><span class="w"></span>
 
-    <span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerCmd</span> <span class="o">=</span> <span class="n">GetSteering</span><span class="p">(</span><span class="n">car_angle</span><span class="p">);</span>
-    <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearCmd</span> <span class="o">=</span> <span class="n">GetGear</span><span class="p">();</span> 
-    <span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span> <span class="o">=</span> <span class="n">GetBrake</span><span class="p">();</span> 
-    <span class="k">if</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">){</span>
-        <span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span> <span class="o">=</span> <span class="n">GetAcceleration</span><span class="p">();</span> 
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetSteering</span><span class="p">(</span><span class="n">car_angle</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetGear</span><span class="p">();</span><span class="w"> </span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetBrake</span><span class="p">();</span><span class="w"> </span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0.0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAcceleration</span><span class="p">();</span><span class="w"> </span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>Let's fix the gear to 4, for a test drive.</p>
-<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetGear</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="mi">4</span><span class="p">;</span> 
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetGear</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>Now let's declare the newly defined method within the class declaration in 
 <em>carcontroller.h</em>.</p>
-<div class="highlight"><pre><span></span>    <span class="kt">float</span> <span class="nf">DistanceFromCarToSegmentEnd</span><span class="p">();</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="nf">DistanceFromCarToSegmentEnd</span><span class="p">();</span><span class="w"></span>
+</code></pre></div>
 
 <p>Time for a test drive.</p>
 <p>[insert video]</p>
@@ -358,45 +348,42 @@ current one. If the maximum speed allowed at the lower gear is lower than our
 current speed, we down shift. Note that we added a shift margin to prevent 
 oscillating the gear up and down.</p>
 <p>Here is the code for the shifting mechanism, implemented in <code>GetGear()</code></p>
-<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetGear</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mf">1.0</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">gear_ratio_up</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearRatio</span><span class="p">[</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearOffset</span><span class="p">];</span>
-    <span class="kt">float</span> <span class="n">omega</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_enginerpmRedLine</span> <span class="o">/</span> <span class="n">gear_ratio_up</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">wheel_radius</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">SHIFT</span> <span class="o">&lt;</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">){</span>
-        <span class="k">return</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">float</span> <span class="n">gear_ratio_down</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearRatio</span><span class="p">[</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearOffset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
-        <span class="n">omega</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_enginerpmRedLine</span> <span class="o">/</span> <span class="n">gear_ratio_down</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">wheel_radius</span> <span class="o">*</span> <span class="n">SHIFT</span> <span class="o">&lt;</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">+</span> <span class="n">SHIFT_MARGIN</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="p">;</span> 
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetGear</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">gear_ratio_up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearRatio</span><span class="p">[</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearOffset</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">omega</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_enginerpmRedLine</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">gear_ratio_up</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">wheel_radius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">omega</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">wheel_radius</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SHIFT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">gear_ratio_down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearRatio</span><span class="p">[</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearOffset</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="n">omega</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_enginerpmRedLine</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">gear_ratio_down</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">omega</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">wheel_radius</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SHIFT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SHIFT_MARGIN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="p">;</span><span class="w"> </span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>Let's define the new constants at the begining of <em>carcontroller.cpp</em></p>
-<div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">SHIFT</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span> <span class="c1">// [-] (% of rpm red line)</span>
-<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">SHIFT_MARGIN</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">;</span> <span class="c1">// [m/s]</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">SHIFT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.9</span><span class="p">;</span><span class="w"> </span><span class="c1">// [-] (% of rpm red line)</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">SHIFT_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">4.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// [m/s]</span>
+</code></pre></div>
 
 <p>And declare them in <em>carcontroller.h</em></p>
-<div class="highlight"><pre><span></span>        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">SHIFT</span><span class="p">;</span>
-        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">SHIFT_MARGIN</span><span class="p">;</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">SHIFT</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">SHIFT_MARGIN</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
 
 <p>Let's do another test drive</p>
 <p>[Video Link]</p>
 <ul>
 <li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
 <li><a href="https://godidier.github.io/torcs-ai-tuto-2.html">Previous: Acceleration</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Next: Steering and Trajectory</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Next: Aerodynamics and Stability Controls</a></li>
 </ul>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

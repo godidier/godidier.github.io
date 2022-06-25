@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="/static/custom.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Didier Gohourou">
+  <meta name="description" content="Posts and writings by Didier Gohourou">
+
+
+<meta name="keywords" content="">
+
+  <title>
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (8/11): Pit Stops      </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="https://godidier.github.io/">Home</a></li>
+          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="https://godidier.github.io/drafts/gtr-gtr-building-a-simple-torcs-ai-agent-811-pit-stops.html">
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (8/11): Pit Stops    </a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: </p>
+    </p>
+  </div>
+  <div class="article__text">
+    
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="http://localhost:8000">[GTR]  <br /> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="http://localhost:8000/drafts/gtr-building-a-simple-torcs-ai-agent-811-pit-stops.html">
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (8/11): Pit Stops  </a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: </p>
+    </p>
+  </div>
+  <div class="article__text">
+    
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="http://localhost:8000">[GTR]  <br /> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="http://localhost:8000/drafts/torcs-ai-tuto-8.html">Building a Simple TORCS AI Agent (8/11): Pit Stops</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 木 13 12月 2018</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <ul>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
+</ul>
+<h1>Introduction</h1>
+<p>During the race, our car consumes fuel, and is likely to endure damages 
+over time. In longer races, we might not be able to drive any further 
+if our fuel tank is empty (the fuel value get to 0), or the car damages 
+exceed a certain threshold (10000 damages points). To stay in the race, we 
+might want to go to the pit stop to refuel and repair the car periodically, 
+according to a strategy. In this chapter we will learn how to send our car 
+to the pit stop for reparation and refuel. </p>
+<p>But how does the pit stop works in TORCS ? Here are the steps to do a pit 
+stop in TORCS. </p>
+<ol>
+<li>The AI agent decides to go to the pit. </li>
+<li>The AI agent enters the pit and drive into the pit lane with respect to 
+the speed limit</li>
+<li>The AI agent drive to its pit and stops there</li>
+<li>Once the agent (is about to) stops in its pit, the simulation captures the 
+car and ask for how much damage point to repairs and the amount of refuel</li>
+<li>The TORCS simulation repairs and refuel the car, then release it</li>
+<li>The car drive to the pit exit in respect to the speed limit</li>
+<li>The AI agent can continue racing</li>
+</ol>
+<p>From the above step we can detect the item to implement for pit stops.</p>
+<ul>
+<li>A strategy to decide if we need a pit stop</li>
+<li>A path to drive into, within and out of the pit lane</li>
+<li>An additional brake filter to stop in the pit</li>
+<li>A callback to tell the simulation (TORCS) how much repairs and fuel we need</li>
+</ul>
+<p>Note that in TORCS there is no tyre wear, so no need to worry about our 
+tyres, and there un pit available per car so no need to verify if there is 
+a pit available before going to pit stop.</p>
+<p>We will start by defining the <strong>spline</strong> class that will help us trace our path 
+to the pit stop, then we will define a Pit class where we will implement 
+helpers methods to achieve what we defined earlier.</p>
+<h1>The Spline</h1>
+<h2>A spline ?</h2>
+<p>We wil start with a method to define a path into our pit. For this task we 
+choose to implement "cubic" splines to create the path. Cubic splines are 
+interpolating polynomials between given base points, such that the function 
+itself and the first derivative are smooth. We need a smooth path because 
+our car can not follow a path with "cracks". </p>
+<p>[Image of smooth path vs non smooth path ?]</p>
+<h2>Spline implementation</h2>
+<p>Here we define the algorithm to draw a path into our pit using 'cubic' splines.</p>
+<p>In a nutshell, you query for a given parameter <span class="math">\(x\)</span> the value of the spline 
+function <span class="math">\(y\)</span>. The algorithm first searches the interval in which <span class="math">\(x\)</span> falls, 
+then it applies the interpolation to compute <span class="math">\(y(x)\)</span>. 
+[Detail explanation of splines ?
+If you want to know how the following algorithm works, you can look it up here.] </p>
+<p>We create a <em>spline.h</em> file in the <em>gtr</em> directory. In this file, we declare 
+a <code>SplinePoint</code> class to hold data for the base point of the spline, as well 
+as the slope we will use for the interpolation algorithm. </p>
+<p>We also declare a <code>Spline</code> class with a constructor, a method to evaluate
+the spline at a given point and a collection of spline points represented 
+by an array and its size.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#ifndef _SPLINE_H_</span>
+<span class="cp">#define _SPLINE_H_</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * A spline point</span>
+<span class="cm"> **/</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplinePoint</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">X</span><span class="p">;</span><span class="w"> </span><span class="c1">// x coordinate</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">Y</span><span class="p">;</span><span class="w"> </span><span class="c1">// y coordinate</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">S</span><span class="p">;</span><span class="w"> </span><span class="c1">// slope</span>
+<span class="p">};</span><span class="w"></span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * A Spline</span>
+<span class="cm"> **/</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Spline</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// TODO: basically a vector </span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
+<span class="w">        </span><span class="n">Spline</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">dimension</span><span class="p">,</span><span class="w"> </span><span class="n">SplinePoint</span><span class="w"> </span><span class="o">*</span><span class="n">spline_points</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">Evaluate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">SplinePoint</span><span class="w"> </span><span class="o">*</span><span class="n">spline_points</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">dimension</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#endif </span><span class="c1">// _SPLINE_H_</span>
+</code></pre></div>
+
+<p>The second method finally computes the spline values. Here follows the implementation, put it into spline.cpp. </p>
+<p>First the algorithm searches for the interval in which the parameter z falls. </p>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">Spline::Evaluate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">a0</span><span class="p">,</span><span class="w"> </span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">,</span><span class="w"> </span><span class="n">a3</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">X</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">a0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Y</span><span class="p">;</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">Y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a0</span><span class="p">;</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="o">*</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">a3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">S</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a1</span><span class="p">;</span><span class="w"> </span><span class="n">a3</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">a2</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">a1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">a2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="mi">-1</span><span class="p">))</span><span class="o">*</span><span class="n">t</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Finally you need to add spline.cpp to the Makefile. Change </p>
+<div class="highlight"><pre><span></span><code>SOURCES     = <span class="cp">${</span><span class="n">ROBOT</span><span class="cp">}</span>.cpp carcontroller.cpp opponent.cpp spline.cpp
+</code></pre></div>
+
+<h1>The Pit Class</h1>
+<p>[Eggsplain pitstop process ...]</p>
+<p>Let's prepare the header file for the pit class. It contains the definition 
+of the functionality to decide if we want to pit (the strategy), to compute 
+the pit path (into, within and out of the pit) and some utility functions. 
+Put the following code into a new file named <em>pit.h</em>. </p>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+
+<p>The following picture shows the path to and out of the pit. We will have to 
+designate base point (p0 to p6) to compute the path. We choose the points 
+such thta our x-axis is the middle line along the track, so the slope at 
+the base points is zero (parallel to the track). </p>
+<p><img alt="Path to the PIT" src="http://localhost:8000/images/2020-02/path-to-pit.svg"></p>
+<p>Let's implement the methods of our pit class. We compute the base points of 
+the spline in the constructor. </p>
+<p>[Eggsplain the spline point ?]</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// put constructor here</span>
+</code></pre></div>
+
+<h1>The Pit strategy</h1>
+<h1>The Pit Brake filter</h1>
+<ul>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
+</ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' }, Macros: {} }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li><a href="https://godidier.wordpress.com" title="Another blog ➚">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li><a href="https://godidier.wordpress.com" title="Another blog ➚">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li ><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li ><a href="https://godidier.wordpress.com" title="Another blog &#x279A;">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

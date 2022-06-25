@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="/static/custom.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Didier Gohourou">
+  <meta name="description" content="Posts and writings by Didier Gohourou">
+
+
+<meta name="keywords" content="">
+
+  <title>
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (4/11): Aerodynamics and Stability Controls        </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="https://godidier.github.io/">Home</a></li>
+          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="https://godidier.github.io/drafts/gtr-gtr-gtr-building-a-simple-torcs-ai-agent-411-aerodynamics-and-stability-controls.html">
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (4/11): Aerodynamics and Stability Controls      </a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: </p>
+    </p>
+  </div>
+  <div class="article__text">
+    
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="http://localhost:8000">[GTR]  <br /> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="http://localhost:8000/drafts/gtr-gtr-building-a-simple-torcs-ai-agent-411-aerodynamics-and-stability-controls.html">
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (4/11): Aerodynamics and Stability Controls    </a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: </p>
+    </p>
+  </div>
+  <div class="article__text">
+    
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="http://localhost:8000">[GTR]  <br /> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="http://localhost:8000/drafts/gtr-building-a-simple-torcs-ai-agent-411-aerodynamics-and-stability-controls.html">
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (4/11): Aerodynamics and Stability Controls  </a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: </p>
+    </p>
+  </div>
+  <div class="article__text">
+    
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="http://localhost:8000">[GTR]  <br /> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="http://localhost:8000/drafts/torcs-ai-tuto-4.html">Building a Simple TORCS AI Agent (4/11): Aerodynamics and Stability Controls</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Sun 09 December 2018</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>This is the fourth chapter of a tutorial for building an AI agent for the racing 
+game TORCS. In this chapter, we will learn to break, change gears and drive
+faster.</p>
+<ul>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/torcs-ai-tuto-3.html">Previous: Brakes and Gears</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-5.html">Next: Steering and Trajectory</a></li>
+</ul>
+<h1>Aerodynamics</h1>
+<p>So far, we omitted many variables to simplify computations. Now we will include 
+an additional concept that plays a major role on our car performance: aerodynamics. </p>
+<p>Aerodynamics can be defined as the study of the motion of air on a solid body. 
+The figure below illustrate different aerodynamic forces applied on a car at 
+speed: the drag, the lift and the downforce. There are also some other ones like
+the yaw moment (not represented here). We will take into account the downforce 
+and the drag in our calculations.</p>
+<p><img alt="Aerodynamic Forces" src="http://localhost:8000/images/2019-01/aerodynamics.png"></p>
+<p>Going in depth in explanation of aerodynamic phenomenon might be a bit out 
+of scope of this tutorial. <del>This chapter is actually a bit lenghty right.</del> 
+But if you are interested, some good resources for our topic are: </p>
+<ul>
+<li><a href="https://www.buildyourownracecar.com/race-car-aerodynamics-basics-and-design/">Race car Aerodynamics basics and design</a></li>
+<li><a href="https://www.nas.nasa.gov/About/Education/Racecar/aerodynamics.html">Aerodynamics</a></li>
+</ul>
+<p>We will revisit the speed limit in turns and the braking mechanism with 
+aerodynamics.</p>
+<h2>Accessing the default car setup</h2>
+<p>Do you remember the directory where we listed the available cars? Well, within 
+each car directory there are various files among which an xml one that defines 
+our car's properties, including the setup. In our case, the xml properties file 
+is at <code>/usr/local/share/games/torcs/cars/car1-trb1/car1-trb1.xml</code>. 
+These setup are used by default for our AI agent car.</p>
+<p>We will discuss more about managing car setup in coming chapters. For now, we need 
+to get some setup from the file, relative to aerodynamics. </p>
+<p>One function we will use to access numerical values in the default setup file is 
+<code>GfParmGetNum</code>. The sections of interest in <code>car1-trb1.xml</code> is the following: </p>
+<div class="highlight"><pre><span></span><code>    <span class="nt">&lt;section</span> <span class="na">name=</span><span class="s">&quot;Aerodynamics&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;Cx&quot;</span> <span class="na">min=</span><span class="s">&quot;0.20&quot;</span> <span class="na">max=</span><span class="s">&quot;2.0&quot;</span> <span class="na">val=</span><span class="s">&quot;0.35&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;front area&quot;</span> <span class="na">unit=</span><span class="s">&quot;m2&quot;</span> <span class="na">min=</span><span class="s">&quot;1.0&quot;</span> <span class="na">max=</span><span class="s">&quot;3.0&quot;</span> <span class="na">val=</span><span class="s">&quot;1.92&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;front Clift&quot;</span> <span class="na">min=</span><span class="s">&quot;0.0&quot;</span> <span class="na">max=</span><span class="s">&quot;1.5&quot;</span> <span class="na">val=</span><span class="s">&quot;0.69&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;rear Clift&quot;</span> <span class="na">min=</span><span class="s">&quot;0.0&quot;</span> <span class="na">max=</span><span class="s">&quot;1.5&quot;</span> <span class="na">val=</span><span class="s">&quot;0.7&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+
+    <span class="nt">&lt;section</span> <span class="na">name=</span><span class="s">&quot;Front Wing&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;area&quot;</span> <span class="na">unit=</span><span class="s">&quot;m2&quot;</span> <span class="na">val=</span><span class="s">&quot;0.25&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;angle&quot;</span> <span class="na">unit=</span><span class="s">&quot;deg&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">max=</span><span class="s">&quot;12&quot;</span> <span class="na">val=</span><span class="s">&quot;6&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;xpos&quot;</span> <span class="na">unit=</span><span class="s">&quot;m&quot;</span> <span class="na">val=</span><span class="s">&quot;2.20&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;zpos&quot;</span> <span class="na">unit=</span><span class="s">&quot;m&quot;</span> <span class="na">val=</span><span class="s">&quot;0.04&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+
+    <span class="nt">&lt;section</span> <span class="na">name=</span><span class="s">&quot;Rear Wing&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;area&quot;</span> <span class="na">unit=</span><span class="s">&quot;m2&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">max=</span><span class="s">&quot;1.0&quot;</span> <span class="na">val=</span><span class="s">&quot;0.7&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;angle&quot;</span> <span class="na">unit=</span><span class="s">&quot;deg&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">max=</span><span class="s">&quot;18&quot;</span> <span class="na">val=</span><span class="s">&quot;14&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;xpos&quot;</span> <span class="na">unit=</span><span class="s">&quot;m&quot;</span> <span class="na">min=</span><span class="s">&quot;-2.5&quot;</span> <span class="na">max=</span><span class="s">&quot;-1.0&quot;</span> <span class="na">val=</span><span class="s">&quot;-2.01&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;zpos&quot;</span> <span class="na">unit=</span><span class="s">&quot;m&quot;</span> <span class="na">min=</span><span class="s">&quot;0.1&quot;</span> <span class="na">max=</span><span class="s">&quot;1.5&quot;</span> <span class="na">val=</span><span class="s">&quot;0.99&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+</code></pre></div>
+
+
+<h2>Aerodynamics in the speed limitation</h2>
+<p>Let's include the downforce in the equation we previously used to find the speed 
+limit in turns. </p>
+<div class="math">$$
+\begin{align*}
+\underbrace{\frac{m \cdot v^2}{r}}_{\text{Centrifugal force}}&amp; = 
+\underbrace{m \cdot g \cdot \mu}_{\text{Friction force}} + 
+\underbrace{C_a \cdot v^2 \cdot \mu}_{\text{Aerodynamic downforce}} \\
+v^2&amp; = \frac{g \cdot \mu \cdot r}{1 - r \cdot C_a \cdot \mu / m} \\
+v&amp; = \sqrt{\frac{g \cdot \mu \cdot r}{1 - min(1, \frac{r \cdot C_a \cdot \mu}{m})}}
+\end{align*}
+$$</div>
+<p>Where <span class="math">\(C_a\)</span> is the downforce coefficient. The downforce coefficient can be 
+considered a fixed value computed using the density of the air, the area, shape 
+and angle of attack of the car's wing and the ride height which is the distance 
+between the ground and the car's bottom. Two things actually contribute to 
+the downforce: the car wings which act like an inverted airplane wing to keep
+the car on the ground, and the ground effect which is cause by the flow of air 
+between the car and the ground. The downforce is a performance advantage on 
+cars with wings and a specially designed chasis.</p>
+<p>When solving the equation for <span class="math">\(v\)</span> there is a risk of getting a negative number 
+under the square root (a complex number), in case <span class="math">\(r \cdot C_a \cdot \mu / m\)</span> 
+becomes greater than 1. To avoid that we use the minimum function to put 
+a restriction.</p>
+<p>Let's start the implementation with the method that initialize the downforce 
+coefficient.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Initialize the aerodynamic coefficient CA of the car.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">InitCa</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">float</span> <span class="n">air_density</span> <span class="o">=</span> <span class="mf">1.23</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">rear_wing_area</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARWING</span><span class="p">,</span> 
+                    <span class="n">PRM_WINGAREA</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">rear_wing_angle</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARWING</span><span class="p">,</span> 
+                    <span class="n">PRM_WINGANGLE</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">front_ground_effect</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
+                    <span class="n">PRM_FCL</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">rear_ground_effect</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
+                    <span class="n">PRM_RCL</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+
+    <span class="kt">float</span> <span class="n">front_right_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_FRNTRGTWHEEL</span><span class="p">,</span> 
+                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">front_left_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_FRNTLFTWHEEL</span><span class="p">,</span> 
+                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">rear_right_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARRGTWHEEL</span><span class="p">,</span> 
+                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">rear_left_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARLFTWHEEL</span><span class="p">,</span> 
+                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
+
+    <span class="kt">float</span> <span class="n">wing_ca</span> <span class="o">=</span> <span class="n">air_density</span> <span class="o">*</span> <span class="n">rear_wing_area</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">rear_wing_angle</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">Cl</span> <span class="o">=</span> <span class="n">front_ground_effect</span> <span class="o">+</span> <span class="n">rear_ground_effect</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">ride_height</span> <span class="o">=</span> <span class="n">front_right_height</span> <span class="o">+</span> <span class="n">front_left_height</span> 
+            <span class="o">+</span> <span class="n">rear_right_height</span> <span class="o">+</span> <span class="n">rear_left_height</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">h</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span> <span class="o">-</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">ride_height</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+
+    <span class="n">CA</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">Cl</span> <span class="o">+</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">wing_ca</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>We can now change the last line of <code>GetAllowedSpeed(tTrackSeg* segment)</code> from</p>
+<div class="highlight"><pre><span></span><code>        <span class="k">return</span> <span class="nf">sqrt</span><span class="p">(</span><span class="n">mu</span> <span class="o">*</span> <span class="n">G</span> <span class="o">*</span> <span class="n">r</span><span class="p">);</span>
+</code></pre></div>
+
+
+<p>to </p>
+<div class="highlight"><pre><span></span><code>        <span class="k">return</span> <span class="nf">sqrt</span><span class="p">((</span><span class="n">mu</span> <span class="o">*</span> <span class="n">G</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">MIN</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span> <span class="n">CA</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">/</span> <span class="n">full_car_mass</span><span class="p">)));</span>
+</code></pre></div>
+
+
+<p>In order to take into account the aerodynamic downforce when we compute the 
+maximum allowed speed in turns.
+We modify the <code>NewRace(...)</code> method to initialize the mass of the car and the 
+the downforce coefficient by calling <code>InitCa()</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span> <span class="n">car</span><span class="p">,</span> <span class="n">tSituation</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">car</span> <span class="o">=</span> <span class="n">car</span><span class="p">;</span>
+    <span class="n">car_mass</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_CAR</span><span class="p">,</span> <span class="n">PRM_MASS</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">);</span>
+    <span class="n">InitCa</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>We also have to update the car mass. We do it in the <code>CarController::Drive(...)</code> 
+function, just after the <code>memset(...)</code> line. </p>
+<div class="highlight"><pre><span></span><code><span class="c1">//...</span>
+    <span class="n">memset</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span> <span class="c1">// reset the values</span>
+
+    <span class="n">full_car_mass</span> <span class="o">=</span> <span class="n">car_mass</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_fuel</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">car_angle</span> <span class="o">=</span> <span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span>
+<span class="c1">//...</span>
+</code></pre></div>
+
+
+<p>Now let's add the declaration of the new class members in <em>carcontroller.h</em>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">private</span><span class="o">:</span>
+        <span class="c1">//...</span>
+        <span class="kt">void</span> <span class="n">InitCa</span><span class="p">();</span>
+
+        <span class="c1">//...</span>
+
+        <span class="kt">float</span> <span class="n">car_mass</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">full_car_mass</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">CA</span><span class="p">;</span>
+
+        <span class="c1">//...</span>
+</code></pre></div>
+
+
+<p>The graph below show a comparison of the maximum speed that can be reach 
+in turns in relation to the radius of the turn,
+between the old and the new <code>GetAllowedSpeed(tTrackSeg* segment)</code> method.</p>
+<p><img alt="Comparison" src="{static}/#"></p>
+<h3>Test drive</h3>
+<p>lap time</p>
+<h2>Aerodynamics in braking</h2>
+<p>We will make use of the aerodynamic downforce and the drag in our calculations. 
+This will allow us to break later and smoothen the braking pattern when driving. </p>
+<p>All right, the next formula maybe intimidating but, take a deep breath and stay 
+with me <del>please</del>... Let's rewrite the energy conservation equation 
+we used to compute the braking distance, by including the downforce and the 
+drag.</p>
+<div class="math">$$
+\underbrace{\frac{m \cdot v_1^2}{2}}_{\text{Current kinetic energy}} - 
+\underbrace{\frac{m \cdot v_2^2}{2}}_{\text{Desired kinetic energy}} = 
+\underbrace{m \cdot g \cdot \mu \cdot s + C_a \cdot \int_{s_2}^{s_1} v^2(s) ds \cdot \mu }_{\text{Energy burned by brake}} +
+\underbrace{C_w \cdot \int_{s_1}^{s_2} v^2(s) ds}_{\text{air resistance energy (drag)}}
+$$</div>
+<p>...Ah, that is enough math for today... So here is the braking distance we get when solving the equation.</p>
+<div class="math">$$
+s = - \frac{ln((c + v_2^2 \cdot d) / (c + v_1^2 \cdot d))}{2 \cdot d}
+$$</div>
+<p>With <span class="math">\(c = g \cdot \mu\)</span> and <span class="math">\(d = (C_a \cdot \mu + C_w) / m\)</span>: </p>
+<p><span class="math">\(C_w\)</span> is the drag coefficient. The drag coefficient is computed using ...</p>
+<p>Here is the implementation of the initialization of <span class="math">\(C_w\)</span></p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Initialize the aerodynamic drag coefficient Cw</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">InitCw</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">Cx</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
+                    <span class="n">PRM_CX</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">front_area</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
+                    <span class="n">PRM_FRNTAREA</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="n">CW</span> <span class="o">=</span> <span class="mf">0.645</span> <span class="o">*</span> <span class="n">Cx</span> <span class="o">*</span> <span class="n">front_area</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>Now we change the following line from <code>GetBrake(...)</code> </p>
+<div class="highlight"><pre><span></span><code>            <span class="kt">float</span> <span class="n">brake_distance</span> <span class="o">=</span> 
+                    <span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">G</span><span class="p">);</span>
+</code></pre></div>
+
+
+<p>to </p>
+<div class="highlight"><pre><span></span><code>            <span class="kt">float</span> <span class="n">brake_distance</span> <span class="o">=</span> 
+                    <span class="o">-</span> <span class="n">log</span><span class="p">((</span><span class="n">c</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">d</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">);</span> 
+</code></pre></div>
+
+
+<p>We declare the new class members in <em>carcontroller.h</em></p>
+<div class="highlight"><pre><span></span><code>    <span class="k">private</span><span class="o">:</span>
+        <span class="c1">//...</span>
+        <span class="kt">void</span> <span class="n">InitCw</span><span class="p">();</span>
+
+        <span class="c1">//...</span>
+        <span class="kt">float</span> <span class="n">CW</span><span class="p">;</span>
+</code></pre></div>
+
+
+<p>and we call <code>InitCw(...)</code> at the end of <code>NewRace(...)</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span> <span class="n">car</span><span class="p">,</span> <span class="n">tSituation</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//...</span>
+    <span class="n">InitCw</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>[Show performance improvement with a plot]
+for integral plotting check
+* https://matplotlib.org/gallery/showcase/integral.html
+* https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html</p>
+<h3>Test drive</h3>
+<p>Lap time</p>
+<h1>Stability Controls</h1>
+<p>During the test drive you may have notice the car wheels slide at some points 
+(leaving marks on the track). This is due to accelerating and braking too hard. 
+We will use some stability control approaches to alleviate this phenomenon.</p>
+<p>Stability controls are mechanisms that improve the stability of a car while driving.
+There are different stability control systems among which the Antilock Brake System
+(ABS) and Traction Control (TCL) that we will implement to assist our AI agent 
+driving.</p>
+<h2>Antilock Brake System (ABS)</h2>
+<p>Wheel lock is caused by ...
+Anti wheel locking system we will implement will...</p>
+<p>implementation </p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Brakes ABS filter</span>
+<span class="cm"> */</span>
+<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">FilterABS</span><span class="p">(</span><span class="kt">float</span> <span class="n">brake</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">&lt;</span> <span class="n">ABS_MIN_SPEED</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">brake</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">slip</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">slip</span> <span class="o">+=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">/</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">slip</span> <span class="o">=</span> <span class="n">slip</span> <span class="o">/</span> <span class="mf">4.0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">slip</span> <span class="o">&lt;</span> <span class="n">ABS_SLIP</span><span class="p">){</span>
+        <span class="n">brake</span> <span class="o">=</span> <span class="n">brake</span> <span class="o">*</span> <span class="n">slip</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">brake</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>We apply the filter by adding the following line at the end of <code>GetBrake(...)</code>
+just above the return statement,</p>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetBrake</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="n">brake</span> <span class="o">=</span> <span class="n">FilterABS</span><span class="p">(</span><span class="n">brake</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">brake</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>We also add the new constant to <em>carcontroller.cpp</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">ABS_SLIP</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span> <span class="c1">// [-] range [0.95..0.3]</span>
+<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">ABS_MIN_SPEED</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">;</span> <span class="c1">// [m/s]</span>
+</code></pre></div>
+
+
+<p>and we update <em>carcontroller.h</em> with the new class members. </p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="c1">// ...</span>
+        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">ABS_SLIP</span><span class="p">;</span>
+        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">ABS_MIN_SPEED</span><span class="p">;</span>
+
+    <span class="k">private</span><span class="o">:</span>
+        <span class="c1">// ...</span>
+        <span class="kt">float</span> <span class="n">FilterABS</span><span class="p">(</span><span class="kt">float</span> <span class="n">brake</span><span class="p">);</span>
+
+<span class="c1">// ...</span>
+</code></pre></div>
+
+
+<h2>Traction Control (TCL)</h2>
+<p>Wheel slips when ...</p>
+<p>Implementation ... 
+used a pointer to function </p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Acceleration TCL filter</span>
+<span class="cm"> */</span>
+<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">FilterTCL</span><span class="p">(</span><span class="kt">float</span> <span class="n">acceleration</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">&lt;</span> <span class="n">TCL_MIN_SPEED</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">acceleration</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">wheel_speed</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">GetDrivenWheelSpeed</span><span class="p">)();</span>
+    <span class="kt">float</span> <span class="n">slip</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">/</span> <span class="n">wheel_speed</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">slip</span> <span class="o">&lt;</span> <span class="n">TCL_SLIP</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">acceleration</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">acceleration</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>Select spinning wheel... function to point to</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Select the right spinning wheel speed calculation for the TCL filter</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">InitDrivenWheelSpeed</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">train_type</span> <span class="o">=</span> <span class="n">GfParmGetStr</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_DRIVETRAIN</span><span class="p">,</span> 
+                    <span class="n">PRM_TYPE</span><span class="p">,</span> <span class="n">VAL_TRANS_RWD</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span> <span class="n">VAL_TRANS_RWD</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">GetDrivenWheelSpeed</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedRWD</span><span class="p">;</span> 
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span> <span class="n">VAL_TRANS_FWD</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="n">GetDrivenWheelSpeed</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedFWD</span><span class="p">;</span> 
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span> <span class="n">VAL_TRANS_4WD</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="n">GetDrivenWheelSpeed</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeed4WD</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>Computing the wheel speed for different train type</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Get the driven wheel speed for Rear Wheel Drive (RWD)</span>
+<span class="cm"> */</span>
+<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedRWD</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">))</span> <span class="o">*</span> 
+            <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Get the driven wheel speed for Front Wheel Drive (FWD)</span>
+<span class="cm"> */</span>
+<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedFWD</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">))</span> <span class="o">*</span> 
+            <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Get the driven wheel speed for Four Wheel Drive (4WD)</span>
+<span class="cm"> */</span>
+<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeed4WD</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">))</span> <span class="o">*</span> 
+                <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">)</span> <span class="o">+</span>
+            <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">))</span> <span class="o">*</span> 
+                <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">4.0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>To apply the TCL filter add the following line at the end of  <code>GetAcceleration()</code>
+before the <code>return</code> statement.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetAcceleration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="n">acceleration</span> <span class="o">=</span> <span class="n">FilterTCL</span><span class="p">(</span><span class="n">acceleration</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">acceleration</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>add <code>InitDrivenWheelSpeed();</code> in <code>NewRace(...)</code> to set the wheel speed 
+calculation pointer function to the right one.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span> <span class="n">car</span><span class="p">,</span> <span class="n">tSituation</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="n">InitDrivenWheelSpeed</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>We define the new constant in <em>carcontroller.cpp</em>,</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">TCL_SLIP</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span> <span class="c1">// [-] range [0.95..0.3]</span>
+<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">TCL_MIN_SPEED</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">;</span> <span class="c1">// [m/s]</span>
+</code></pre></div>
+
+
+<p>and add the new class member declaration in <em>carcontroller.h</em>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
+    <span class="k">public</span><span class="o">:</span> 
+        <span class="c1">// ...</span>
+        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">TCL_SLIP</span><span class="p">;</span>
+        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">TCL_MIN_SPEED</span><span class="p">;</span>
+
+    <span class="k">private</span><span class="o">:</span>
+        <span class="c1">// ...</span>
+        <span class="kt">float</span> <span class="n">FilterTCL</span><span class="p">(</span><span class="kt">float</span> <span class="n">acceleration</span><span class="p">);</span>
+        <span class="kt">float</span> <span class="nf">GetWheelSpeedRWD</span><span class="p">();</span>
+        <span class="kt">float</span> <span class="nf">GetWheelSpeedFWD</span><span class="p">();</span>
+        <span class="kt">float</span> <span class="nf">GetWheelSpeed4WD</span><span class="p">();</span>
+        <span class="kt">void</span> <span class="nf">InitDrivenWheelSpeed</span><span class="p">();</span>
+
+        <span class="kt">float</span> <span class="p">(</span><span class="n">CarController</span><span class="o">::*</span><span class="n">GetDrivenWheelSpeed</span><span class="p">)();</span>
+<span class="c1">// ...</span>
+</code></pre></div>
+
+
+<h3>Test Drive</h3>
+<p>[Video Link]</p>
+<ul>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/torcs-ai-tuto-3.html">Previous: Brakes and Gears</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-5.html">Next: Steering and Trajectory</a></li>
+</ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' }, Macros: {} }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li><a href="https://godidier.wordpress.com" title="Another blog ➚">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li><a href="https://godidier.wordpress.com" title="Another blog ➚">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li><a href="https://godidier.wordpress.com" title="Another blog ➚">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li ><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li ><a href="https://godidier.wordpress.com" title="Another blog &#x279A;">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

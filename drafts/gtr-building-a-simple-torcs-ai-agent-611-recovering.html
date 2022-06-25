@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="/static/custom.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Didier Gohourou">
+  <meta name="description" content="Posts and writings by Didier Gohourou">
+
+
+<meta name="keywords" content="">
+
+  <title>
+    [GTR]
+&ndash; 
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (6/11): Recovering    </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="https://godidier.github.io/">Home</a></li>
+          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="https://godidier.github.io/drafts/gtr-building-a-simple-torcs-ai-agent-611-recovering.html">
+    [GTR]
+&ndash; Building a Simple TORCS AI Agent (6/11): Recovering  </a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: </p>
+    </p>
+  </div>
+  <div class="article__text">
+    
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="http://localhost:8000">[GTR]  <br /> Godidier's Technical Report</a>
+      </div>
+      <p>
+	  <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+	  -->
+      </p>
+	  <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+	  </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="http://localhost:8000/drafts/torcs-ai-tuto-6.html">Building a Simple TORCS AI Agent (6/11): Recovering</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: 火 11 12月 2018</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <ul>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-5.html">Previous: Steering and Trajectory</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-7.html">Next: Collision avoidance and Overtaking</a></li>
+</ul>
+<p id="introduction"></p>
+<h1>Introduction</h1>
+<p>So far, our agent only knows how to drive forward. But if something happen (like a 
+crash with another car during a race), and the agent go off-course to hit 
+the wall for example, it will still try to move forward and be <em>stuck</em>!</p>
+<p>In this chapter we will come up with an approach to recognize that our 
+agent is off-course and implement a mechanism to recover from such incident.</p>
+<p id="basic_recovery"></p>
+<h1>A Basic Recovery Strategy</h1>
+<p>Basically if our car is stuck, we recover, else, we drive normally.
+We will consider that our car is stuck, if the angle of the car relative to the 
+track is greater than a certain value during a certain period of time. 
+We will start with 30 degrees as our angle limit, and 100 the number of 
+simulation steps up to which we will consider the car stuck.
+Since the simulation time is 0.02 seconds, the <code>Drive(...)</code> method is 
+executed every 0.02 seconds. This means that our car needs to form an angle 
+with an absolute value greater than 30 degrees relatively to the track, 
+for 2 seconds (or more) before we trigger the recovering process.</p>
+<p>Let's start by defining those new constants in <em>carcontroller.h</em>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">MAX_UNSTUCK_ANGLE</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">UNSTUCK_TIME_LIMIT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"> </span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_UNSTUCK_COUNT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">stuck_counter</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// ...</span>
+</code></pre></div>
+
+<p>At the beginning of <em>carcontroller.cpp</em> we initialize <code>MAX_UNSTUCK_ANGLE</code> and 
+<code>UNSTUCK_TIME_LIMIT</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Driver</span><span class="o">::</span><span class="n">MAX_UNSTUCK_ANGLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">30.0</span><span class="o">/</span><span class="mf">180.0</span><span class="o">*</span><span class="n">PI</span><span class="p">;</span><span class="w">  </span><span class="cm">/* [radians] */</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Driver</span><span class="o">::</span><span class="n">UNSTUCK_TIME_LIMIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w">           </span><span class="cm">/* [s] */</span><span class="w"></span>
+</code></pre></div>
+
+<p>We also initialise <code>MAX_UNSTUCK_COUNT</code> and <code>stuck_counter</code> in the 
+<code>newRace(...)</code> method. Note that <code>MAX_UNSTUCK_COUNT</code> stays constant after 
+this first initialization.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="n">MAX_UNSTUCK_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">UNSTUCK_TIME_LIMIT</span><span class="o">/</span><span class="n">RCM_MAX_DT_ROBOTS</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">stuck_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>WTF is this <code>RCM_MAX_DT_ROBOTS</code> thing ? It is a constant defined in 
+<em>$TORCS_BASE/src/interfaces/raceman.h</em> that represents the mean robot update
+rate that is equal to 0.02 second, So <code>MAX_UNSTUCK_COUNT</code> will be 100.</p>
+<p>Then in <em>carcontroller.cpp</em> we write a method that tells us if our car is 
+stuck or not. The implementation steps are quite simple:</p>
+<ol>
+<li>Initialize a stuck counter to 0</li>
+<li>If the absolute value of the angle between the car and the track is smaller 
+than a certain value <code>MAX_UNSTUCK_ANGLE</code>, reset the counter to 0 and return false 
+(Meaning "not stuck")</li>
+<li>If the angle is smaller than a certain limit (100), increase the counter and 
+return false (for "not stuck"). Otherwise return true (for "stuck").</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Check if the car is off course (stuck)</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CarController::IsStuck</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RtTrackSideTgAngleL</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remainder</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_UNSTUCK_ANGLE</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">stuck_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stuck_counter</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">stuck_counter</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>As previously explained, this method will be used in our driving strategy. 
+If the car is stuck we recover by counter steering and going back (until
+the car is no more stuck).</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::Drive</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">memset</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span><span class="w"> </span><span class="c1">// reset the values</span>
+
+<span class="w">    </span><span class="n">full_car_mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_mass</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_fuel</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">IsStuck</span><span class="p">()){</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car_angle</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gear</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// reverse</span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 30% acceleration</span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// no brakes</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetSteering</span><span class="p">(</span><span class="n">car_angle</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetGear</span><span class="p">();</span><span class="w"> </span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetBrake</span><span class="p">();</span><span class="w"> </span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0.0</span><span class="p">){</span><span class="w"></span>
+<span class="w">            </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAcceleration</span><span class="p">();</span><span class="w"> </span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>[compile and test ? how to check? collision ?]</p>
+<p>Below is a illustration to help us get our head wrapped around a situation of 
+getting stuck.</p>
+<p><img alt="Getting Stuck 1" src="http://localhost:8000/images/2019-11/getting-stuck-1.svg"></p>
+<p>This approach is simple and get the job done in most case. Yet, there is an 
+edge case we have to take into account.</p>
+<p id="better_recovery"></p>
+<h1>A Better Recovery Strategy</h1>
+<p>Consider the situation where the car is oversteering in a turn and the angle 
+between the track tangent and the car increase. At a certain point the angle 
+becomes big enough (&gt; 30 degree), and start incrementing the 'stuck' counter. 
+If the 'stuck' counter gets to 100 and the car hits the wall with its back, 
+we will try to get unstuck. Since the back of the car is against the wall, and 
+the unstuck method is the back up, we will stay stuck! Having a close look at the 
+figure below representing that situation, we don't need to get 'unstuck' i.e 
+back off is such situation. We can simply drive forward to come back on the track.
+This is mainly because the front of our car point toward the middle of the track 
+(or looks inside the track). </p>
+<p><img alt="Getting Stuck 2" src="http://localhost:8000/images/2019-11/getting-stuck-2.svg"></p>
+<p>To detect if the car points to the middle of the track or not, we will use 
+the angle formed by the car and the tangent to the track, and the car 
+position relatively to the middle of the track. The angle formed by the car 
+direction and the tangent of the track is positive when it goes clockwise, and 
+negative when it goes counter-clockwise. The relative position of the car to 
+the middle of the track is represented by <code>car-&gt;_trkPos.toMiddle</code>, which is 
+positive on the left side of the track and negative on the right side. We can 
+conclude that if the 'angle fo the car' times the 'position to the middle' is 
+positive, we are looking toward the middle of the track. The figure below 
+illustrate the different values used as criteria and the case where the car 
+(in red) look outside the track and the car (in blue) looks inside the track.</p>
+<p><img alt="Look inside criteria" src="http://localhost:8000/images/2019-11/look-inside.svg"></p>
+<p>We will just drive forward if <code>fabs(angle) &lt; MAX_UNSTUCK_ANGLE</code>. Else, we are 
+looking outward and it the <code>stuck_counter</code> is already big enough, <code>IsStuck()</code> 
+returns true. Otherwise If <code>stuck_counter</code> is less, we increment it.</p>
+<p>To trigger the unstuck mechanism more safely, we will add a condition on the 
+speed to be below a certain threshold. </p>
+<p>Let's start the implementation. First, let's use some constants to hold the 
+[...] speed and the [...] distance. </p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">MAX_UNSTUCK_SPEED</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">MIN_UNSTUCK_DIST</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+
+<p>We initialize the constants at the top of <em>carcontroller.cpp</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Driver</span><span class="o">::</span><span class="n">MAX_UNSTUCK_SPEED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5.0</span><span class="p">;</span><span class="w">   </span><span class="cm">/* [m/s] */</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Driver</span><span class="o">::</span><span class="n">MIN_UNSTUCK_DIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">;</span><span class="w">    </span><span class="cm">/* [m] */</span><span class="w"></span>
+</code></pre></div>
+
+<p>Let's make the modificaitons in <code>IsStuck(...)</code> </p>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="nf">CarController::IsStuck</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RtTrackSideTgAngleL</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remainder</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MAX_UNSTUCK_ANGLE</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_UNSTUCK_SPEED</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">fabs</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MIN_UNSTUCK_DIST</span><span class="p">){</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">stuck_counter</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MAX_UNSTUCK_COUNT</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="o">*</span><span class="n">angle</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="p">){</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">stuck_counter</span><span class="o">++</span><span class="p">;</span><span class="w"> </span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">stuck_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Let's increase the reverse throttle value, in the <code>Drive</code> method a bit.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">//...</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsStuck</span><span class="p">(</span><span class="n">car</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">.</span><span class="n">steer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">angle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">.</span><span class="n">gear</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// reverse gear</span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">.</span><span class="n">accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w"> </span><span class="c1">// 50% accelerator pedal</span>
+<span class="w">        </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">.</span><span class="n">brakeCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// no brakes</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="c1">// ...</span>
+</code></pre></div>
+
+<p>[Download and Test drive]</p>
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li><a href="https://godidier.wordpress.com" title="Another blog ➚">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li ><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li ><a href="https://godidier.wordpress.com" title="Another blog &#x279A;">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" target="_blank" title="facebook">
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

@@ -53,7 +53,7 @@
     <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Building a Simple TORCS AI Agent (4/11): Aerodynamics and Stability Controls</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: Sun 09 December 2018</p>
+    <p class="article__meta__post-date">Posted on: 日 09 12月 2018</p>
     </p>
   </div>
   <div class="article__text">
@@ -93,7 +93,7 @@ These setup are used by default for our AI agent car.</p>
 to get some setup from the file, relative to aerodynamics. </p>
 <p>One function we will use to access numerical values in the default setup file is 
 <code>GfParmGetNum</code>. The sections of interest in <code>car1-trb1.xml</code> is the following: </p>
-<div class="highlight"><pre><span></span>    <span class="nt">&lt;section</span> <span class="na">name=</span><span class="s">&quot;Aerodynamics&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code>    <span class="nt">&lt;section</span> <span class="na">name=</span><span class="s">&quot;Aerodynamics&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;Cx&quot;</span> <span class="na">min=</span><span class="s">&quot;0.20&quot;</span> <span class="na">max=</span><span class="s">&quot;2.0&quot;</span> <span class="na">val=</span><span class="s">&quot;0.35&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;front area&quot;</span> <span class="na">unit=</span><span class="s">&quot;m2&quot;</span> <span class="na">min=</span><span class="s">&quot;1.0&quot;</span> <span class="na">max=</span><span class="s">&quot;3.0&quot;</span> <span class="na">val=</span><span class="s">&quot;1.92&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;front Clift&quot;</span> <span class="na">min=</span><span class="s">&quot;0.0&quot;</span> <span class="na">max=</span><span class="s">&quot;1.5&quot;</span> <span class="na">val=</span><span class="s">&quot;0.69&quot;</span><span class="nt">/&gt;</span>
@@ -113,8 +113,7 @@ to get some setup from the file, relative to aerodynamics. </p>
         <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;xpos&quot;</span> <span class="na">unit=</span><span class="s">&quot;m&quot;</span> <span class="na">min=</span><span class="s">&quot;-2.5&quot;</span> <span class="na">max=</span><span class="s">&quot;-1.0&quot;</span> <span class="na">val=</span><span class="s">&quot;-2.01&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;attnum</span> <span class="na">name=</span><span class="s">&quot;zpos&quot;</span> <span class="na">unit=</span><span class="s">&quot;m&quot;</span> <span class="na">min=</span><span class="s">&quot;0.1&quot;</span> <span class="na">max=</span><span class="s">&quot;1.5&quot;</span> <span class="na">val=</span><span class="s">&quot;0.99&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/section&gt;</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2>Aerodynamics in the speed limitation</h2>
 <p>Let's include the downforce in the equation we previously used to find the speed 
@@ -142,91 +141,85 @@ becomes greater than 1. To avoid that we use the minimum function to put
 a restriction.</p>
 <p>Let's start the implementation with the method that initialize the downforce 
 coefficient.</p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Initialize the aerodynamic coefficient CA of the car.</span>
-<span class="cm"> */</span>
-<span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">InitCa</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">const</span> <span class="kt">float</span> <span class="n">air_density</span> <span class="o">=</span> <span class="mf">1.23</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">rear_wing_area</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARWING</span><span class="p">,</span> 
-                    <span class="n">PRM_WINGAREA</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">rear_wing_angle</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARWING</span><span class="p">,</span> 
-                    <span class="n">PRM_WINGANGLE</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">front_ground_effect</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
-                    <span class="n">PRM_FCL</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">rear_ground_effect</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
-                    <span class="n">PRM_RCL</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">CarController::InitCa</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">air_density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.23</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">rear_wing_area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_REARWING</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_WINGAREA</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">rear_wing_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_REARWING</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_WINGANGLE</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">front_ground_effect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_AERODYNAMICS</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_FCL</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">rear_ground_effect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_AERODYNAMICS</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_RCL</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">);</span><span class="w"></span>
 
-    <span class="kt">float</span> <span class="n">front_right_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_FRNTRGTWHEEL</span><span class="p">,</span> 
-                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">front_left_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_FRNTLFTWHEEL</span><span class="p">,</span> 
-                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">rear_right_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARRGTWHEEL</span><span class="p">,</span> 
-                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">rear_left_height</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_REARLFTWHEEL</span><span class="p">,</span> 
-                    <span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">front_right_height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_FRNTRGTWHEEL</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.20</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">front_left_height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_FRNTLFTWHEEL</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.20</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">rear_right_height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_REARRGTWHEEL</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.20</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">rear_left_height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_REARLFTWHEEL</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_RIDEHEIGHT</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.20</span><span class="p">);</span><span class="w"></span>
 
-    <span class="kt">float</span> <span class="n">wing_ca</span> <span class="o">=</span> <span class="n">air_density</span> <span class="o">*</span> <span class="n">rear_wing_area</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">rear_wing_angle</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">Cl</span> <span class="o">=</span> <span class="n">front_ground_effect</span> <span class="o">+</span> <span class="n">rear_ground_effect</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">wing_ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">air_density</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rear_wing_area</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">rear_wing_angle</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">Cl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">front_ground_effect</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rear_ground_effect</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kt">float</span> <span class="n">ride_height</span> <span class="o">=</span> <span class="n">front_right_height</span> <span class="o">+</span> <span class="n">front_left_height</span> 
-            <span class="o">+</span> <span class="n">rear_right_height</span> <span class="o">+</span> <span class="n">rear_left_height</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">h</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span> <span class="o">-</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">ride_height</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ride_height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">front_right_height</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">front_left_height</span><span class="w"> </span>
+<span class="w">            </span><span class="o">+</span><span class="w"> </span><span class="n">rear_right_height</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rear_left_height</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="w"> </span><span class="mf">-3.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">ride_height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">));</span><span class="w"></span>
 
-    <span class="n">CA</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">Cl</span> <span class="o">+</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">wing_ca</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Cl</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">4.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">wing_ca</span><span class="p">;</span><span class="w"></span>
 
-<span class="p">}</span>
-</pre></div>
-
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>We can now change the last line of <code>GetAllowedSpeed(tTrackSeg* segment)</code> from</p>
-<div class="highlight"><pre><span></span>        <span class="k">return</span> <span class="nf">sqrt</span><span class="p">(</span><span class="n">mu</span> <span class="o">*</span> <span class="n">G</span> <span class="o">*</span> <span class="n">r</span><span class="p">);</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">r</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
 
 <p>to </p>
-<div class="highlight"><pre><span></span>        <span class="k">return</span> <span class="nf">sqrt</span><span class="p">((</span><span class="n">mu</span> <span class="o">*</span> <span class="n">G</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">MIN</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span> <span class="n">CA</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">/</span> <span class="n">full_car_mass</span><span class="p">)));</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sqrt</span><span class="p">((</span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">MIN</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CA</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">full_car_mass</span><span class="p">)));</span><span class="w"></span>
+</code></pre></div>
 
 <p>In order to take into account the aerodynamic downforce when we compute the 
 maximum allowed speed in turns.
 We modify the <code>NewRace(...)</code> method to initialize the mass of the car and the 
 the downforce coefficient by calling <code>InitCa()</code>.</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span> <span class="n">car</span><span class="p">,</span> <span class="n">tSituation</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">this</span><span class="o">-&gt;</span><span class="n">car</span> <span class="o">=</span> <span class="n">car</span><span class="p">;</span>
-    <span class="n">car_mass</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_CAR</span><span class="p">,</span> <span class="n">PRM_MASS</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">);</span>
-    <span class="n">InitCa</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">car</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">car_mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_CAR</span><span class="p">,</span><span class="w"> </span><span class="n">PRM_MASS</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">1000.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">InitCa</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>We also have to update the car mass. We do it in the <code>CarController::Drive(...)</code> 
 function, just after the <code>memset(...)</code> line. </p>
-<div class="highlight"><pre><span></span><span class="c1">//...</span>
-    <span class="n">memset</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span> <span class="c1">// reset the values</span>
+<div class="highlight"><pre><span></span><code><span class="c1">//...</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span><span class="w"> </span><span class="c1">// reset the values</span>
 
-    <span class="n">full_car_mass</span> <span class="o">=</span> <span class="n">car_mass</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_fuel</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">car_angle</span> <span class="o">=</span> <span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span>
+<span class="w">    </span><span class="n">full_car_mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_mass</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_fuel</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span><span class="w"></span>
 <span class="c1">//...</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Now let's add the declaration of the new class members in <em>carcontroller.h</em>.</p>
-<div class="highlight"><pre><span></span>    <span class="k">private</span><span class="o">:</span>
-        <span class="c1">//...</span>
-        <span class="kt">void</span> <span class="n">InitCa</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1">//...</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">InitCa</span><span class="p">();</span><span class="w"></span>
 
-        <span class="c1">//...</span>
+<span class="w">        </span><span class="c1">//...</span>
 
-        <span class="kt">float</span> <span class="n">car_mass</span><span class="p">;</span>
-        <span class="kt">float</span> <span class="n">full_car_mass</span><span class="p">;</span>
-        <span class="kt">float</span> <span class="n">CA</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">car_mass</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">full_car_mass</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">CA</span><span class="p">;</span><span class="w"></span>
 
-        <span class="c1">//...</span>
-</pre></div>
-
+<span class="w">        </span><span class="c1">//...</span>
+</code></pre></div>
 
 <p>The graph below show a comparison of the maximum speed that can be reach 
 in turns in relation to the radius of the turn,
@@ -254,50 +247,45 @@ $$</div>
 <p>With <span class="math">\(c = g \cdot \mu\)</span> and <span class="math">\(d = (C_a \cdot \mu + C_w) / m\)</span>: </p>
 <p><span class="math">\(C_w\)</span> is the drag coefficient. The drag coefficient is computed using ...</p>
 <p>Here is the implementation of the initialization of <span class="math">\(C_w\)</span></p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Initialize the aerodynamic drag coefficient Cw</span>
-<span class="cm"> */</span>
-<span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">InitCw</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="kt">float</span> <span class="n">Cx</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
-                    <span class="n">PRM_CX</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-    <span class="kt">float</span> <span class="n">front_area</span> <span class="o">=</span> <span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_AERODYNAMICS</span><span class="p">,</span> 
-                    <span class="n">PRM_FRNTAREA</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-    <span class="n">CW</span> <span class="o">=</span> <span class="mf">0.645</span> <span class="o">*</span> <span class="n">Cx</span> <span class="o">*</span> <span class="n">front_area</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">CarController::InitCw</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">Cx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_AERODYNAMICS</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_CX</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">front_area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetNum</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_AERODYNAMICS</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_FRNTAREA</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">CW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.645</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Cx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">front_area</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>Now we change the following line from <code>GetBrake(...)</code> </p>
-<div class="highlight"><pre><span></span>            <span class="kt">float</span> <span class="n">brake_distance</span> <span class="o">=</span> 
-                    <span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">G</span><span class="p">);</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">brake_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="w">                    </span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mf">2.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
 
 <p>to </p>
-<div class="highlight"><pre><span></span>            <span class="kt">float</span> <span class="n">brake_distance</span> <span class="o">=</span> 
-                    <span class="o">-</span> <span class="n">log</span><span class="p">((</span><span class="n">c</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">d</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">);</span> 
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">brake_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="w">                    </span><span class="o">-</span><span class="w"> </span><span class="n">log</span><span class="p">((</span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">allowed_speed</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">d</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">d</span><span class="p">);</span><span class="w"> </span>
+</code></pre></div>
 
 <p>We declare the new class members in <em>carcontroller.h</em></p>
-<div class="highlight"><pre><span></span>    <span class="k">private</span><span class="o">:</span>
-        <span class="c1">//...</span>
-        <span class="kt">void</span> <span class="n">InitCw</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1">//...</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">InitCw</span><span class="p">();</span><span class="w"></span>
 
-        <span class="c1">//...</span>
-        <span class="kt">float</span> <span class="n">CW</span><span class="p">;</span>
-</pre></div>
-
+<span class="w">        </span><span class="c1">//...</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">CW</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
 
 <p>and we call <code>InitCw(...)</code> at the end of <code>NewRace(...)</code>.</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span> <span class="n">car</span><span class="p">,</span> <span class="n">tSituation</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="c1">//...</span>
-    <span class="n">InitCw</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//...</span>
+<span class="w">    </span><span class="n">InitCw</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>[Show performance improvement with a plot]
 for integral plotting check
@@ -317,178 +305,167 @@ driving.</p>
 <p>Wheel lock is caused by ...
 Anti wheel locking system we will implement will...</p>
 <p>implementation </p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Brakes ABS filter</span>
-<span class="cm"> */</span>
-<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">FilterABS</span><span class="p">(</span><span class="kt">float</span> <span class="n">brake</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">&lt;</span> <span class="n">ABS_MIN_SPEED</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">brake</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">slip</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
-        <span class="n">slip</span> <span class="o">+=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">/</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="n">slip</span> <span class="o">=</span> <span class="n">slip</span> <span class="o">/</span> <span class="mf">4.0</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">slip</span> <span class="o">&lt;</span> <span class="n">ABS_SLIP</span><span class="p">){</span>
-        <span class="n">brake</span> <span class="o">=</span> <span class="n">brake</span> <span class="o">*</span> <span class="n">slip</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">brake</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::FilterABS</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">brake</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ABS_MIN_SPEED</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">slip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">slip</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">slip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slip</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">4.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">slip</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ABS_SLIP</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">brake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brake</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">slip</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>We apply the filter by adding the following line at the end of <code>GetBrake(...)</code>
 just above the return statement,</p>
-<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetBrake</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">// ...</span>
-    <span class="n">brake</span> <span class="o">=</span> <span class="n">FilterABS</span><span class="p">(</span><span class="n">brake</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">brake</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetBrake</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="n">brake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FilterABS</span><span class="p">(</span><span class="n">brake</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>We also add the new constant to <em>carcontroller.cpp</em></p>
-<div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">ABS_SLIP</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span> <span class="c1">// [-] range [0.95..0.3]</span>
-<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">ABS_MIN_SPEED</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">;</span> <span class="c1">// [m/s]</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">ABS_SLIP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.9</span><span class="p">;</span><span class="w"> </span><span class="c1">// [-] range [0.95..0.3]</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">ABS_MIN_SPEED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// [m/s]</span>
+</code></pre></div>
 
 <p>and we update <em>carcontroller.h</em> with the new class members. </p>
-<div class="highlight"><pre><span></span><span class="c1">// ...</span>
-    <span class="k">public</span><span class="o">:</span>
-        <span class="c1">// ...</span>
-        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">ABS_SLIP</span><span class="p">;</span>
-        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">ABS_MIN_SPEED</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ABS_SLIP</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ABS_MIN_SPEED</span><span class="p">;</span><span class="w"></span>
 
-    <span class="k">private</span><span class="o">:</span>
-        <span class="c1">// ...</span>
-        <span class="kt">float</span> <span class="n">FilterABS</span><span class="p">(</span><span class="kt">float</span> <span class="n">brake</span><span class="p">);</span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">FilterABS</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">brake</span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">// ...</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2>Traction Control (TCL)</h2>
 <p>Wheel slips when ...</p>
 <p>Implementation ... 
 used a pointer to function </p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Acceleration TCL filter</span>
-<span class="cm"> */</span>
-<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">FilterTCL</span><span class="p">(</span><span class="kt">float</span> <span class="n">acceleration</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">&lt;</span> <span class="n">TCL_MIN_SPEED</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">acceleration</span><span class="p">;</span>
-    <span class="kt">float</span> <span class="n">wheel_speed</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">GetDrivenWheelSpeed</span><span class="p">)();</span>
-    <span class="kt">float</span> <span class="n">slip</span> <span class="o">=</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span> <span class="o">/</span> <span class="n">wheel_speed</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">slip</span> <span class="o">&lt;</span> <span class="n">TCL_SLIP</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">acceleration</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">acceleration</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::FilterTCL</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">acceleration</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">TCL_MIN_SPEED</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">acceleration</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">wheel_speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;*</span><span class="n">GetDrivenWheelSpeed</span><span class="p">)();</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">slip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">wheel_speed</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">slip</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">TCL_SLIP</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">acceleration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">acceleration</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>Select spinning wheel... function to point to</p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Select the right spinning wheel speed calculation for the TCL filter</span>
-<span class="cm"> */</span>
-<span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">InitDrivenWheelSpeed</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">train_type</span> <span class="o">=</span> <span class="n">GfParmGetStr</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span> <span class="n">SECT_DRIVETRAIN</span><span class="p">,</span> 
-                    <span class="n">PRM_TYPE</span><span class="p">,</span> <span class="n">VAL_TRANS_RWD</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span> <span class="n">VAL_TRANS_RWD</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">GetDrivenWheelSpeed</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedRWD</span><span class="p">;</span> 
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span> <span class="n">VAL_TRANS_FWD</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
-        <span class="n">GetDrivenWheelSpeed</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedFWD</span><span class="p">;</span> 
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span> <span class="n">VAL_TRANS_4WD</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
-        <span class="n">GetDrivenWheelSpeed</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeed4WD</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">CarController::InitDrivenWheelSpeed</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">train_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GfParmGetStr</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">SECT_DRIVETRAIN</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">PRM_TYPE</span><span class="p">,</span><span class="w"> </span><span class="n">VAL_TRANS_RWD</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span><span class="w"> </span><span class="n">VAL_TRANS_RWD</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">GetDrivenWheelSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedRWD</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span><span class="w"> </span><span class="n">VAL_TRANS_FWD</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">GetDrivenWheelSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedFWD</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">train_type</span><span class="p">,</span><span class="w"> </span><span class="n">VAL_TRANS_4WD</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">GetDrivenWheelSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeed4WD</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>Computing the wheel speed for different train type</p>
-<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Get the driven wheel speed for Rear Wheel Drive (RWD)</span>
-<span class="cm"> */</span>
-<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedRWD</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">))</span> <span class="o">*</span> 
-            <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetWheelSpeedRWD</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>
+<span class="w">            </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
 
 <span class="cm">/**</span>
 <span class="cm"> * Get the driven wheel speed for Front Wheel Drive (FWD)</span>
-<span class="cm"> */</span>
-<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeedFWD</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">))</span> <span class="o">*</span> 
-            <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetWheelSpeedFWD</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_RGT</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>
+<span class="w">            </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Get the driven wheel speed for Four Wheel Drive (4WD)</span>
-<span class="cm"> */</span>
-<span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetWheelSpeed4WD</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span> <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">))</span> <span class="o">*</span> 
-                <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">)</span> <span class="o">+</span>
-            <span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_RGT</span><span class="p">)</span> <span class="o">+</span> <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">))</span> <span class="o">*</span> 
-                <span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">4.0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="cm"> */</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetWheelSpeed4WD</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_RGT</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>
+<span class="w">                </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">REAR_LFT</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"></span>
+<span class="w">            </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_RGT</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelSpinVel</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>
+<span class="w">                </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_wheelRadius</span><span class="p">(</span><span class="n">FRNT_LFT</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">4.0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>To apply the TCL filter add the following line at the end of  <code>GetAcceleration()</code>
 before the <code>return</code> statement.</p>
-<div class="highlight"><pre><span></span><span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">GetAcceleration</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="c1">// ...</span>
-    <span class="n">acceleration</span> <span class="o">=</span> <span class="n">FilterTCL</span><span class="p">(</span><span class="n">acceleration</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">acceleration</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetAcceleration</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="n">acceleration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FilterTCL</span><span class="p">(</span><span class="n">acceleration</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">acceleration</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>add <code>InitDrivenWheelSpeed();</code> in <code>NewRace(...)</code> to set the wheel speed 
 calculation pointer function to the right one.</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span> <span class="n">car</span><span class="p">,</span> <span class="n">tSituation</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="c1">// ...</span>
-    <span class="n">InitDrivenWheelSpeed</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="n">InitDrivenWheelSpeed</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>We define the new constant in <em>carcontroller.cpp</em>,</p>
-<div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">TCL_SLIP</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span> <span class="c1">// [-] range [0.95..0.3]</span>
-<span class="k">const</span> <span class="kt">float</span> <span class="n">CarController</span><span class="o">::</span><span class="n">TCL_MIN_SPEED</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">;</span> <span class="c1">// [m/s]</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">TCL_SLIP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.9</span><span class="p">;</span><span class="w"> </span><span class="c1">// [-] range [0.95..0.3]</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">TCL_MIN_SPEED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// [m/s]</span>
+</code></pre></div>
 
 <p>and add the new class member declaration in <em>carcontroller.h</em>.</p>
-<div class="highlight"><pre><span></span><span class="c1">// ...</span>
-    <span class="k">public</span><span class="o">:</span> 
-        <span class="c1">// ...</span>
-        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">TCL_SLIP</span><span class="p">;</span>
-        <span class="k">static</span> <span class="k">const</span> <span class="kt">float</span> <span class="n">TCL_MIN_SPEED</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">TCL_SLIP</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">TCL_MIN_SPEED</span><span class="p">;</span><span class="w"></span>
 
-    <span class="k">private</span><span class="o">:</span>
-        <span class="c1">// ...</span>
-        <span class="kt">float</span> <span class="n">FilterTCL</span><span class="p">(</span><span class="kt">float</span> <span class="n">acceleration</span><span class="p">);</span>
-        <span class="kt">float</span> <span class="nf">GetWheelSpeedRWD</span><span class="p">();</span>
-        <span class="kt">float</span> <span class="nf">GetWheelSpeedFWD</span><span class="p">();</span>
-        <span class="kt">float</span> <span class="nf">GetWheelSpeed4WD</span><span class="p">();</span>
-        <span class="kt">void</span> <span class="nf">InitDrivenWheelSpeed</span><span class="p">();</span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">FilterTCL</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">acceleration</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetWheelSpeedRWD</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetWheelSpeedFWD</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetWheelSpeed4WD</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">InitDrivenWheelSpeed</span><span class="p">();</span><span class="w"></span>
 
-        <span class="kt">float</span> <span class="p">(</span><span class="n">CarController</span><span class="o">::*</span><span class="n">GetDrivenWheelSpeed</span><span class="p">)();</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="p">(</span><span class="n">CarController</span><span class="o">::*</span><span class="n">GetDrivenWheelSpeed</span><span class="p">)();</span><span class="w"></span>
 <span class="c1">// ...</span>
-</pre></div>
-
+</code></pre></div>
 
 <h3>Test Drive</h3>
 <p>[Video Link]</p>
