@@ -87,3 +87,7 @@ ul.listlinks  {
 
 ul.listlinks li { 
 }
+
+main article .article__text code{
+  background: none;
+}
