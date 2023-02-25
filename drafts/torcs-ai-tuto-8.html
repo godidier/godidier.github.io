@@ -3,16 +3,16 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="http://localhost:8000/theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="http://localhost:8000/">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/hatena-bookmark-icon.css">
   <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 
@@ -25,7 +25,7 @@
 <meta name="keywords" content="">
 
   <title>
-    [GTR]
+    Didier Gohourou's Blog
 &ndash; Building a Simple TORCS AI Agent (8/11): Pit Stops  </title>
 
 </head>
@@ -34,33 +34,36 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
+        <a href="http://localhost:8000">Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
       </div>
+      <p>Tutorials, Research and Thoughts</p>
       <p>
-	  <!--
-        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
-	  -->
+      <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+      -->
+
       </p>
-	  <ul class="menuitems">   
-          <li><a href="https://godidier.github.io/">Home</a></li>
-          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
-	  </ul>
+	    <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/resume.html">Resume</a></li>
+	    </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-8.html">Building a Simple TORCS AI Agent (8/11): Pit Stops</a></h1>
+    <h1><a href="http://localhost:8000/drafts/torcs-ai-tuto-8.html">Building a Simple TORCS AI Agent (8/11): Pit Stops</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 木 13 12月 2018</p>
+    <p class="article__meta__post-date">Posted on: Thu 13 December 2018</p>
     </p>
   </div>
   <div class="article__text">
     <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
 </ul>
 <h1>Introduction</h1>
 <p>During the race, our car consumes fuel, and is likely to endure damages 
@@ -106,9 +109,9 @@ our car can not follow a path with "cracks". </p>
 <p>[Image of smooth path vs non smooth path ?]</p>
 <h2>Spline implementation</h2>
 <p>Here we define the algorithm to draw a path into our pit using 'cubic' splines.</p>
-<p>In a nutshell, you query for a given parameter <span class="math">\(x\)</span> the value of the spline 
-function <span class="math">\(y\)</span>. The algorithm first searches the interval in which <span class="math">\(x\)</span> falls, 
-then it applies the interpolation to compute <span class="math">\(y(x)\)</span>. 
+<p>In a nutshell, you query for a given parameter $x$ the value of the spline 
+function $y$. The algorithm first searches the interval in which $x$ falls, 
+then it applies the interpolation to compute $y(x)$. 
 [Detail explanation of splines ?
 If you want to know how the following algorithm works, you can look it up here.] </p>
 <p>We create a <em>spline.h</em> file in the <em>gtr</em> directory. In this file, we declare 
@@ -122,53 +125,53 @@ by an array and its size.</p>
 
 <span class="cm">/**</span>
 <span class="cm"> * A spline point</span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">SplinePoint</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplinePoint</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
 <span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">X</span><span class="p">;</span><span class="w"> </span><span class="c1">// x coordinate</span>
 <span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">Y</span><span class="p">;</span><span class="w"> </span><span class="c1">// y coordinate</span>
 <span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">S</span><span class="p">;</span><span class="w"> </span><span class="c1">// slope</span>
-<span class="p">};</span><span class="w"></span>
+<span class="p">};</span>
 
 
 <span class="cm">/**</span>
 <span class="cm"> * A Spline</span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Spline</span><span class="p">{</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Spline</span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// TODO: basically a vector </span>
 <span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
-<span class="w">        </span><span class="n">Spline</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">dimension</span><span class="p">,</span><span class="w"> </span><span class="n">SplinePoint</span><span class="w"> </span><span class="o">*</span><span class="n">spline_points</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">Evaluate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">Spline</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">dimension</span><span class="p">,</span><span class="w"> </span><span class="n">SplinePoint</span><span class="w"> </span><span class="o">*</span><span class="n">spline_points</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">Evaluate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">);</span>
 
-<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="w">        </span><span class="n">SplinePoint</span><span class="w"> </span><span class="o">*</span><span class="n">spline_points</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">dimension</span><span class="p">;</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">SplinePoint</span><span class="w"> </span><span class="o">*</span><span class="n">spline_points</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">dimension</span><span class="p">;</span>
+<span class="p">};</span>
 
 <span class="cp">#endif </span><span class="c1">// _SPLINE_H_</span>
 </code></pre></div>
 
 <p>The second method finally computes the spline values. Here follows the implementation, put it into spline.cpp. </p>
 <p>First the algorithm searches for the interval in which the parameter z falls. </p>
-<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">Spline::Evaluate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">a0</span><span class="p">,</span><span class="w"> </span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">,</span><span class="w"> </span><span class="n">a3</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">Spline::Evaluate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">a0</span><span class="p">,</span><span class="w"> </span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">,</span><span class="w"> </span><span class="n">a3</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">X</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">a0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Y</span><span class="p">;</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">Y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a0</span><span class="p">;</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="o">*</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">a3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">S</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a1</span><span class="p">;</span><span class="w"> </span><span class="n">a3</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">a2</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">a1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">a2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="mi">-1</span><span class="p">))</span><span class="o">*</span><span class="n">t</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">X</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">X</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<span class="w">    </span><span class="n">a0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Y</span><span class="p">;</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">Y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a0</span><span class="p">;</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="o">*</span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">s</span><span class="p">;</span>
+<span class="w">    </span><span class="n">a3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">spline_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">S</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a1</span><span class="p">;</span><span class="w"> </span><span class="n">a3</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">a2</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">a1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">a2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="mi">-1</span><span class="p">))</span><span class="o">*</span><span class="n">t</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Finally you need to add spline.cpp to the Makefile. Change </p>
-<div class="highlight"><pre><span></span><code>SOURCES     = <span class="cp">${</span><span class="n">ROBOT</span><span class="cp">}</span>.cpp carcontroller.cpp opponent.cpp spline.cpp
+<div class="highlight"><pre><span></span><code>SOURCES<span class="w">     </span>=<span class="w"> </span><span class="cp">${</span><span class="n">ROBOT</span><span class="cp">}</span>.cpp<span class="w"> </span>carcontroller.cpp<span class="w"> </span>opponent.cpp<span class="w"> </span>spline.cpp
 </code></pre></div>
 
 <h1>The Pit Class</h1>
@@ -184,7 +187,7 @@ Put the following code into a new file named <em>pit.h</em>. </p>
 designate base point (p0 to p6) to compute the path. We choose the points 
 such thta our x-axis is the middle line along the track, so the slope at 
 the base points is zero (parallel to the track). </p>
-<p><img alt="Path to the PIT" src="https://godidier.github.io/images/2020-02/path-to-pit.svg"></p>
+<p><img alt="Path to the PIT" src="http://localhost:8000/images/2020-02/path-to-pit.svg"></p>
 <p>Let's implement the methods of our pit class. We compute the base points of 
 the spline in the constructor. </p>
 <p>[Eggsplain the spline point ?]</p>
@@ -194,67 +197,10 @@ the spline in the constructor. </p>
 <h1>The Pit strategy</h1>
 <h1>The Pit Brake filter</h1>
 <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
 </ul>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' }, Macros: {} }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
   </div>
 
 </article>
@@ -267,7 +213,7 @@ the spline in the constructor. </p>
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">
@@ -279,11 +225,6 @@ the spline in the constructor. </p>
 			<li>&#x26AB;</li>
           </ul>
           <ul>
-            <li>
-              <a href="#" target="_blank" title="facebook">
-                <i class="fab fa-facebook-square"></i>
-              </a>
-            </li>
             <li>
               <a href="https://twitter.com/godidier" target="_blank" title="twitter">
                 <i class="fab fa-twitter-square"></i>

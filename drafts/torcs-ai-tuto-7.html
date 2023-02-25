@@ -3,16 +3,16 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="http://localhost:8000/theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="http://localhost:8000/">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/css/hatena-bookmark-icon.css">
   <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 
@@ -25,7 +25,7 @@
 <meta name="keywords" content="">
 
   <title>
-    [GTR]
+    Didier Gohourou's Blog
 &ndash; Building a Simple TORCS AI Agent (7/11): Collision avoidance and Overtaking  </title>
 
 </head>
@@ -34,33 +34,36 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="https://godidier.github.io">[GTR]  <br/> Godidier's Technical Report</a>
+        <a href="http://localhost:8000">Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
       </div>
+      <p>Tutorials, Research and Thoughts</p>
       <p>
-	  <!--
-        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
-	  -->
+      <!--
+        <a href="http://localhost:8000/archives.html"><i class="fas fa-archive"></i> Archive</a>
+      -->
+
       </p>
-	  <ul class="menuitems">   
-          <li><a href="https://godidier.github.io/">Home</a></li>
-          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
-	  </ul>
+	    <ul class="menuitems">   
+          <li><a href="http://localhost:8000/">Home</a></li>
+          <li><a href="http://localhost:8000/categories.html">Categories</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/about.html">About</a></li>
+          <li class="menupage"><a href="http://localhost:8000/pages/resume.html">Resume</a></li>
+	    </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Building a Simple TORCS AI Agent (7/11): Collision avoidance and Overtaking</a></h1>
+    <h1><a href="http://localhost:8000/drafts/torcs-ai-tuto-7.html">Building a Simple TORCS AI Agent (7/11): Collision avoidance and Overtaking</a></h1>
   </div>
   <div class="article__meta">
-    <p class="article__meta__post-date">Posted on: 水 12 12月 2018</p>
+    <p class="article__meta__post-date">Posted on: Wed 12 December 2018</p>
     </p>
   </div>
   <div class="article__text">
     <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-6.html">Previous: Recovering</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-8.html">Next: Pit Stops</a></li>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-6.html">Previous: Recovering</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-8.html">Next: Pit Stops</a></li>
 </ul>
 <p>This chapter will describe an approach to implement avoidance and overtaking 
 of opponents in a race. There are plenty of ways to do it. Here we will 
@@ -89,20 +92,20 @@ that is hold a collection of <code>Opponent</code>s.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#ifndef _OPPONENT_H_</span>
 <span class="cp">#define _OPPONENT_H_</span>
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span>
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;tgf.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;track.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;car.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;raceman.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;robottools.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;robot.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;tgf.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;track.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;car.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;raceman.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;robottools.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;robot.h&gt;</span>
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;linalg/vector2d.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;carcontroller.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;linalg/vector2d.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;carcontroller.h&quot;</span>
 
 <span class="cp">#define OPP_IGNORE  0</span>
 <span class="cp">#define OPP_FRONT   (1&lt;&lt;0)</span>
@@ -110,68 +113,68 @@ that is hold a collection of <code>Opponent</code>s.</p>
 <span class="cp">#define OPP_SIDE    (1&lt;&lt;2)</span>
 <span class="cp">#define OPP_COLL    (1&lt;&lt;3)</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="p">;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="p">;</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Class encapsulating data of our AI agent opponents.</span>
-<span class="cm"> */</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Opponent</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="w">        </span><span class="n">Opponent</span><span class="p">();</span><span class="w"></span>
+<span class="cm"> */</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Opponent</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">Opponent</span><span class="p">();</span>
 
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetCar</span><span class="p">(</span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">car</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetTrack</span><span class="p">(</span><span class="n">tTrack</span><span class="w"> </span><span class="o">*</span><span class="n">track</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">track</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">track</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetCar</span><span class="p">(</span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">car</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetTrack</span><span class="p">(</span><span class="n">tTrack</span><span class="w"> </span><span class="o">*</span><span class="n">track</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">track</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">track</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetSpeed</span><span class="p">(</span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="nf">GetCar</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">GetState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">state</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetCatchDistance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">catch_distance</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetDistance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetSideDistance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">side_distance</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetWidth</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">width</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetSpeed</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">speed</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetSpeed</span><span class="p">(</span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">);</span>
+<span class="w">        </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="nf">GetCar</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">GetState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">state</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetCatchDistance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">catch_distance</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetDistance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetSideDistance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">side_distance</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetWidth</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">width</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetSpeed</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">speed</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">);</span>
 
-<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">GetDistanceToSegmentStart</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">GetDistanceToSegmentStart</span><span class="p">();</span>
 
-<span class="w">        </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">;</span><span class="w">       </span><span class="cm">/* pointer to the opponents car */</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span><span class="w">     </span><span class="cm">/* approximation of the real distance */</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">speed</span><span class="p">;</span><span class="w">        </span><span class="cm">/* speed in direction of the track */</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">catch_distance</span><span class="p">;</span><span class="w">    </span><span class="cm">/* distance needed to catch the opponent */</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">width</span><span class="p">;</span><span class="w">        </span><span class="cm">/* the cars needed width on the track */</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">side_distance</span><span class="p">;</span><span class="w">     </span><span class="cm">/* distance of center of gravity of the cars */</span><span class="w"></span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">state</span><span class="p">;</span><span class="w">          </span><span class="cm">/* state bitmask of the opponent */</span><span class="w"></span>
+<span class="w">        </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">;</span><span class="w">       </span><span class="cm">/* pointer to the opponents car */</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">distance</span><span class="p">;</span><span class="w">     </span><span class="cm">/* approximation of the real distance */</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">speed</span><span class="p">;</span><span class="w">        </span><span class="cm">/* speed in direction of the track */</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">catch_distance</span><span class="p">;</span><span class="w">    </span><span class="cm">/* distance needed to catch the opponent */</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">width</span><span class="p">;</span><span class="w">        </span><span class="cm">/* the cars needed width on the track */</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">side_distance</span><span class="p">;</span><span class="w">     </span><span class="cm">/* distance of center of gravity of the cars */</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">state</span><span class="p">;</span><span class="w">          </span><span class="cm">/* state bitmask of the opponent */</span>
 
-<span class="w">        </span><span class="cm">/* class variables */</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">tTrack</span><span class="w"> </span><span class="o">*</span><span class="n">track</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* class variables */</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">tTrack</span><span class="w"> </span><span class="o">*</span><span class="n">track</span><span class="p">;</span>
 
-<span class="w">        </span><span class="cm">/* constants */</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">FRONT_COLLDIST</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">BACK_COLLDIST</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">SIDE_COLLDIST</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">LENGTH_MARGIN</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">WIDTH_MARGIN</span><span class="p">;</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<span class="w">        </span><span class="cm">/* constants */</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">FRONT_COLLDIST</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">BACK_COLLDIST</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">SIDE_COLLDIST</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">LENGTH_MARGIN</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">WIDTH_MARGIN</span><span class="p">;</span>
+<span class="p">};</span>
 
 
 <span class="cm">/** </span>
 <span class="cm"> * Holds an array of Opponents our AI agent is racing against</span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Opponents</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="w">        </span><span class="n">Opponents</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="o">~</span><span class="n">Opponents</span><span class="p">();</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Opponents</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">Opponents</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">);</span>
+<span class="w">        </span><span class="o">~</span><span class="n">Opponents</span><span class="p">();</span>
 
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="nf">GetOpponentPtr</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">opponent</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">Count</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="nf">GetOpponentPtr</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">opponent</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">Count</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="w">        </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="n">opponent</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="n">opponent</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="p">};</span>
 
 <span class="cp">#endif _OPPONENT_H_</span>
 </code></pre></div>
@@ -188,13 +191,13 @@ number of opponents we are dealing with.</p>
 <p>Now create a file named <em>opponent.cpp</em> where we will define the symbols we just 
 declared.</p>
 <p>We start by including the header and define the class variables and constants. </p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;opponent.h&quot;</span><span class="cp"></span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;opponent.h&quot;</span>
 
-<span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">track</span><span class="p">;</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">FRONT_COLLDIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">200.0</span><span class="p">;</span><span class="w">  </span><span class="cm">/* [m] distance to check for other cars */</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">BACK_COLLDIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">50.0</span><span class="p">;</span><span class="w">    </span><span class="cm">/* [m] distance to check for other cars */</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">LENGTH_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w">    </span><span class="cm">/* [m] safety margin */</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">WIDTH_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w">      </span><span class="cm">/* [m] safety margin */</span><span class="w"></span>
+<span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">track</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">FRONT_COLLDIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">200.0</span><span class="p">;</span><span class="w">  </span><span class="cm">/* [m] distance to check for other cars */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">BACK_COLLDIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">50.0</span><span class="p">;</span><span class="w">    </span><span class="cm">/* [m] distance to check for other cars */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">LENGTH_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w">    </span><span class="cm">/* [m] safety margin */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">WIDTH_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w">      </span><span class="cm">/* [m] safety margin */</span>
 </code></pre></div>
 
 <p><code>FRONT_COLLDIST</code> and <code>BACK_COLLDIST</code> respectively define distances from which 
@@ -217,18 +220,18 @@ From the trackangle we compute a direction vector of the track
 direction, which will give us the speed in the direction of the track. </p>
 <div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Compute speed component parallel to the track </span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="nf">Opponent::GetSpeed</span><span class="p">(</span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">speed</span><span class="p">,</span><span class="w"> </span><span class="n">direction</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">track_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RtTrackSideTgAngleL</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">));</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">Opponent::GetSpeed</span><span class="p">(</span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">speed</span><span class="p">,</span><span class="w"> </span><span class="n">direction</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">track_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RtTrackSideTgAngleL</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">));</span>
 
-<span class="w">    </span><span class="n">speed</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_X</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">speed</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_Y</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">direction</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">track_angle</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">direction</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">track_angle</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">direction</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">speed</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_X</span><span class="p">;</span>
+<span class="w">    </span><span class="n">speed</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_Y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">direction</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">track_angle</span><span class="p">);</span>
+<span class="w">    </span><span class="n">direction</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">track_angle</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">direction</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>The next method <code>Opponent::getDistToSegStart()</code>  computes the distance of the 
@@ -237,15 +240,15 @@ contains the length of the segment for straight segments and for turns the
 arc, so we need a conversion to the length.</p>
 <div class="highlight"><pre><span></span><code><span class="cm">/** </span>
 <span class="cm"> * Compute the length to the start of the segment </span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="nf">Opponent::GetDistanceToSegmentStart</span><span class="p">()</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_STR</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toStart</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toStart</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">Opponent::GetDistanceToSegmentStart</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_STR</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toStart</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toStart</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Now we will have a look at the 
@@ -286,58 +289,58 @@ faster opponents. </p>
 we compute the distance (sideways) and set the flag <code>OPP_SIDE</code>. </p>
 <div class="highlight"><pre><span></span><code><span class="cm">/** </span>
 <span class="cm"> * Update the values in Opponent this </span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">Opponent::Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">();</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Opponent::Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">();</span>
 
-<span class="w">    </span><span class="cm">/* init state of opponent to ignore */</span><span class="w"></span>
-<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPP_IGNORE</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* init state of opponent to ignore */</span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPP_IGNORE</span><span class="p">;</span>
 
-<span class="w">    </span><span class="cm">/* if the car is out of the simulation ignore it */</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_state</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">RM_CAR_STATE_NO_SIMU</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* if the car is out of the simulation ignore it */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_state</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">RM_CAR_STATE_NO_SIMU</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="cm">/* updating distance along the middle */</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">oppToStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">lgfromstart</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">GetDistanceToSegmentStart</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oppToStart</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_distFromStartLine</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">distance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* updating distance along the middle */</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">oppToStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">lgfromstart</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">GetDistanceToSegmentStart</span><span class="p">();</span>
+<span class="w">    </span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oppToStart</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_distFromStartLine</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">distance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">track</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="cm">/* update speed in track direction */</span><span class="w"></span>
-<span class="w">    </span><span class="n">speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">GetSpeed</span><span class="p">(</span><span class="n">car</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">cosa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">speed</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_X</span><span class="o">*</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_X</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_Y</span><span class="o">*</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_Y</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acos</span><span class="p">(</span><span class="n">cosa</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_y</span><span class="o">*</span><span class="n">cosa</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MIN</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* update speed in track direction */</span>
+<span class="w">    </span><span class="n">speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Opponent</span><span class="o">::</span><span class="n">GetSpeed</span><span class="p">(</span><span class="n">car</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">cosa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">speed</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_X</span><span class="o">*</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_X</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_Y</span><span class="o">*</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_Y</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acos</span><span class="p">(</span><span class="n">cosa</span><span class="p">);</span>
+<span class="w">    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_y</span><span class="o">*</span><span class="n">cosa</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MIN</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">);</span>
 
-<span class="w">    </span><span class="cm">/* is opponent in relevant range -50..200 m */</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">BACK_COLLDIST</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FRONT_COLLDIST</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="cm">/* is opponent in front and slower */</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">distance</span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">speed</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_FRONT</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">MAX</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">LENGTH_MARGIN</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">cardist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cardist</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">cardist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fabs</span><span class="p">(</span><span class="n">cardist</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fabs</span><span class="p">(</span><span class="n">width</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_y</span><span class="o">/</span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cardist</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">WIDTH_MARGIN</span><span class="p">)</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_COLL</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="cm">/* is opponent behind and faster */</span><span class="w"></span>
-<span class="w">            </span><span class="n">catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">()</span><span class="o">*</span><span class="n">distance</span><span class="o">/</span><span class="p">(</span><span class="n">speed</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">());</span><span class="w"></span>
-<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_BACK</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">MAX</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">LENGTH_MARGIN</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SIDECOLLDIST</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="cm">/* is opponent aside */</span><span class="w"></span>
-<span class="w">            </span><span class="n">side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_SIDE</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* is opponent in relevant range -50..200 m */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">BACK_COLLDIST</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FRONT_COLLDIST</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* is opponent in front and slower */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">distance</span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">speed</span><span class="p">);</span>
+<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_FRONT</span><span class="p">;</span>
+<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">MAX</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">);</span>
+<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">LENGTH_MARGIN</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">cardist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="p">;</span>
+<span class="w">            </span><span class="n">side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cardist</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cardist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fabs</span><span class="p">(</span><span class="n">cardist</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fabs</span><span class="p">(</span><span class="n">width</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_y</span><span class="o">/</span><span class="mf">2.0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cardist</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">WIDTH_MARGIN</span><span class="p">)</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_COLL</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="cm">/* is opponent behind and faster */</span>
+<span class="w">            </span><span class="n">catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">()</span><span class="o">*</span><span class="n">distance</span><span class="o">/</span><span class="p">(</span><span class="n">speed</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetSpeed</span><span class="p">());</span>
+<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_BACK</span><span class="p">;</span>
+<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">MAX</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">,</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_dimension_x</span><span class="p">);</span>
+<span class="w">            </span><span class="n">distance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">LENGTH_MARGIN</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="n">SIDECOLLDIST</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SIDECOLLDIST</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="cm">/* is opponent aside */</span>
+<span class="w">            </span><span class="n">side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">agent</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="p">;</span>
+<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">OPP_SIDE</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Now the implementation of the <code>Opponents</code> class methods.</p>
@@ -345,27 +348,27 @@ we compute the distance (sideways) and set the flag <code>OPP_SIDE</code>. </p>
 Opponent instances. The destructor deletes the instances and frees the memory. </p>
 <div class="highlight"><pre><span></span><code><span class="cm">/** </span>
 <span class="cm"> * Initialize the list of opponents </span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="n">Opponents</span><span class="o">::</span><span class="n">Opponents</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">opponent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Opponent</span><span class="p">[</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">cars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">opponent</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">SetCar</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">cars</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
-<span class="w">            </span><span class="n">j</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="n">Opponent</span><span class="o">::</span><span class="n">SetTrack</span><span class="p">(</span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetTrack</span><span class="p">());</span><span class="w"></span>
-<span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="n">Opponents</span><span class="o">::</span><span class="n">Opponents</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">opponent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Opponent</span><span class="p">[</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">cars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">opponent</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">SetCar</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">cars</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">            </span><span class="n">j</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">Opponent</span><span class="o">::</span><span class="n">SetTrack</span><span class="p">(</span><span class="n">car_controller</span><span class="o">-&gt;</span><span class="n">GetTrack</span><span class="p">());</span>
+<span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Then the <code>Opponents::Update</code></p>
 <div class="highlight"><pre><span></span><code><span class="n">Opponents</span><span class="o">::~</span><span class="n">Opponents</span><span class="p">()</span><span class="w"> </span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">opponent</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">opponent</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <h2>Modifying our AI agent controller</h2>
@@ -373,20 +376,20 @@ Opponent instances. The destructor deletes the instances and frees the memory. <
 class from the opponent class.</p>
 <div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> *  Updates all the Opponent instances </span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">Opponents::Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Update</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">car_controller</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Opponents::Update</span><span class="p">(</span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">CarController</span><span class="w"> </span><span class="o">*</span><span class="n">car_controller</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">_ncars</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Update</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">car_controller</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <h2>Updating the Makefile</h2>
 <p>Add the <code>Opponent</code> class to the compilation configuration by adding 
 '<em>opponent.cpp</em>' to the <code>SOURCES</code> variables in the <em>Makefile</em></p>
-<div class="highlight"><pre><span></span><code>SOURCES     = <span class="cp">${</span><span class="n">ROBOT</span><span class="cp">}</span>.cpp carcontroller.cpp opponent.cpp
+<div class="highlight"><pre><span></span><code>SOURCES<span class="w">     </span>=<span class="w"> </span><span class="cp">${</span><span class="n">ROBOT</span><span class="cp">}</span>.cpp<span class="w"> </span>carcontroller.cpp<span class="w"> </span>opponent.cpp
 </code></pre></div>
 
 <p>[Test Drive + Video ?]</p>
@@ -406,40 +409,40 @@ declare the braking filter method in the public section of the class, and
 an <code>Opponents</code> and <code>Opponent</code> pointers to hold the list of opponents and 
 the current opponent we will analyze at a given time.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">//... Other includes</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;opponent.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;opponent.h&quot;</span>
 
 <span class="c1">//...</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Opponents</span><span class="p">;</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Opponent</span><span class="p">;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Opponents</span><span class="p">;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Opponent</span><span class="p">;</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="w"> </span><span class="p">{</span>
 
 <span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="w">        </span><span class="o">~</span><span class="n">CarController</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="o">~</span><span class="n">CarController</span><span class="p">();</span>
 
-<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
 <span class="w">        </span><span class="c1">//...</span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">FilterBrakeCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">brake</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">FilterBrakeCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">brake</span><span class="p">);</span>
 <span class="w">        </span><span class="c1">//...</span>
-<span class="w">        </span><span class="n">Opponents</span><span class="w"> </span><span class="o">*</span><span class="n">opponents</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">Opponent</span><span class="w"> </span><span class="n">opponent</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">Opponents</span><span class="w"> </span><span class="o">*</span><span class="n">opponents</span><span class="p">;</span>
+<span class="w">        </span><span class="n">Opponent</span><span class="w"> </span><span class="n">opponent</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Now to the implementation in <em>carcontroller.cpp</em>. We define the destructor.</p>
-<div class="highlight"><pre><span></span><code><span class="n">CarController</span><span class="o">::~</span><span class="n">CarController</span><span class="p">(){</span><span class="w"></span>
-<span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="n">opponents</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">CarController</span><span class="o">::~</span><span class="n">CarController</span><span class="p">(){</span>
+<span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="n">opponents</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Instantiate the <code>Opponent</code>(s) classes in <code>NewRace</code> method</p>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">opponents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Opponents</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">opponent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">GetOpponentPtr</span><span class="p">();</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">opponents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Opponents</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="n">opponent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">GetOpponentPtr</span><span class="p">();</span>
 <span class="w">    </span><span class="c1">//...</span>
-<span class="p">}</span><span class="w"></span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Let's implement the filter method. In a nutshell it iterates through the 
@@ -453,34 +456,34 @@ it work. The computation of the brakedistance should be familiar from
 previous chapters. </p>
 <div class="highlight"><pre><span></span><code><span class="cm">/** </span>
 <span class="cm"> * Filter the brake to avoid a front collision</span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::FilterBrakeCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">brake</span><span class="p">){</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">current_speed_sqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">surface</span><span class="o">-&gt;</span><span class="n">kFriction</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">cm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">full_car_mass</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CA</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CW</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">Count</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetState</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">OPP_COLL</span><span class="w"> </span><span class="p">){</span><span class="w"></span>
-<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">allowed_speed_sqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetSpeed</span><span class="p">(),</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::FilterBrakeCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">brake</span><span class="p">){</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">current_speed_sqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">surface</span><span class="o">-&gt;</span><span class="n">kFriction</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">cm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">full_car_mass</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CA</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CW</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">Count</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetState</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">OPP_COLL</span><span class="w"> </span><span class="p">){</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">allowed_speed_sqr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetSpeed</span><span class="p">(),</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
 <span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">brake_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">full_car_mass</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">current_speed_sqr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">allowed_speed_sqr</span><span class="p">)</span><span class="w"> </span>
 <span class="w">                </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mf">2.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">cm</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">allowed_speed_sqr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ca</span><span class="p">));</span><span class="w"> </span>
-<span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">brake_distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetDistance</span><span class="p">()){</span><span class="w"></span>
-<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">                </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">brake_distance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetDistance</span><span class="p">()){</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Now we can call it in the <code>GetBrake</code> method.</p>
-<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetBrake</span><span class="p">()</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetBrake</span><span class="p">()</span>
+<span class="p">{</span>
 <span class="w">    </span><span class="c1">// ...</span>
-<span class="w">    </span><span class="n">brake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FilterABS</span><span class="p">(</span><span class="n">FilterBrakeCollision</span><span class="p">(</span><span class="n">brake</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">brake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FilterABS</span><span class="p">(</span><span class="n">FilterBrakeCollision</span><span class="p">(</span><span class="n">brake</span><span class="p">));</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brake</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>[Test drive with other robots or driver]</p>
@@ -489,22 +492,22 @@ previous chapters. </p>
 aside of our car. The following implementation will add an additional filter 
 to the steer value. But it doesn't check if we leave the track. </p>
 <p>We start with the declaration in <em>carcontroller.h</em>.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="w"> </span><span class="p">{</span>
 
 <span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">SIDE_COLLISION_MARGIN</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">SIDE_COLLISION_MARGIN</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">FilterSteeringCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">steering</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">FilterSteeringCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">steering</span><span class="p">);</span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="p">}</span><span class="w"></span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>We go in <em>carcontroller.cpp</em> for the definitions. 
 The <code>SIDE_COLLISION_MARGIN</code> constant at the beginning. </p>
-<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">SIDE_COLLISION_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [m] */</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">SIDE_COLLISION_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [m] */</span>
 </code></pre></div>
 
 <p>The <code>FilterSteeringCollision</code> method do an approximate search of the 
@@ -536,54 +539,54 @@ opponent's car, before further computations.</p>
 <p>[TODO: an illustration of the situation]</p>
 <div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Filter the steering to avoid a collision from the side</span>
-<span class="cm"> **/</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::FilterSteeringCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">steering</span><span class="p">){</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="cm"> **/</span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::FilterSteeringCollision</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">steering</span><span class="p">){</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span>
 <span class="w">        </span><span class="n">abs_side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="n">min_side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">min_side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
 
-<span class="w">    </span><span class="cm">/* get the index of the nearest car (o) */</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">Count</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetState</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">OPP_SIDE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetSideDistance</span><span class="p">();</span><span class="w"></span>
-<span class="w">            </span><span class="n">abs_side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fabs</span><span class="p">(</span><span class="n">side_distance</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs_side_distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min_side_distance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">                </span><span class="n">min_side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">abs_side_distance</span><span class="p">;</span><span class="w"></span>
-<span class="w">                </span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
-<span class="w">            </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="cm">/* if there is another car handle the situation */</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min_side_distance</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetWidth</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="cm">/* near enough */</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SIDE_COLLISION_MARGIN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="cm">/* compute angle between cars */</span><span class="w"></span>
-<span class="w">            </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">ocar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">();</span><span class="w"></span>
-<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">angle_difference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ocar</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">remainder</span><span class="p">(</span><span class="n">angle_difference</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIDE_COLLISION_MARGIN</span><span class="o">/</span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">parallel_steering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle_difference</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">steering</span><span class="o">*</span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">2.0</span><span class="o">*</span><span class="w"> </span><span class="n">parallel_steering</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">steering</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">steering</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/* get the index of the nearest car (o) */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">Count</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetState</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">OPP_SIDE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetSideDistance</span><span class="p">();</span>
+<span class="w">            </span><span class="n">abs_side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fabs</span><span class="p">(</span><span class="n">side_distance</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs_side_distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min_side_distance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">min_side_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">abs_side_distance</span><span class="p">;</span>
+<span class="w">                </span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* if there is another car handle the situation */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min_side_distance</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetWidth</span><span class="p">();</span>
+<span class="w">        </span><span class="cm">/* near enough */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SIDE_COLLISION_MARGIN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* compute angle between cars */</span>
+<span class="w">            </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">ocar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">();</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">angle_difference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ocar</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span>
+<span class="w">            </span><span class="n">remainder</span><span class="p">(</span><span class="n">angle_difference</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIDE_COLLISION_MARGIN</span><span class="o">/</span><span class="mf">2.0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">parallel_steering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle_difference</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">steering</span><span class="o">*</span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">2.0</span><span class="o">*</span><span class="w"> </span><span class="n">parallel_steering</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">steering</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">steering</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>We can now use the filter in the <code>GetSteering</code> method. Change the last line to 
 the following two.</p>
-<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetSteering</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetSteering</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="p">)</span>
+<span class="p">{</span>
 <span class="w">    </span><span class="c1">// ...</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">steering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_angle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">FilterSteeringCollision</span><span class="p">(</span><span class="n">steering</span><span class="p">);</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">steering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_angle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">FilterSteeringCollision</span><span class="p">(</span><span class="n">steering</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>[Test drive, video]</p>
@@ -598,20 +601,20 @@ Depending on the side we want to pass an opponent, we slightly add an offset
 vector to the target point. This offset is perpendicular to the track tangent. </p>
 <p>[TODO: Illustration]</p>
 <p>Let's make the necessary declarations in <em>carcontroller.h</em>. </p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="w"> </span><span class="p">{</span>
 
 <span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">BORDER_OVERTAKE_MARGIN</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">BORDER_OVERTAKE_MARGIN</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span>
 
 <span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"> </span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">GetOvertakeOffset</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">GetOvertakeOffset</span><span class="p">();</span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">overtake_offset</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">overtake_offset</span><span class="p">;</span>
 <span class="w">        </span><span class="c1">// ...</span>
-<span class="p">}</span><span class="w"></span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Then in <em>carcontroller.cpp</em> we define the values of the constants at the 
@@ -624,17 +627,17 @@ We also lower the value of the <code>WIDTH_DIV</code> constant.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// ...</span>
 <span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">WIDTH_DIV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// [-]</span>
 <span class="c1">// ...</span>
-<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">BORDER_OVERTAKE_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [m] */</span><span class="w"></span>
-<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w">    </span><span class="cm">/* [m/timestep] */</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">BORDER_OVERTAKE_MARGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w"> </span><span class="cm">/* [m] */</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w">    </span><span class="cm">/* [m/timestep] */</span>
 </code></pre></div>
 
 <p><code>overtake_offset</code> is initialize to zero in the <code>NewRace()</code> method.</p>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">CarController::NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
 <span class="w">    </span><span class="c1">// ...</span>
-<span class="w">    </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 <span class="w">    </span><span class="c1">// ...</span>
-<span class="p">}</span><span class="w"></span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>And here is the implementation of <code>GetOvertakeOffset()</code> that compute the 
@@ -652,39 +655,39 @@ slightly toward zero. In the next section we will add the offset to the
 target point. </p>
 <div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Compute an offset to the trajectory target point for overtaking.</span>
-<span class="cm"> * */</span><span class="w"></span>
-<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetOvertakeOffset</span><span class="p">(){</span><span class="w"></span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="cm"> * */</span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">CarController::GetOvertakeOffset</span><span class="p">(){</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">catch_distance</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="n">min_catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">min_catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Opponent</span><span class="w"> </span><span class="o">*</span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">Count</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetState</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">OPP_FRONT</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetCatchDistance</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">catch_distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min_catch_distance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">                </span><span class="n">min_catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">catch_distance</span><span class="p">;</span><span class="w"></span>
-<span class="w">                </span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
-<span class="w">            </span><span class="p">}</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">WIDTH_DIV</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">BORDER_OVERTAKE_MARGIN</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">opp_to_middle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">opponents</span><span class="o">-&gt;</span><span class="n">Count</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetState</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">OPP_FRONT</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetCatchDistance</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">catch_distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min_catch_distance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">min_catch_distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">catch_distance</span><span class="p">;</span>
+<span class="w">                </span><span class="n">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">opponent</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">WIDTH_DIV</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">BORDER_OVERTAKE_MARGIN</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">opp_to_middle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opp</span><span class="o">-&gt;</span><span class="n">GetCar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="p">;</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">opp_to_middle</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="w"> </span>
-<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span>
 <span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">w</span><span class="p">)</span><span class="w"> </span>
-<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">)</span><span class="w"> </span>
-<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span>
 <span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">)</span><span class="w"> </span>
-<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">OVERTAKE_OFFSET_INCREMENT</span><span class="p">;</span>
 <span class="w">        </span><span class="k">else</span><span class="w"> </span>
-<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">overtake_offset</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="n">overtake_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">overtake_offset</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Finally, we need to add the offset to the target point. We will include the 
@@ -699,50 +702,50 @@ the track tangent at the target point. The computation depends on whether
 the target point is on a straight or a turn. </p>
 <div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Find a target point ahead of the car toward which the wheels will steer</span>
-<span class="cm"> */</span><span class="w"></span>
-<span class="n">Vector2D</span><span class="w"> </span><span class="nf">CarController::GetTargetPoint</span><span class="p">()</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">tTrackSeg</span><span class="o">*</span><span class="w"> </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">look_ahead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LOOK_AHEAD_CONST</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">LOOK_AHEAD_FACTOR</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DistanceFromCarToSegmentEnd</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetOvertakeOffset</span><span class="p">();</span><span class="w"></span>
+<span class="cm"> */</span>
+<span class="n">Vector2D</span><span class="w"> </span><span class="nf">CarController::GetTargetPoint</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">tTrackSeg</span><span class="o">*</span><span class="w"> </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">look_ahead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LOOK_AHEAD_CONST</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_speed_x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">LOOK_AHEAD_FACTOR</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DistanceFromCarToSegmentEnd</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetOvertakeOffset</span><span class="p">();</span>
 
-<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">look_ahead</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">look_ahead</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">segment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
 <span class="w">        </span><span class="n">length</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w">  </span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">look_ahead</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">target_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SR</span><span class="p">].</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">target_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SR</span><span class="p">].</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">target</span><span class="p">(</span><span class="n">target_x</span><span class="p">,</span><span class="w"> </span><span class="n">target_y</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_STR</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">tangent_perpendicular_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_ER</span><span class="p">].</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">tangent_perpendicular_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_ER</span><span class="p">].</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="p">(</span><span class="n">tangent_perpendicular_x</span><span class="p">,</span><span class="w"> </span><span class="n">tangent_perpendicular_y</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">tangent_perpendicular</span><span class="p">.</span><span class="n">Normalize</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">direction_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">direction_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">direction</span><span class="p">(</span><span class="n">direction_x</span><span class="p">,</span><span class="w"> </span><span class="n">direction_y</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">direction</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">look_ahead</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">target_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SR</span><span class="p">].</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">target_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SR</span><span class="p">].</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">target</span><span class="p">(</span><span class="n">target_x</span><span class="p">,</span><span class="w"> </span><span class="n">target_y</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_STR</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">tangent_perpendicular_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_ER</span><span class="p">].</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">tangent_perpendicular_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_ER</span><span class="p">].</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">        </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="p">(</span><span class="n">tangent_perpendicular_x</span><span class="p">,</span><span class="w"> </span><span class="n">tangent_perpendicular_y</span><span class="p">);</span>
+<span class="w">        </span><span class="n">tangent_perpendicular</span><span class="p">.</span><span class="n">Normalize</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">direction_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">direction_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_EL</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">vertex</span><span class="p">[</span><span class="n">TR_SL</span><span class="p">].</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">        </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">direction</span><span class="p">(</span><span class="n">direction_x</span><span class="p">,</span><span class="w"> </span><span class="n">direction_y</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">direction</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">center</span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">center</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">center</span><span class="p">.</span><span class="n">y</span><span class="p">);</span><span class="w">  </span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">arc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">arcsign</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_RGT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">arc</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">arcsign</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">target</span><span class="p">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="w"> </span><span class="n">arc</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">center</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">target</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">arcsign</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">arc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">radius</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">arcsign</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">segment</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TR_RGT</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">arc</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">arcsign</span><span class="p">;</span>
+<span class="w">        </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">target</span><span class="p">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="w"> </span><span class="n">arc</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Vector2D</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">center</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">target</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">arcsign</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tangent_perpendicular</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>[Test drive &amp; video]</p>
 <p>[TODO: about camber setting change]</p>
 <p>Let me know if you have a different implementation</p>
 <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-6.html">Previous: Recovering</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-8.html">Next: Pit Stops</a></li>
+<li><a href="http://localhost:8000/torcs-ai-tuto-1.html#table_of_contents">Table of Contents</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-6.html">Previous: Recovering</a></li>
+<li><a href="http://localhost:8000/drafts/torcs-ai-tuto-8.html">Next: Pit Stops</a></li>
 </ul>
   </div>
 
@@ -756,7 +759,7 @@ the target point is on a straight or a turn. </p>
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <a href="http://localhost:8000/pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">
@@ -768,11 +771,6 @@ the target point is on a straight or a turn. </p>
 			<li>&#x26AB;</li>
           </ul>
           <ul>
-            <li>
-              <a href="#" target="_blank" title="facebook">
-                <i class="fab fa-facebook-square"></i>
-              </a>
-            </li>
             <li>
               <a href="https://twitter.com/godidier" target="_blank" title="twitter">
                 <i class="fab fa-twitter-square"></i>

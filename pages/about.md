@@ -10,24 +10,16 @@ lang:en
 I am a computer engineering enthusiast, seeking to get the best out of life, and 
 make the world a better place. <del>Yeah, I know that's clich&eacute;.</del>
 
-## Career 
-
-I work as a software engineer. I have some experience in the corporate, academics 
-and freelance worlds. I just like building things. I also get involve in open 
-source sometimes.
-
-You can take a look at a piece of my CV [here]({static}/docs/godidier_resume.pdf).
 
 ## Interests
 
 Pretty much anything funny that will put me in a challenging position. That include
 but is not limited to: 
 
-* Sport (mainly Judo)
+* Sport (mainly Judo), Outdoor (Hiking) and Driving / Riding
 * Traveling to places where I have no clue about the language/culture
-* Drawing places and people
-* Being creative with LEGO blocks (a favorite!)
-* Keeping up with the state of the art in AI 
+* Being creative (especially with drawing and design as a hobby)
+* Learning complex concepts, teach them simply or use them to make stuff
 
 ## Contact 
 
