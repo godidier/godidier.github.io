@@ -6,7 +6,7 @@
   <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
@@ -47,6 +47,7 @@
           <li><a href="https://godidier.github.io/">Home</a></li>
           <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
           <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
           <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
 	    </ul>
     </header>
@@ -109,9 +110,9 @@ our car can not follow a path with "cracks". </p>
 <p>[Image of smooth path vs non smooth path ?]</p>
 <h2>Spline implementation</h2>
 <p>Here we define the algorithm to draw a path into our pit using 'cubic' splines.</p>
-<p>In a nutshell, you query for a given parameter $x$ the value of the spline 
-function $y$. The algorithm first searches the interval in which $x$ falls, 
-then it applies the interpolation to compute $y(x)$. 
+<p>In a nutshell, you query for a given parameter <span class="math">\(x\)</span> the value of the spline 
+function <span class="math">\(y\)</span>. The algorithm first searches the interval in which <span class="math">\(x\)</span> falls, 
+then it applies the interpolation to compute <span class="math">\(y(x)\)</span>. 
 [Detail explanation of splines ?
 If you want to know how the following algorithm works, you can look it up here.] </p>
 <p>We create a <em>spline.h</em> file in the <em>gtr</em> directory. In this file, we declare 
@@ -201,6 +202,68 @@ the spline in the constructor. </p>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-7.html">Previous: Collision avoidance and Overtaking</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-9.html">Next: Customizing the car settings and appearance</a></li>
 </ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
   </div>
 
 </article>

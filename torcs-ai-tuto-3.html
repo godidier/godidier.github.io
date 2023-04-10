@@ -6,7 +6,7 @@
   <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
@@ -47,6 +47,7 @@
           <li><a href="https://godidier.github.io/">Home</a></li>
           <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
           <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
           <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
 	    </ul>
     </header>
@@ -87,14 +88,14 @@ is what occurs when a car steers less than the amount commanded by the driver. <
 <p><img alt="Understeer and Oversteer" src="https://godidier.github.io/images/2018-12/understeer-oversteer.png"></p>
 <p>So we need to know what amount of speed we can apply to safely pass a turn.
 We will resort to an equation from physics. <del>Stay with me</del>. </p>
-<p>$$ {mv^2 \over r} = {mg\mu} $$</p>
+<div class="math">$$ {mv^2 \over r} = {mg\mu} $$</div>
 <p>Where: </p>
 <ul>
-<li>$m$ : is the current car mass (kg)</li>
-<li>$v$ : current speed (m/s)</li>
-<li>$r$ : radius of the turn's segment(m) </li>
-<li>$\mu$ : friction coefficient</li>
-<li>$g$ : the gravity of earth 9.80665 (m/s^2)</li>
+<li><span class="math">\(m\)</span> : is the current car mass (kg)</li>
+<li><span class="math">\(v\)</span> : current speed (m/s)</li>
+<li><span class="math">\(r\)</span> : radius of the turn's segment(m) </li>
+<li><span class="math">\(\mu\)</span> : friction coefficient</li>
+<li><span class="math">\(g\)</span> : the gravity of earth 9.80665 (m/s^2)</li>
 </ul>
 <p>The left part of the equation is the <strong>centrifugal force</strong> and the left side is 
 the <strong>centripetal force</strong> created by the friction of the turning wheels of our 
@@ -113,12 +114,12 @@ circular path. </p>
 </blockquote>
 <p>Let's picture what we are talking about.</p>
 <p><img alt="Centrifugal and Centripetal forces" src="https://godidier.github.io/images/2018-12/centrifugal-centripetal.png"></p>
-<p>We find the appropriate speed by expressing $v$ from the equation above, which 
+<p>We find the appropriate speed by expressing <span class="math">\(v\)</span> from the equation above, which 
 yield:</p>
-<p>$$ v = \sqrt{g \mu r} $$</p>
+<div class="math">$$ v = \sqrt{g \mu r} $$</div>
 <p>This is a simplified version of the real appropriate speed value. We assume that 
-all wheels have the same $\mu$, and the weight is equally distributed over all 
-wheels. The coefficient $\mu$ with the friction coefficient which normally is 
+all wheels have the same <span class="math">\(\mu\)</span>, and the weight is equally distributed over all 
+wheels. The coefficient <span class="math">\(\mu\)</span> with the friction coefficient which normally is 
 a function with many parameters includind the relative speed vector between the<br>
 surfaces, the current load, the shape of the patch, the temperature, etc.</p>
 <p>With our result, let's create a function that returns the appropriate (allowed) 
@@ -150,32 +151,32 @@ to know how much throttle to apply on the acceleretor pedal. In TORCS the
 acceleration throttle value is between 0 and 1, and can be deduced by 
 normalizing the car engine's given revolution per minute (rpm) by its rpm redline
 i.e the maximum revolution per minute the car's engine can operate at.</p>
-<p>$$
+<div class="math">$$
 accelerator\ throttle = \frac{rpm}{rpm\ redline} 
-$$</p>
-<p>If we also express the angular speed of the wheel $\omega = \theta / t$ 
-with the linear speed $v = \omega \times \theta$ we have $\omega = v / r$
+$$</div>
+<p>If we also express the angular speed of the wheel <span class="math">\(\omega = \theta / t\)</span> 
+with the linear speed <span class="math">\(v = \omega \times \theta\)</span> we have <span class="math">\(\omega = v / r\)</span>
 Since the angular speed is also equal to the rpm divided by the gear ratio, 
 we have the following relation: </p>
-<p>$$
-\begin{align<em>}
-\frac{v}{r}&amp; = \frac{rpm}{gear\ ratio} \
+<div class="math">$$
+\begin{align*}
+\frac{v}{r}&amp; = \frac{rpm}{gear\ ratio} \\
 rpm&amp; = \frac{v \times gear\ ratio}{r} 
-\end{align</em>}
-$$</p>
+\end{align*}
+$$</div>
 <p>Where </p>
 <ul>
-<li>$v$ is the speed of the car (m/s)</li>
-<li>$r$ is the radius of the spinning wheel (m)</li>
-<li>$rpm$ ie the engine's revolution per minute (rad/s)</li>
-<li>$gear\ ratio$ the ratio of the angular velocity fo input gear (engine's rpm) 
+<li><span class="math">\(v\)</span> is the speed of the car (m/s)</li>
+<li><span class="math">\(r\)</span> is the radius of the spinning wheel (m)</li>
+<li><span class="math">\(rpm\)</span> ie the engine's revolution per minute (rad/s)</li>
+<li><span class="math">\(gear\ ratio\)</span> the ratio of the angular velocity fo input gear (engine's rpm) 
 and the angular velocity output gear (the wheel). </li>
 </ul>
-<p>We obtain the desired accelerator throttle by plugin the expression of $rpm$ 
-into the one of the $accelerator\ throttle$. </p>
-<p>$$
+<p>We obtain the desired accelerator throttle by plugin the expression of <span class="math">\(rpm\)</span> 
+into the one of the <span class="math">\(accelerator\ throttle\)</span>. </p>
+<div class="math">$$
 accelerator\ throttle = \frac{(v \times gear\ ratio) / r}{rpm\ redline}
-$$</p>
+$$</div>
 <p>We rewrite the <code>GetAcceleration()</code> method with the result. It basically says 
 if with our current speed we can accelerate to the max without stepping over 
 the allowed speed of the segment, we go full throttle. Else, we compute the 
@@ -217,23 +218,23 @@ that turn segment. For that, we need to brake. </p>
 <p>We need to know in advance when to apply the brakes. i.e. at what distance from the 
 turn we have to start braking. We can compute the braking distance using the 
 following equation of energies. </p>
-<p>$$
-\underbrace{\frac{m \cdot v_1^2}{2}}<em _text_Desired="\text{Desired" energy kinetic>{\text{Current kinetic energy}} - \underbrace{\frac{m \cdot v_2^2}{2}}</em>} = \underbrace{m \cdot g \cdot \mu \cdot s}_{\text{Energy 'burned' by the brakes over distance s}}
-$$</p>
+<div class="math">$$
+\underbrace{\frac{m \cdot v_1^2}{2}}_{\text{Current kinetic energy}} - \underbrace{\frac{m \cdot v_2^2}{2}}_{\text{Desired kinetic energy}} = \underbrace{m \cdot g \cdot \mu \cdot s}_{\text{Energy 'burned' by the brakes over distance s}}
+$$</div>
 <p>Where </p>
 <ul>
-<li>$m$ is the mass of the car (kg)</li>
-<li>$v_1$ is the current speed of the car (m/s)</li>
-<li>$v_2$ is the allowed speed on the turn segment, or targeted portion of the track
+<li><span class="math">\(m\)</span> is the mass of the car (kg)</li>
+<li><span class="math">\(v_1\)</span> is the current speed of the car (m/s)</li>
+<li><span class="math">\(v_2\)</span> is the allowed speed on the turn segment, or targeted portion of the track
  (m/s)</li>
-<li>$g$ is the gravity constant</li>
-<li>$\mu$ is the friction coefficient </li>
-<li>$s$ is the distance necessary to brake (m)</li>
+<li><span class="math">\(g\)</span> is the gravity constant</li>
+<li><span class="math">\(\mu\)</span> is the friction coefficient </li>
+<li><span class="math">\(s\)</span> is the distance necessary to brake (m)</li>
 </ul>
 <p>We have </p>
-<p>$$
+<div class="math">$$
 s = \frac{v_1^2 - v_2^2}{2 \cdot g \cdot \mu}
-$$</p>
+$$</div>
 <p>We also need a mechanism to gradually look ahead from the current position of 
 the car to a potential segment with an allowed speed lower than the current speed 
 of the car, up to a given distance. The lookahead mechanism will start with the 
@@ -259,8 +260,8 @@ function to get this initial distance. </p>
 <p>As you might see, if the segement is a straight, we simply do a substraction else 
 the arc of the radius comes into play.</p>
 <p>Note that the maximum distance up to which we check for a turn to slow down is 
-a special case of the distance formula $s$ where $v_2 = 0$. Meaning in case 
-we have to completely stop the car. This yield $s = v_1^2 / (2 \cdot g \cdot \mu)$</p>
+a special case of the distance formula <span class="math">\(s\)</span> where <span class="math">\(v_2 = 0\)</span>. Meaning in case 
+we have to completely stop the car. This yield <span class="math">\(s = v_1^2 / (2 \cdot g \cdot \mu)\)</span></p>
 <p>The illustration below gives an idea of the 'look ahead' mechanism. </p>
 <p><img alt="Look ahead" src="{static}/#"></p>
 <h2>Braking</h2>
@@ -388,6 +389,68 @@ oscillating the gear up and down.</p>
 <li><a href="https://godidier.github.io/torcs-ai-tuto-2.html">Previous: Acceleration</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-4.html">Next: Aerodynamics and Stability Controls</a></li>
 </ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
   </div>
 
 </article>

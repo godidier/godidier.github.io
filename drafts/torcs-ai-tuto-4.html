@@ -6,7 +6,7 @@
   <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
   <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
@@ -47,6 +47,7 @@
           <li><a href="https://godidier.github.io/">Home</a></li>
           <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
           <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
           <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
 	    </ul>
     </header>
@@ -121,16 +122,16 @@ to get some setup from the file, relative to aerodynamics. </p>
 <h2>Aerodynamics in the speed limitation</h2>
 <p>Let's include the downforce in the equation we previously used to find the speed 
 limit in turns. </p>
-<p>$$
-\begin{align<em>}
-\underbrace{\frac{m \cdot v^2}{r}}<em _text_Friction="\text{Friction" force>{\text{Centrifugal force}}&amp; = 
-\underbrace{m \cdot g \cdot \mu}</em>} + 
-\underbrace{C_a \cdot v^2 \cdot \mu}_{\text{Aerodynamic downforce}} \
-v^2&amp; = \frac{g \cdot \mu \cdot r}{1 - r \cdot C_a \cdot \mu / m} \
+<div class="math">$$
+\begin{align*}
+\underbrace{\frac{m \cdot v^2}{r}}_{\text{Centrifugal force}}&amp; = 
+\underbrace{m \cdot g \cdot \mu}_{\text{Friction force}} + 
+\underbrace{C_a \cdot v^2 \cdot \mu}_{\text{Aerodynamic downforce}} \\
+v^2&amp; = \frac{g \cdot \mu \cdot r}{1 - r \cdot C_a \cdot \mu / m} \\
 v&amp; = \sqrt{\frac{g \cdot \mu \cdot r}{1 - min(1, \frac{r \cdot C_a \cdot \mu}{m})}}
-\end{align</em>}
-$$</p>
-<p>Where $C_a$ is the downforce coefficient. The downforce coefficient can be 
+\end{align*}
+$$</div>
+<p>Where <span class="math">\(C_a\)</span> is the downforce coefficient. The downforce coefficient can be 
 considered a fixed value computed using the density of the air, the area, shape 
 and angle of attack of the car's wing and the ride height which is the distance 
 between the ground and the car's bottom. Two things actually contribute to 
@@ -138,8 +139,8 @@ the downforce: the car wings which act like an inverted airplane wing to keep
 the car on the ground, and the ground effect which is cause by the flow of air 
 between the car and the ground. The downforce is a performance advantage on 
 cars with wings and a specially designed chasis.</p>
-<p>When solving the equation for $v$ there is a risk of getting a negative number 
-under the square root (a complex number), in case $r \cdot C_a \cdot \mu / m$ 
+<p>When solving the equation for <span class="math">\(v\)</span> there is a risk of getting a negative number 
+under the square root (a complex number), in case <span class="math">\(r \cdot C_a \cdot \mu / m\)</span> 
 becomes greater than 1. To avoid that we use the minimum function to put 
 a restriction.</p>
 <p>Let's start the implementation with the method that initialize the downforce 
@@ -237,19 +238,19 @@ This will allow us to break later and smoothen the braking pattern when driving.
 with me <del>please</del>... Let's rewrite the energy conservation equation 
 we used to compute the braking distance, by including the downforce and the 
 drag.</p>
-<p>$$
-\underbrace{\frac{m \cdot v_1^2}{2}}<em _text_Desired="\text{Desired" energy kinetic>{\text{Current kinetic energy}} - 
-\underbrace{\frac{m \cdot v_2^2}{2}}</em>} = 
-\underbrace{m \cdot g \cdot \mu \cdot s + C_a \cdot \int_{s_2}^{s_1} v^2(s) ds \cdot \mu }<em s_1>{\text{Energy burned by brake}} +
-\underbrace{C_w \cdot \int</em>^{s_2} v^2(s) ds}_{\text{air resistance energy (drag)}}
-$$</p>
+<div class="math">$$
+\underbrace{\frac{m \cdot v_1^2}{2}}_{\text{Current kinetic energy}} - 
+\underbrace{\frac{m \cdot v_2^2}{2}}_{\text{Desired kinetic energy}} = 
+\underbrace{m \cdot g \cdot \mu \cdot s + C_a \cdot \int_{s_2}^{s_1} v^2(s) ds \cdot \mu }_{\text{Energy burned by brake}} +
+\underbrace{C_w \cdot \int_{s_1}^{s_2} v^2(s) ds}_{\text{air resistance energy (drag)}}
+$$</div>
 <p>...Ah, that is enough math for today... So here is the braking distance we get when solving the equation.</p>
-<p>$$
+<div class="math">$$
 s = - \frac{ln((c + v_2^2 \cdot d) / (c + v_1^2 \cdot d))}{2 \cdot d}
-$$</p>
-<p>With $c = g \cdot \mu$ and $d = (C_a \cdot \mu + C_w) / m$: </p>
-<p>$C_w$ is the drag coefficient. The drag coefficient is computed using ...</p>
-<p>Here is the implementation of the initialization of $C_w$</p>
+$$</div>
+<p>With <span class="math">\(c = g \cdot \mu\)</span> and <span class="math">\(d = (C_a \cdot \mu + C_w) / m\)</span>: </p>
+<p><span class="math">\(C_w\)</span> is the drag coefficient. The drag coefficient is computed using ...</p>
+<p>Here is the implementation of the initialization of <span class="math">\(C_w\)</span></p>
 <div class="highlight"><pre><span></span><code><span class="cm">/**</span>
 <span class="cm"> * Initialize the aerodynamic drag coefficient Cw</span>
 <span class="cm"> */</span>
@@ -477,6 +478,68 @@ calculation pointer function to the right one.</p>
 <li><a href="https://godidier.github.io/torcs-ai-tuto-3.html">Previous: Brakes and Gears</a></li>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-5.html">Next: Steering and Trajectory</a></li>
 </ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
   </div>
 
 </article>
