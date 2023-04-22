@@ -466,124 +466,88 @@ The <code>itf-&gt;rbPitCmd</code> is set to <code>NULL</code>. Let's set it to <
 function that we will define shortly after. The remaining of the code is basically 
 about replacing the callback functions their counterparts from the <code>CarController</code>
 class.  Here is the listing of the updated <em>racebot.cpp</em>, with some formatting.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;carcontroller.h&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="cm">/** Previous includes **/</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;carcontroller.h&quot;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">tTrack</span><span class="w">   </span><span class="o">*</span><span class="n">curTrack</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="n">CarController</span><span class="o">*</span><span class="w"> </span><span class="n">controller</span><span class="p">;</span><span class="w"> </span><span class="c1">// static pointer to the controller</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">initTrack</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">newrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">drive</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">endrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">shutdown</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">);</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="nf">InitFuncPt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pt</span><span class="p">);</span><span class="w"> </span>
 
 
-<span class="n">CarController</span><span class="o">::</span><span class="n">CarController</span><span class="p">()</span>
+<span class="cm">/* </span>
+<span class="cm"> * Module entry point  </span>
+<span class="cm"> */</span><span class="w"> </span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span>
+<span class="n">racebot</span><span class="p">(</span><span class="n">tModInfo</span><span class="w"> </span><span class="o">*</span><span class="n">modInfo</span><span class="p">)</span><span class="w"> </span>
 <span class="p">{</span>
-<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strdup</span><span class="p">(</span><span class="s">&quot;racebot&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strdup</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">modInfo</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">tModInfo</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">controller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CarController</span><span class="p">();</span><span class="w"> </span><span class="c1">// Instanciate the controller</span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">name</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">GetName</span><span class="p">();</span><span class="w"> </span><span class="c1">// Module name  </span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">desc</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">GetDescription</span><span class="p">();</span><span class="w"> </span><span class="c1">// Module description</span>
+
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">fctInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InitFuncPt</span><span class="p">;</span><span class="w">      </span><span class="cm">/* init function */</span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">gfId</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">ROB_IDENT</span><span class="p">;</span><span class="w">       </span><span class="cm">/* supported framework version */</span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">index</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Module interface initialization. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span>
+<span class="n">InitFuncPt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pt</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">tRobotItf</span><span class="w"> </span><span class="o">*</span><span class="n">itf</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">tRobotItf</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">pt</span><span class="p">;</span><span class="w"> </span>
+
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbNewTrack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initTrack</span><span class="p">;</span><span class="w"> </span><span class="cm">/* Give the robot the track view called */</span><span class="w"> </span>
+<span class="w">                 </span><span class="cm">/* for every track change or new race */</span><span class="w"> </span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbNewRace</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">newrace</span><span class="p">;</span><span class="w">   </span><span class="cm">/* Start a new race */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbDrive</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">drive</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Drive during race */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbPitCmd</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbEndRace</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">endrace</span><span class="p">;</span><span class="w">   </span><span class="cm">/* End of the current race */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shutdown</span><span class="p">;</span><span class="w">  </span><span class="cm">/* Called before the module is unloaded */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">index</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">index</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Index used if multiple interfaces */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Called for every track change or new race. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w">  </span>
+<span class="n">initTrack</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">InitTrack</span><span class="p">(</span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Start a new race. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w">  </span>
+<span class="n">newrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">NewRace</span><span class="p">(</span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Drive during race. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w">  </span>
+<span class="n">drive</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">Drive</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * Callback before the start of every race.</span>
-<span class="cm"> */</span>
-<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">InitTrack</span><span class="p">(</span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">**</span><span class="w"> </span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span>
-<span class="w">        </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
+<span class="cm">/* End of the current race */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span>
+<span class="n">endrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">track</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">track</span><span class="p">;</span>
-
-<span class="w">    </span><span class="o">*</span><span class="n">carParmHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">EndRace</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * Called at the start of a new race</span>
-<span class="cm"> */</span>
-<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
+<span class="cm">/* Called before the module is unloaded */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span>
+<span class="n">shutdown</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">car</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Function that setup the controls values to drive the car during the race.</span>
-<span class="cm"> */</span>
-<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">Drive</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="n">memset</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span><span class="w"> </span><span class="c1">// reset the values</span>
-
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetSteering</span><span class="p">(</span><span class="n">car_angle</span><span class="p">);</span>
-<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetGear</span><span class="p">();</span><span class="w"> </span>
-<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAcceleration</span><span class="p">();</span><span class="w"> </span>
-<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetBrake</span><span class="p">();</span><span class="w"> </span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Return the name of the controller, to be used as module name.</span>
-<span class="cm"> */</span>
-<span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetName</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span>
-<span class="p">}</span>
-
-
-<span class="cm">/**</span>
-<span class="cm"> * Return the description of the controller to be used as the module description</span>
-<span class="cm"> */</span>
-<span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetDescription</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">description</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cm">/***</span>
-<span class="cm"> * End of the current race</span>
-<span class="cm"> */</span>
-<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">EndRace</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="c1">// TODO </span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Command for the pitstop</span>
-<span class="cm"> */</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">PitCommand</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ROB_PIT_IM</span><span class="p">;</span><span class="w"> </span><span class="c1">// return immediately</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Compute and return the acceleration value to be applied.</span>
-<span class="cm"> */</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetAcceleration</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mf">0.3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 30% acceleration</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Compute and return the braking value to be applied.</span>
-<span class="cm"> */</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetBrake</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// No brakes</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Compute and return the gear to be applied.</span>
-<span class="cm"> */</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetGear</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// first gear</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Compute and return the steering value.</span>
-<span class="cm"> */</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetSteering</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">steering_angle</span><span class="p">;</span>
-<span class="w">    </span><span class="n">steering_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">steering_angle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Computes the current angle of the car relatively to the track</span>
-<span class="cm"> */</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RtTrackSideTgAngleL</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span>
-<span class="w">    </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remainder</span><span class="p">(</span><span class="w"> </span><span class="n">car_angle</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span><span class="w"> </span><span class="c1">// ensure it is within -PI and PI</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">car_angle</span><span class="p">;</span>
+<span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="n">controller</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
 

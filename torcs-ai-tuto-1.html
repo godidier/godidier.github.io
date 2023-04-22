@@ -66,8 +66,9 @@ TORCS (The Open Racing Cars Simulation). TORCS is an open source video game.
 You can checkout the Wikipedia page of the game for a 
 <a href="https://en.wikipedia.org/wiki/TORCS">History of TORCS</a> from little AI game 
 to Speed Dreams and others.</p>
-<p id="why"></p>
 <h1>Why bother ?</h1>
+<p id="why"></p>
+
 <p>Writing an AI for a racing game ? Maybe you already have your own motivation, you 
 like racing, you might like computer science an AI, you are an enthusiast 
 programmer etc. But above all this series aim to give clear fundamentals on the 
@@ -78,8 +79,9 @@ tutorial included in the game. You might also want to check that in case you
 want a different perspective... <del>Don't look at me like that!</del> 
 You should be careful though, because there are some differences in the progression 
 and the code.</p>
-<p id="prerequisites"></p>
 <h1>Pre-requisites</h1>
+<p id="prerequisites"></p>
+
 <p>This tutorial assumes that you have some basic C++ knowledge, and that you have
 some experience with high school mathematics and physics.</p>
 <p>Nevertheless, I will do my best to be as clear as possible and give pointers 
@@ -92,6 +94,7 @@ explanations thoroughly and try again. This way you will come up with a deeper
 understanding of how things works. This will enable you to improve the code 
 beyond the tutorial, and easily translate your knowledge elsewhere.</p>
 <p id="table_of_contents"></p>
+
 <h1>Content</h1>
 <ol>
 <li><a href="https://godidier.github.io/torcs-ai-tuto-1.html">Getting started</a></li>
@@ -107,16 +110,18 @@ beyond the tutorial, and easily translate your knowledge elsewhere.</p>
 <li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-10.html">Wrap Up</a></li>
 </ol>
 <p id="installation"></p>
+
 <h1>Installation</h1>
 <p>Let's install the game!</p>
 <p>TORCS can be installed via binaries but we are here to implement AI agent for the 
 game so we need to install via from the sources. The binaries and sources of 
 TORCS are available at the 
 <a href="http://torcs.sourceforge.net/index.php">Official site of TORCS</a> within the 
-<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> section. There are also basic installatioin instruction on that 
-page.</p>
-<p><strong>Note</strong>: We will give instructions for an RPM package oriented Linux 
-distribution like Fedora. Excuse my lazyness but I might give instructions for 
+<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> section. 
+There are also basic installatioin instruction on that page.</p>
+<p><strong>Note</strong>: We will give instructions mainly for an RPM package oriented Linux 
+distribution like Fedora, and Ubuntu as well. Excuse my lazyness but I 
+might give instructions for 
 more Operation System in the future. Meanwhile one can use the instructions 
 available on the <a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> page. </p>
 <h2>Requirements</h2>
@@ -130,7 +135,19 @@ available on the <a href="http://torcs.sourceforge.net/index.php?name=Sections&a
 <p>Computers dating from the Pentium3 era can run TORCS. So basically if you are 
 reading this on a computer today, you should be able to run TORCS.</p>
 <h3>Software</h3>
-<p>On a Linux distribution you will need: </p>
+<p>Installing the necessary development package for your (Linux) distribution
+is highly recommended. </p>
+<p>On Fedora you might want to type the following in the command line: </p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>update
+sudo<span class="w"> </span>dnf<span class="w"> </span>groupinstall<span class="w"> </span><span class="s2">&quot;Development Tools&quot;</span><span class="w"> </span><span class="s2">&quot;Development Libraries&quot;</span>
+</code></pre></div>
+
+<p>On Ubuntu enter the following:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>
+</code></pre></div>
+
+<p>The main package to compile the game are:</p>
 <ul>
 <li>Hardware accelerated OpenGL</li>
 <li><a href="http://freeglut.sourceforge.net/">FreeGlut</a></li>
@@ -139,15 +156,34 @@ reading this on a computer today, you should be able to run TORCS.</p>
 <li><a href="http://libpng.sourceforge.net/">libpng</a></li>
 <li><a href="http://www.vorbis.com/">libogg</a></li>
 </ul>
-<p>All of the above are usually provided by linux distribution. On a Fedora 
-distribution you might run: </p>
-<div class="highlight"><pre><span></span><code>sudo dnf install freeglut plib openal-soft libpng libogg
+<p>All of the above are usually provided by linux distribution. 
+Install them using your package manager (dnf on Fedora, apt on Ubuntu.</p>
+<p>Below is a command to install the libraries you might need, including 
+additional ones (at least the one I needed).</p>
+<p>On Fedora:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>freeglut.x86_64<span class="w"> </span>freeglut-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>plib.x86_64<span class="w"> </span>plib-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>openal-soft.x86_64<span class="w">  </span>openal-soft-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>freealut.x86_64<span class="w"> </span>freealut-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libXmu.x86_64<span class="w"> </span>libXmu-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libXxf86vm.x86_64<span class="w"> </span>libXxf86vm-devel.x86_64<span class="w"> </span>
 </code></pre></div>
 
-<p>and you should be good. If you have any trouble, you can try lookin at the 
-<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> page instructions, or the installation instructions of the 
-<a href="http://www.berniw.org/tutorials/robot/tutorial.html">TORCS Robot Tutorial</a>, on 
-which this tutorial is based, or contact the <a href="torcs-users@lists.sourceforge.net">torcs-users</a> mailing list.</p>
+<p>On Ubuntu: </p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>freeglut3<span class="w"> </span>freeglut3-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libplib-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libopenal1<span class="w">  </span>libopenal-dev<span class="w">  </span>libopenal-data<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libalut0<span class="w">  </span>libalut-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libvorbis-dev<span class="w">  </span>libvorbis-dbg<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxi6<span class="w">  </span>libxi-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxmu6<span class="w">  </span>libxmu-headers<span class="w">  </span>libxmu-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxrender1<span class="w">  </span>libxrender-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxrandr2<span class="w">  </span>libxrandr-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libpng16-16<span class="w">  </span>libpng-dev
+</code></pre></div>
+
+<p>After installing those packages you should be good. If you have any trouble,
+check the <a href="#troubleshooting">Troubleshooing</a> section of this article. </p>
 <h2>Getting the Code</h2>
 <p>The source code of TORCS is available at the TORCS's Sourceforge project 
 <a href="https://sourceforge.net/projects/torcs/">page</a>.
@@ -177,17 +213,8 @@ make install
 make datainstall
 </code></pre></div>
 
-<p><strong>Note:</strong> When running <code>./configure</code> if the command fails because of an 
-uninstalled library, do a quick search with your package manager to make 
-sure we find the correct package name for our distribution. In my case the
-package manager is <code>dnf</code>. Then install the development package of that missing 
-librairy. For example:</p>
-<div class="highlight"><pre><span></span><code>dnf search &lt;package-name&gt; 
-sudo dnf install &lt;package-devel-name&gt;
-</code></pre></div>
-
-<p>If you rarely compile C/C++ code on your computer you might be in for a long
-ride...</p>
+<p>In case you have any trouble with those commands, 
+check the <a href="#troubleshooting">Troubleshooing</a> section of this article. </p>
 <h2>Environment Variables</h2>
 <p>Because we want to develop AI module for the game, we need to point the game 
 librairies to our compiler when will be using <code>Makefile</code> for compilation. 
@@ -219,6 +246,61 @@ play the game. Familiarize yourself with it: the menu, the controls, etc.</p>
 look <a href="https://gameimps.com/ps3-controller-linux-usb-290">here</a> for how to use 
 <code>xboxdrv</code> to connect your Playsation controller with a better support. 
 It's also valid for Xbox controllers (Which are usually well supported).</p>
+<p id="troubleshooting"></p>
+
+<h1>Troubleshooting</h1>
+<h3>Trouble with the required package</h3>
+<p><strong>Note:</strong> When running <code>./configure</code> if the command fails because of an 
+uninstalled library, do a quick search with your package manager to make 
+sure we find the correct package name for our distribution, and install it. </p>
+<p>On Fedora:</p>
+<div class="highlight"><pre><span></span><code>dnf<span class="w"> </span>search<span class="w"> </span>&lt;package-name&gt;
+sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>&lt;correct-package-name&gt;
+</code></pre></div>
+
+<p>On Ubuntu:</p>
+<div class="highlight"><pre><span></span><code>apt<span class="w"> </span>search<span class="w"> </span>&lt;package-name&gt;<span class="w"> </span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>&lt;correct-package-name&gt;
+</code></pre></div>
+
+<h3>Compilation Errors</h3>
+<p>During my recent compilation of <strong>torcs-1.3.7</strong> (April 2023) I experienced 
+some compilation errors. Here is how I solved them: </p>
+<p>The first one was when running the <code>make</code> command. I encountered the 
+following error: </p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;/usr/local/src/torcs-1.3.7/src/libs/musicplayer/OpenALMusicPlayer.cpp&quot;</span><span class="w"> </span><span class="m">271</span><span class="w"> </span>line
+OpenALMusicPlayer.cpp:164:29:<span class="w"> </span>error:<span class="w"> </span>invalid<span class="w"> </span>conversion<span class="w"> </span>from<span class="w"> </span>‘char’<span class="w"> </span>to<span class="w"> </span>‘const<span class="w"> </span>char*’<span class="w"> </span><span class="o">[</span>-fpermissive<span class="o">]</span>
+</code></pre></div>
+
+<p>To solve it, open the file <em>/usr/local/src/torcs-1.3.7/src/libs/musicplayer/OpenALMusicPlayer.cpp</em>, go to line 271 and make the following change from:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span><span class="w">  </span>
+</code></pre></div>
+
+<p>to (changing single quote to double quotes)</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>The second bug appeared when running <code>make install</code>. The following error
+showed up:</p>
+<div class="highlight"><pre><span></span><code>src/drivers/olethros/geometry.cpp
+isnan<span class="w"> </span>not<span class="w"> </span>define.<span class="w"> </span>line<span class="w"> </span><span class="m">396</span>
+</code></pre></div>
+
+<p>To solve it open the file <em>/usr/local/src/torcs-1.3.7/src/drivers/olethros/geometry.cp</em>. Go to line 396 and change it from:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isnan</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</code></pre></div>
+
+<p>to </p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">isnan</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+</code></pre></div>
+
+<h3>Others Troubles</h3>
+<p>Try lookin at the 
+<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> page instructions, or the installation instructions of the 
+<a href="http://www.berniw.org/tutorials/robot/tutorial.html">TORCS Robot Tutorial</a>, on 
+which this tutorial is based, or contact the <a href="torcs-users@lists.sourceforge.net">torcs-users</a> mailing list.</p>
+<p>I understand it might be frustrating to experience trouble during the installation but please don't give up it's part of your learning journey. 
+Take a break (minutes, hours, days) and try again.</p>
 <h1>Moving Forward</h1>
 <p>Now that the setup is done, let's do what we came here for, start building an 
 AI agent!</p>
