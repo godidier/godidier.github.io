@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="/static/custom.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Didier Gohourou">
+  <meta name="description" content="Posts and writings by Didier Gohourou">
+
+
+<meta name="keywords" content="">
+
+  <title>
+    Didier Gohourou's Blog
+&ndash; Create Your First TORCS Racing AI Bot - Part 01: Acceleration  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="https://godidier.github.io">Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
+      </div>
+      <p>Tutorials, Research and Thoughts</p>
+      <p>
+      <!--
+        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+      -->
+
+      </p>
+	    <ul class="menuitems">   
+          <li><a href="https://godidier.github.io/">Home</a></li>
+          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
+	    </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="https://godidier.github.io/torcs-ai-tuto-01.html">Create Your First TORCS Racing AI Bot - Part 01: Acceleration</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Sat 08 December 2018</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>This is the second chapter of a tutorial for building an AI agent for the racing 
+game TORCS. In this chapter, we will generate the base code of the AI agent, 
+make it drive slowly, and reorganize the code for easier implementation.</p>
+<ul>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-00.html#table_of_contents">Table of Contents</a></li>
+</ul>
+<p id="ai_base_code"></p>
+<h1>Generate the AI agent base code</h1>
+<p>To start building our AI agent, we will use a tool called <code>robotgen</code>, to create 
+the baseline code structure. robotgen is used as following: </p>
+<div class="highlight"><pre><span></span><code>robotgen -n &lt;name&gt; -a &lt;author&gt; -c &lt;car&gt; [-d description] [--gpl]
+</code></pre></div>
+
+<p>Where <code>&lt;name&gt;</code> is the name of the agent we are creating, <code>&lt;author&gt;</code> is the name of 
+the creator (AKA you) and <code>&lt;car&gt;</code> is the name of the car we want our agent to be 
+using.  We might also use optional argument to give a description of our agent, 
+or add a GPL statement at the beginning of the source code files.</p>
+<p>The list of available cars can be obtain as follow:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>ls<span class="w"> </span>/usr/local/share/games/torcs/cars/<span class="w"> </span>
+<span class="m">155</span>-DTM<span class="w"> </span>car2-trb1<span class="w"> </span>kc-a110<span class="w"> </span>kc-dbs<span class="w"> </span>pw-206wrc<span class="w"> </span>
+acura-nsx-sz<span class="w"> </span>car3-trb1<span class="w"> </span>kc-alfatz2<span class="w"> </span>kc-dino<span class="w"> </span>pw-306wrc<span class="w"> </span>
+baja-bug<span class="w"> </span>car4-trb1<span class="w"> </span>kc-bigh<span class="w"> </span>kc-ghibli<span class="w"> </span>pw-corollawrc<span class="w"> </span>
+buggy<span class="w"> </span>car5-trb1<span class="w"> </span>kc-cobra<span class="w"> </span>kc-giulietta<span class="w"> </span>pw-evoviwrc<span class="w"> </span>
+car1-ow1<span class="w"> </span>car6-trb1<span class="w"> </span>kc-coda<span class="w"> </span>kc-grifo<span class="w"> </span>pw-focuswrc<span class="w"> </span>
+car1-stock1<span class="w"> </span>car7-trb1<span class="w"> </span>kc-conrero<span class="w"> </span>kc-gt40<span class="w"> </span>pw-imprezawrc<span class="w"> </span>
+car1-stock2<span class="w"> </span>car8-trb1<span class="w"> </span>kc-corvette-ttop<span class="w"> </span>kc-gto<span class="w"> </span>
+car1-trb1<span class="w"> </span>kc-2000gt<span class="w"> </span>kc-daytona<span class="w"> </span>kc-p4<span class="w"> </span>
+car1-trb3<span class="w"> </span>kc-5300gt<span class="w"> </span>kc-db4z<span class="w"> </span>p406
+</code></pre></div>
+
+<p>Now let's move to the <code>$TOCS_BASE</code> folder, and use the robotgen utility is and 
+generate the initial source code of our agent.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$TORCS_BASE</span><span class="w"> </span>
+./robotgen<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;racebot&quot;</span><span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;My racing bot&quot;</span><span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;car1-trb1&quot;</span>
+</code></pre></div>
+
+<p>This command will create a folder with the name of your ai agent inside 
+<code>$TORCS_BASE/src/drivers</code>. Inside that folder (in our case 
+<code>$TORCS_BASE/src/drivers/racebot</code>), we will have the following files:</p>
+<ul>
+<li><strong>Makefile</strong> : Instruction for compiling and installing your AI agent</li>
+<li><strong>racebot.cpp</strong> : Actual code of your AI agent</li>
+<li><strong>racebot.xml</strong> : Customizable properties for your agent</li>
+<li><strong>racebot.def</strong>, <strong>racebot.dsp</strong> : Some Visual Studio (2005) project files. 
+Not much useful anymore</li>
+<li><strong>car1-trb1.rbg</strong> : Image file used as paint job for the car</li>
+<li><strong>logo.rbg</strong> : Image file used as paint job for your driver's name and flag 
+and your team's logo</li>
+<li><strong>car1-trb1.xcf</strong> : GIMP project file to edit your paint job's image files</li>
+</ul>
+<h1>Install the AI Agent</h1>
+<p>Let's build and install the AI agent. For that, we move to the directory of our 
+agent, and use  the command <code>make</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span><span class="nv">$TORCS_BASE</span>/src/drivers/racebot
+make<span class="w"> </span>
+make<span class="w"> </span>install<span class="w"> </span>
+</code></pre></div>
+
+<p>Note: We might need writing permission to the directory where TORCS library are 
+installed <code>/usr/local/lib/torcs/</code>.</p>
+<p>Once done, let's test our agent (I am so excited...). Run the game with a 
+double-click on the desktop icon of TORCS or typing the command <code>torcs</code> 
+in the command line. Select <em>Race &gt; Practice &gt; Configure Race</em>. Choose a track: 
+<em>CG Speedway number 1</em>, and click <em>Accept</em>. Click on your AI agent name in the 
+<em>Not Selected</em> column on the right and click <em>(De)Select</em> to put it in the 
+<em>Selected</em> column. Only one participant is allowed in practice session so if 
+there is already another participant in the <em>Selected</em> Box, you have to remove 
+it first by clicking it and click the <em>(De)Select</em> menu item, and then choose 
+your AI agent like we just describe. Then click <em>Accept</em>. After that, 
+select the number of laps and display.  We may leave it as is (2 laps). 
+Click <em>Accept</em>, then click <em>New Race</em> in the <em>Practice</em> menu. 
+Wait... Yay our car is on the road!</p>
+<p><img alt="Car on road" src="#"></p>
+<p>Hey wait! but it is not doing anything ?!...</p>
+<p>....That was the joke folks ! (I am sure it bombed)</p>
+<p>Yes our AI agent is just chilling because we haven't gave it any instructions.
+But before we pursue, let's learn to remove our AI agent. First quit the game 
+and then delete the 'installed' driver folder from /usr/local/lib/torcs/drivers/. 
+In our example, we can run: </p>
+<div class="highlight"><pre><span></span><code>rm<span class="w"> </span>-f<span class="w"> </span>/usr/local/lib/torcs/drivers/racebot
+</code></pre></div>
+
+<p>but for future easier uninstalls, add the following lines at the end of the 
+<em>Makefile</em> in our AI Agent folder:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">uninstall</span><span class="o">:</span><span class="w"> </span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="si">${</span><span class="nv">libdir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">MODULEDIR</span><span class="si">}</span>
+</code></pre></div>
+
+<p>From now, can comfortably uninstall by typing <code>make uninstall</code> from the our 
+AI Agent development folder.</p>
+<h1>Before We Write Some Code</h1>
+<p>In this chapter of the series, we implement basic steering and acceleration. 
+All in the AI agent main cpp file represented by <code>racebot.cpp</code>. Let's check the 
+content of the file.</p>
+<p>Open the file with your favourite text editor, one with syntax highlighting should 
+be enough. The file start with some standard C language header files. Then we have 
+some TORCS header files that includes the necessary data structures and functions 
+for the implementation of our agent. Note: those file are accessible via 
+<code>$TORCS_BASE/export/include</code>.</p>
+<ul>
+<li>tgf.h : Generic gaming API utilities</li>
+<li>track.h : Structure and loader of tracks</li>
+<li>car.h : Data structure (and sub structure) representing a car</li>
+<li>raceman.h : Data Structures providing information during a race</li>
+<li>robottools.h : Utility functions to compute values useful to the AI agent (robot)</li>
+<li>robot.h : AI agent (robot) module interface definition. Contains callback functions that operate the robot.</li>
+</ul>
+<p>After the headers come the declaration and definition of the function we will edit to build our AI agent.</p>
+<p><code>initTrack</code>: Called for every track change. Can be used to deal with some 
+initialization before a new race.</p>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">initTrack</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"> </span>
+</code></pre></div>
+
+<p><code>newrace</code>: Used as callback when a new race starts.</p>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">newrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>drive</code>: Used as callback to get the driving instructions.</p>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">drive</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>endrace</code>: Used as callback when the current race ends.</p>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">endrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>shutdown</code>: Called before the module is unloaded. Can be used to free memory.</p>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">shutdown</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>InitFuncPt</code>: Module interface initialization. Setup the implemented callback 
+function that will operate the AI agent.</p>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">InitFuncPt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pt</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>racebot</code> (AI agent name): Module entry point. Used to initialize the AI agent 
+module properties.</p>
+<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">racebot</span><span class="p">(</span><span class="n">tModInfo</span><span class="w"> </span><span class="o">*</span><span class="n">modInfo</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="p">...</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h1>Let's drive</h1>
+<p>To drive we set the values of our car control. Those values are updated every 
+0.2 second by the method drive. the control values are: 
+* <code>car-&gt;ctrl.steer</code> between -1.0 and 1.0
+* <code>car-&gt;ctrl.gear</code> between -1 and the car max gear
+* <code>car-&gt;ctrl.accelCmd</code> between 0 and 1.0
+* <code>car-&gt;ctrl.brakwCmd</code> between 0 and 1.0</p>
+<p>To accelerate we just press the accelerator right ?! (set it to 1.0) ... 
+We might as well end up in the grass or the wall a the first turn you encounter! 
+So I think we might want some basic steering. For our first drive the plan is 
+to accelerate slowly and steer in a way to always stay in the middle of the track. 
+My laziness sense tells me that it is time to quote the tutorial shipped with 
+the game.</p>
+<blockquote>
+<p>Before we can start implementing simple steering we need to discuss how the track 
+looks for the robot. The track is partitioned into segments of the following 
+types: left turns, right turns and straight segments. The segments are usually 
+short, so a turn that looks like a big turn or a long straight is most often 
+split into much smaller segments. The segments are organized as linked list in 
+the memory. A straight segment has a width and a length, a turn has a width, a 
+length and a radius, everyting is measured in the middle of the track. 
+All segments connect tangentially to the next and previous segments, so the 
+middle line is smooth. There is much more data available, the structure 
+tTrack is defined in $TORCS_BASE/export/include/track.h.</p>
+</blockquote>
+<p>The image below from <a href="https://en.wikipedia.org/wiki/Speed_Dreams#Tracks">Wikipedia</a>
+give an illustration of the quote above.</p>
+<p><img alt="Track Segment section" src="https://godidier.github.io/images/2018-12/Speed_Dreams_Track_Subsegments-Sections_animation.gif"></p>
+<p>The goal of our simple steering function is to make the car follow the middle of 
+track. For that, we steer the front wheel parallel to the track, and we add a 
+correction value if we are not in the middle of the track.</p>
+<p>To know how much we need to steer the wheel, we need to know three things: </p>
+<ul>
+<li>The angle formed by the middle line of the starting segment of the track and 
+the tangent line to the segment where the car currently is. It is obtained via 
+the function <code>RtTrackSideTgAngleL(&amp;(car-&gt;_trPos))</code> from <code>robottools.h</code>.  </li>
+<li>The angle formed by the middle line of the starting segment of the track and 
+the <strong>yaw</strong> direction of the car. <del>I am not talking about yawning tho.</del> 
+This is obtained via <code>car-&gt;yaw</code>. A yaw rotation is a movement around the yaw 
+axis. The 3 axes of a car, plane have specific names: roll, pitch and yaw.
+<img alt="Rotational Axis" src="https://godidier.github.io/images/2018-12/rotational-movements.svg"></li>
+<li>The distance between the car and the middle line of the segment where the car is.
+ This is obtained via <code>car-&gt;_trkPos.toMiddle</code>, which is positive if the car is to 
+the left of the middle line and negative if the car is to the rigth of the middle 
+line. This value is in meter so to contribute to steering angle, it will be 
+normalized by the width of the segment <code>car-&gt;_trkPos.seg-&gt;width</code>.</li>
+</ul>
+<p>Now to compute the steering angle, we substract 
+<code>RtTrackSideTgAngleL(&amp;(car-&gt;_trPos))</code> from <code>car-&gt;_yaw</code>, we make sure to make it 
+lies between &pi; and -&pi;, either using <code>NORM_PI_PI(angle)</code> from the game API, 
+or the <code>remainder(double x, double y)</code> function from <em>math.h</em>. Next we substract 
+<code>car-&gt;_trkPos.toMiddle</code> (in meters), normalized by <code>car-&gt;_trkPos.seg-&gt;width</code> 
+from the obtained value.  We then convert the angle to the steering 
+range [-1, 1] by dividing the angle by the maximum steering value of the car: 
+<code>car-&gt;_steerLock</code>.</p>
+<p>We also accelerate slowly (by 30%), with the gearbox set to the first gear.
+All of this is implemented within the <code>drive</code> function that will look like:</p>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">drive</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">memset</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span><span class="w"> </span><span class="c1">// reset the values</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RtTrackSideTgAngleL</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span>
+<span class="w">    </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remainder</span><span class="p">(</span><span class="w"> </span><span class="n">angle</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span><span class="w"> </span><span class="c1">// making sure angle is within -PI and PI</span>
+<span class="w">    </span><span class="n">angle</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// first gear</span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 30% acceleration</span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// no brakes</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The picture below try to give you a better intuition of what is going on with the 
+angles, and the algorithm above.</p>
+<p><img alt="Steering Angles" src="https://godidier.github.io/images/2018-12/steering-angles.svg"></p>
+<h1>Test drive</h1>
+<p>[Video Link]</p>
+<h1>Restructuring the code</h1>
+<p>Now let's prepare for the coming chapters. We will reorganize the code in a more 
+modular way. We will create a class that will be responsible for controlling 
+our AI agent. Let's call it <code>CarController</code> (yeah, very original).</p>
+<p>We create a file named <em>carcontroller.h</em> and define the class. The content of 
+the class are callback methods, some properties of our AI module, and helper 
+methods to compute controls values.  We also put the car and the track as 
+members of the class for easier access.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#ifndef _CARCONTROLLER_H_</span>
+<span class="cp">#define _CARCONTROLLER_H_</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;tgf.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;track.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;car.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;raceman.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;robottools.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;robot.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CarController</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"> </span>
+<span class="w">        </span><span class="n">CarController</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">InitTrack</span><span class="p">(</span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">**</span><span class="w"> </span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                        </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">Drive</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">EndRace</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">PitCommand</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="nf">GetName</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="nf">GetDescription</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">GetAcceleration</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetBrake</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetGear</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">GetSteering</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="nf">CurrentCarAngle</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">;</span>
+<span class="w">        </span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">description</span><span class="p">;</span>
+
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Create a file called <em>carcontroller.cpp</em> and define and define the methods as 
+follows:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;carcontroller.h&quot;</span>
+
+
+<span class="n">CarController</span><span class="o">::</span><span class="n">CarController</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strdup</span><span class="p">(</span><span class="s">&quot;racebot&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strdup</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Callback before the start of every race.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">InitTrack</span><span class="p">(</span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">**</span><span class="w"> </span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">track</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">track</span><span class="p">;</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">carParmHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Called at the start of a new race</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">NewRace</span><span class="p">(</span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">car</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Function that setup the controls values to drive the car during the race.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">Drive</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">ctrl</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tCarCtrl</span><span class="p">));</span><span class="w"> </span><span class="c1">// reset the values</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">situation</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetSteering</span><span class="p">(</span><span class="n">car_angle</span><span class="p">);</span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_gearCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetGear</span><span class="p">();</span><span class="w"> </span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_accelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetAcceleration</span><span class="p">();</span><span class="w"> </span>
+<span class="w">    </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_brakeCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetBrake</span><span class="p">();</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Return the name of the controller, to be used as module name.</span>
+<span class="cm"> */</span>
+<span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetName</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * Return the description of the controller to be used as the module description</span>
+<span class="cm"> */</span>
+<span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetDescription</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">description</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * End of the current race</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">EndRace</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// TODO </span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Command for the pitstop</span>
+<span class="cm"> */</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">PitCommand</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ROB_PIT_IM</span><span class="p">;</span><span class="w"> </span><span class="c1">// return immediately</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Compute and return the acceleration value to be applied.</span>
+<span class="cm"> */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetAcceleration</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mf">0.3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 30% acceleration</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Compute and return the braking value to be applied.</span>
+<span class="cm"> */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetBrake</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// No brakes</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Compute and return the gear to be applied.</span>
+<span class="cm"> */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetGear</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// first gear</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Compute and return the steering value.</span>
+<span class="cm"> */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">GetSteering</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">steering_angle</span><span class="p">;</span>
+<span class="w">    </span><span class="n">steering_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">toMiddle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">.</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">steering_angle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_steerLock</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Computes the current angle of the car relatively to the track</span>
+<span class="cm"> */</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">CarController</span><span class="o">::</span><span class="n">CurrentCarAngle</span><span class="p">(</span><span class="n">tSituation</span><span class="o">*</span><span class="w"> </span><span class="n">situation</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RtTrackSideTgAngleL</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_trkPos</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">car</span><span class="o">-&gt;</span><span class="n">_yaw</span><span class="p">;</span>
+<span class="w">    </span><span class="n">car_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remainder</span><span class="p">(</span><span class="w"> </span><span class="n">car_angle</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">);</span><span class="w"> </span><span class="c1">// ensure it is within -PI and PI</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">car_angle</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Let's go back to <em>racebot.cpp</em>, and update it accordingly. First, we include our 
+CarController class header file and define a static variable that will hold 
+an instance of our CarController. Then we instanciate the <code>CarController</code> within 
+the module entry point method <code>racebot(...)</code>. You may also notice that the module 
+interface initialization function in <code>InitFuncPt(..)</code> is missing a callback. 
+The <code>itf-&gt;rbPitCmd</code> is set to <code>NULL</code>. Let's set it to <code>pitcommand</code>, a callback 
+function that we will define shortly after. The remaining of the code is basically 
+about replacing the callback functions their counterparts from the <code>CarController</code>
+class.  Here is the listing of the updated <em>racebot.cpp</em>, with some formatting.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/** Previous includes **/</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;carcontroller.h&quot;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">tTrack</span><span class="w">   </span><span class="o">*</span><span class="n">curTrack</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="n">CarController</span><span class="o">*</span><span class="w"> </span><span class="n">controller</span><span class="p">;</span><span class="w"> </span><span class="c1">// static pointer to the controller</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">initTrack</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">newrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">drive</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span><span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">endrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">shutdown</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">);</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="nf">InitFuncPt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pt</span><span class="p">);</span><span class="w"> </span>
+
+
+<span class="cm">/* </span>
+<span class="cm"> * Module entry point  </span>
+<span class="cm"> */</span><span class="w"> </span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span>
+<span class="n">racebot</span><span class="p">(</span><span class="n">tModInfo</span><span class="w"> </span><span class="o">*</span><span class="n">modInfo</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">modInfo</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">tModInfo</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">controller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CarController</span><span class="p">();</span><span class="w"> </span><span class="c1">// Instanciate the controller</span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">name</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">GetName</span><span class="p">();</span><span class="w"> </span><span class="c1">// Module name  </span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">desc</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">GetDescription</span><span class="p">();</span><span class="w"> </span><span class="c1">// Module description</span>
+
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">fctInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InitFuncPt</span><span class="p">;</span><span class="w">      </span><span class="cm">/* init function */</span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">gfId</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">ROB_IDENT</span><span class="p">;</span><span class="w">       </span><span class="cm">/* supported framework version */</span>
+<span class="w">    </span><span class="n">modInfo</span><span class="o">-&gt;</span><span class="n">index</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Module interface initialization. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span>
+<span class="n">InitFuncPt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pt</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">tRobotItf</span><span class="w"> </span><span class="o">*</span><span class="n">itf</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">tRobotItf</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">pt</span><span class="p">;</span><span class="w"> </span>
+
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbNewTrack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initTrack</span><span class="p">;</span><span class="w"> </span><span class="cm">/* Give the robot the track view called */</span><span class="w"> </span>
+<span class="w">                 </span><span class="cm">/* for every track change or new race */</span><span class="w"> </span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbNewRace</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">newrace</span><span class="p">;</span><span class="w">   </span><span class="cm">/* Start a new race */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbDrive</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">drive</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Drive during race */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbPitCmd</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbEndRace</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">endrace</span><span class="p">;</span><span class="w">   </span><span class="cm">/* End of the current race */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">rbShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shutdown</span><span class="p">;</span><span class="w">  </span><span class="cm">/* Called before the module is unloaded */</span>
+<span class="w">    </span><span class="n">itf</span><span class="o">-&gt;</span><span class="n">index</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">index</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Index used if multiple interfaces */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Called for every track change or new race. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w">  </span>
+<span class="n">initTrack</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tTrack</span><span class="o">*</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">InitTrack</span><span class="p">(</span><span class="n">track</span><span class="p">,</span><span class="w"> </span><span class="n">carHandle</span><span class="p">,</span><span class="w"> </span><span class="n">carParmHandle</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Start a new race. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w">  </span>
+<span class="n">newrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">NewRace</span><span class="p">(</span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="cm">/* Drive during race. */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w">  </span>
+<span class="n">drive</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="o">*</span><span class="w"> </span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">Drive</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* End of the current race */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span>
+<span class="n">endrace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">tCarElt</span><span class="w"> </span><span class="o">*</span><span class="n">car</span><span class="p">,</span><span class="w"> </span><span class="n">tSituation</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">controller</span><span class="o">-&gt;</span><span class="n">EndRace</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* Called before the module is unloaded */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span>
+<span class="n">shutdown</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="n">controller</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Compile and run it to ensure that everything went smoothly. If not and you are 
+on the edge of tearing of your hairs out of your head, please download or clone 
+this <a href="https://github.com/godidier/torcs-ai">code</a> and 
+copy the <em>racebot-01</em> folder into the <code>$TORCS_BASE/drivers</code> folder and 
+compile it.</p>
+<p>Here is a test drive of the result.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bnEI__LV1mQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p>That's it for this chapter!... And yes we have a working agent! But let's be 
+honest it is kind of lame. So let's make him faster, break, and change gears.</p>
+<ul>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-00.html">Previous: Getting Started</a></li>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-02.html">Next: Brakes and Gears</a></li>
+</ul>
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li ><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li ><a href="https://godidier.wordpress.com" title="Another blog &#x279A;">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>

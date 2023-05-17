@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="/static/custom.css">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Didier Gohourou">
+  <meta name="description" content="Posts and writings by Didier Gohourou">
+
+
+<meta name="keywords" content="">
+
+  <title>
+    Didier Gohourou's Blog
+&ndash; Create Your First TORCS Racing AI Bot - Part 0: Getting Started  </title>
+
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="site-name">
+        <a href="https://godidier.github.io">Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
+      </div>
+      <p>Tutorials, Research and Thoughts</p>
+      <p>
+      <!--
+        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+      -->
+
+      </p>
+	    <ul class="menuitems">   
+          <li><a href="https://godidier.github.io/">Home</a></li>
+          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
+          <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
+	    </ul>
+    </header>
+
+<article>
+  <div class="article__title">
+    <h1><a href="https://godidier.github.io/torcs-ai-tuto-00.html">Create Your First TORCS Racing AI Bot - Part 0: Getting Started</a></h1>
+  </div>
+  <div class="article__meta">
+    <p class="article__meta__post-date">Posted on: Fri 07 December 2018</p>
+    </p>
+  </div>
+  <div class="article__text">
+    <p>This is the beginning of a series on how to build an AI agent for the game 
+TORCS (The Open Racing Cars Simulation). TORCS is an open source video game.
+You can checkout the Wikipedia page of the game for a 
+<a href="https://en.wikipedia.org/wiki/TORCS">History of TORCS</a> from little AI game 
+to Speed Dreams and others.</p>
+<h1>Why bother ?</h1>
+<p id="why"></p>
+
+<p>Writing an AI for a racing game ? Maybe you already have your own motivation, you 
+like racing, you might like computer science an AI, you are an enthusiast 
+programmer etc. But above all this series aim to give clear fundamentals on the 
+task... Or just maybe you are like me... you have plenty of time to waste! 
+Even then, it is a wise place to waste it.</p>
+<p>A quick disclaimer: this series is <del>highly</del> Inspired from the robot 
+tutorial included in the game. You might also want to check that in case you 
+want a different perspective... <del>Don't look at me like that!</del> 
+You should be careful though, because there are some differences in the progression 
+and the code.</p>
+<h1>Pre-requisites</h1>
+<p id="prerequisites"></p>
+
+<p>This tutorial assumes that you have some basic C++ knowledge, and that you have
+some experience with high school mathematics and physics.</p>
+<p>Nevertheless, I will do my best to be as clear as possible and give pointers 
+for further readings, to those interested in learning more.</p>
+<p>On a side note, I strongly encougare you to code along with the tutorial by 
+yourself. Sure you can copy-paste the code to go fast, but you will miss 
+the mistakes that make you learn and understand concepts far better. 
+When you make mistakes or things go sideways, try to re-analyse the code and the 
+explanations thoroughly and try again. This way you will come up with a deeper 
+understanding of how things works. This will enable you to improve the code 
+beyond the tutorial, and easily translate your knowledge elsewhere.</p>
+<p id="table_of_contents"></p>
+
+<h1>Content</h1>
+<ol>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-00.html">Getting started</a></li>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-01.html">Acceleration</a></li>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-02.html">Brakes and Gears</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-03.html">Aerodynamics and Stability Controls</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-04.html">Steering and Trajectory</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-05.html">Recovering</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-06.html">Collision Avoidance and Overtaking</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-07.html">Pit Stops</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-08.html">Tuning and Customization</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-09.html">Handling Multiple Cars</a></li>
+<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-10.html">Wrap Up</a></li>
+</ol>
+<p id="installation"></p>
+
+<h1>Installation</h1>
+<p>Let's install the game!</p>
+<p>TORCS can be installed via binaries but we are here to implement AI agent for the 
+game so we need to install via from the sources. The binaries and sources of 
+TORCS are available at the 
+<a href="http://torcs.sourceforge.net/index.php">Official site of TORCS</a> within the 
+<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> section. 
+There are also basic installatioin instruction on that page.</p>
+<p><strong>Note</strong>: We will give instructions mainly for an RPM package oriented Linux 
+distribution like Fedora, and Ubuntu as well. Excuse my lazyness but I 
+might give instructions for 
+more Operation System in the future. Meanwhile one can use the instructions 
+available on the <a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> page. </p>
+<h2>Requirements</h2>
+<h3>Hardware</h3>
+<p>They are pretty low: </p>
+<ul>
+<li>CPU &gt; 800MHz </li>
+<li>RAM &gt; 256 MB</li>
+<li>A very basic graphic card</li>
+</ul>
+<p>Computers dating from the Pentium3 era can run TORCS. So basically if you are 
+reading this on a computer today, you should be able to run TORCS.</p>
+<h3>Software</h3>
+<p>Installing the necessary development package for your (Linux) distribution
+is highly recommended. </p>
+<p>On Fedora you might want to type the following in the command line: </p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>update
+sudo<span class="w"> </span>dnf<span class="w"> </span>groupinstall<span class="w"> </span><span class="s2">&quot;Development Tools&quot;</span><span class="w"> </span><span class="s2">&quot;Development Libraries&quot;</span>
+</code></pre></div>
+
+<p>On Ubuntu enter the following:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>
+</code></pre></div>
+
+<p>The main package to compile the game are:</p>
+<ul>
+<li>Hardware accelerated OpenGL</li>
+<li><a href="http://freeglut.sourceforge.net/">FreeGlut</a></li>
+<li><a href="http://plib.sourceforge.net/">PLIB</a> version 1.8.5 or higher</li>
+<li><a href="http://kcat.strangesoft.net/openal.html">OpenAL</a></li>
+<li><a href="http://libpng.sourceforge.net/">libpng</a></li>
+<li><a href="http://www.vorbis.com/">libogg</a></li>
+</ul>
+<p>All of the above are usually provided by linux distribution. 
+Install them using your package manager (dnf on Fedora, apt on Ubuntu.</p>
+<p>Below is a command to install the libraries you might need, including 
+additional ones (at least the one I needed).</p>
+<p>On Fedora:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>freeglut.x86_64<span class="w"> </span>freeglut-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>plib.x86_64<span class="w"> </span>plib-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>openal-soft.x86_64<span class="w">  </span>openal-soft-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>freealut.x86_64<span class="w"> </span>freealut-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libXmu.x86_64<span class="w"> </span>libXmu-devel.x86_64<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libXxf86vm.x86_64<span class="w"> </span>libXxf86vm-devel.x86_64<span class="w"> </span>
+</code></pre></div>
+
+<p>On Ubuntu: </p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>freeglut3<span class="w"> </span>freeglut3-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libplib-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libopenal1<span class="w">  </span>libopenal-dev<span class="w">  </span>libopenal-data<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libalut0<span class="w">  </span>libalut-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libvorbis-dev<span class="w">  </span>libvorbis-dbg<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxi6<span class="w">  </span>libxi-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxmu6<span class="w">  </span>libxmu-headers<span class="w">  </span>libxmu-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxrender1<span class="w">  </span>libxrender-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxrandr2<span class="w">  </span>libxrandr-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libpng16-16<span class="w">  </span>libpng-dev
+</code></pre></div>
+
+<p>After installing those packages you should be good. If you have any trouble,
+check the <a href="#troubleshooting">Troubleshooing</a> section of this article. </p>
+<h2>Getting the Code</h2>
+<p>The source code of TORCS is available at the TORCS's Sourceforge project 
+<a href="https://sourceforge.net/projects/torcs/">page</a>.
+Please select the "all-in-one" version when downloading. This tutorial uses 
+TORCS 1.3.7 (all-in-one) package which is available <a href="http://sourceforge.net/projects/torcs/files/all-in-one/1.3.7/torcs-1.3.7.tar.bz2/download">here</a></p>
+<h2>Install TORCS From the Sources</h2>
+<ul>
+<li>Unpack the downloaded file. Carefully choose the folder where you will unpack 
+the package. I recommend <code>/usr/local/src</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span>
+<span class="n">tar</span><span class="w"> </span><span class="n">xvf</span><span class="w"> </span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">downloaded</span><span class="o">/</span><span class="n">torcs</span><span class="o">-</span><span class="mf">1.3</span><span class="o">.</span><span class="mf">7.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+</code></pre></div>
+
+<p>Change the unpacked directory's ownership to your username. e.g. if your username
+is <em>uname</em> and the unpacked folder <em>torcs-1.3.7</em>, run:</p>
+<div class="highlight"><pre><span></span><code>sudo chown -R uname torcs-1.3.7
+</code></pre></div>
+
+<ul>
+<li>Run the following command to compile and install TORCS:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>cd torcs-1.3.7
+./configure 
+make 
+make install
+make datainstall
+</code></pre></div>
+
+<p>In case you have any trouble with those commands, 
+check the <a href="#troubleshooting">Troubleshooing</a> section of this article. </p>
+<h2>Environment Variables</h2>
+<p>Because we want to develop AI module for the game, we need to point the game 
+librairies to our compiler when will be using <code>Makefile</code> for compilation. 
+For that we set environment variables. </p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">LD_LIBRARY_PATH</span><span class="o">=$</span><span class="n">LD_LIBRARY_PATH</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span>
+<span class="k">export</span><span class="w"> </span><span class="n">TORCS_BASE</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">torcs</span><span class="o">/</span><span class="n">torcs</span><span class="o">-</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">7</span>
+<span class="k">export</span><span class="w"> </span><span class="n">MAKE_DEFAULT</span><span class="o">=$</span><span class="n">TORCS_BASE</span><span class="o">/</span><span class="n">Make</span><span class="o">-</span><span class="n">default</span><span class="o">.</span><span class="n">mk</span>
+</code></pre></div>
+
+<p>To avoid setting up those variable before every development session, we can add 
+the above lines to your shell's rc file like <em>~/.bashrc</em> if you are using a bash 
+terminal. You can run :</p>
+<div class="highlight"><pre><span></span><code>source ~/.bashrc
+</code></pre></div>
+
+<p>for the changes to take effect.</p>
+<p>Remember if you have any trouble, you can try lookin at the 
+<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> page instructions, or the installation instructions of the 
+<a href="http://www.berniw.org/tutorials/robot/tutorial.html">TORCS Robot Tutorial</a>, on 
+which this tutorial is based, or contact the <a href="torcs-users@lists.sourceforge.net">torcs-users</a> mailing list.</p>
+<h1>Gameplay</h1>
+<p>After all this setup hassle, I recommend that you 
+play the game. Familiarize yourself with it: the menu, the controls, etc.</p>
+<p>You can lauch the game from the terminal. </p>
+<div class="highlight"><pre><span></span><code>torcs
+</code></pre></div>
+
+<p>The video below gives an idea of how to setup a player, get to practice mode, select/de-select a car and drive. In the video I am using the keyboard's D-pad, don't judge me.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-zHo3dQoAk8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p>Tip: If you are on Linux and interested in playing with a Playstation controller,
+look <a href="https://gameimps.com/ps3-controller-linux-usb-290">here</a> for how to use 
+<code>xboxdrv</code> to connect your Playsation controller with a better support. 
+It's also valid for Xbox controllers (Which are usually well supported).</p>
+<p id="troubleshooting"></p>
+
+<h1>Troubleshooting</h1>
+<h3>Trouble with the required package</h3>
+<p><strong>Note:</strong> When running <code>./configure</code> if the command fails because of an 
+uninstalled library, do a quick search with your package manager to make 
+sure we find the correct package name for our distribution, and install it. </p>
+<p>On Fedora:</p>
+<div class="highlight"><pre><span></span><code>dnf<span class="w"> </span>search<span class="w"> </span>&lt;package-name&gt;
+sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>&lt;correct-package-name&gt;
+</code></pre></div>
+
+<p>On Ubuntu:</p>
+<div class="highlight"><pre><span></span><code>apt<span class="w"> </span>search<span class="w"> </span>&lt;package-name&gt;<span class="w"> </span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>&lt;correct-package-name&gt;
+</code></pre></div>
+
+<h3>Compilation Errors</h3>
+<p>During my recent compilation of <strong>torcs-1.3.7</strong> (April 2023) I experienced 
+some compilation errors. Here is how I solved them: </p>
+<p>The first one was when running the <code>make</code> command. I encountered the 
+following error: </p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;/usr/local/src/torcs-1.3.7/src/libs/musicplayer/OpenALMusicPlayer.cpp&quot;</span><span class="w"> </span><span class="m">271</span><span class="w"> </span>line
+OpenALMusicPlayer.cpp:164:29:<span class="w"> </span>error:<span class="w"> </span>invalid<span class="w"> </span>conversion<span class="w"> </span>from<span class="w"> </span>‘char’<span class="w"> </span>to<span class="w"> </span>‘const<span class="w"> </span>char*’<span class="w"> </span><span class="o">[</span>-fpermissive<span class="o">]</span>
+</code></pre></div>
+
+<p>To solve it, open the file <em>/usr/local/src/torcs-1.3.7/src/libs/musicplayer/OpenALMusicPlayer.cpp</em>, go to line 271 and make the following change from:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span><span class="w">  </span>
+</code></pre></div>
+
+<p>to (changing single quote to double quotes)</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>The second bug appeared when running <code>make install</code>. The following error
+showed up:</p>
+<div class="highlight"><pre><span></span><code>src/drivers/olethros/geometry.cpp
+isnan<span class="w"> </span>not<span class="w"> </span>define.<span class="w"> </span>line<span class="w"> </span><span class="m">396</span>
+</code></pre></div>
+
+<p>To solve it open the file <em>/usr/local/src/torcs-1.3.7/src/drivers/olethros/geometry.cp</em>. Go to line 396 and change it from:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isnan</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</code></pre></div>
+
+<p>to </p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">isnan</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+</code></pre></div>
+
+<h3>Others Troubles</h3>
+<p>Try lookin at the 
+<a href="http://torcs.sourceforge.net/index.php?name=Sections&amp;op=viewarticle&amp;artid=3">Download/Installation</a> page instructions, or the installation instructions of the 
+<a href="http://www.berniw.org/tutorials/robot/tutorial.html">TORCS Robot Tutorial</a>, on 
+which this tutorial is based, or contact the <a href="torcs-users@lists.sourceforge.net">torcs-users</a> mailing list.</p>
+<p>I understand it might be frustrating to experience trouble during the installation but please don't give up it's part of your learning journey. 
+Take a break (minutes, hours, days) and try again.</p>
+<h1>Moving Forward</h1>
+<p>Now that the setup is done, let's do what we came here for, start building an 
+AI agent!</p>
+<ul>
+<li><a href="https://godidier.github.io/torcs-ai-tuto-01.html">Next: Acceleration</a></li>
+</ul>
+  </div>
+
+</article>
+
+
+  </main>
+    <footer>
+      <div class="author__logo">
+          <img src="/images/2019-02/go-chan.png" alt="logo">
+      </div>
+      <section class="author">
+        <div class="author__name">
+          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <p></p>
+        </div>
+        <div class="author__link">
+          <ul style="font-size:16px;">
+			<li>&#x26AB;</li>
+			<li ><a href="archives.html" title="Archives">Archives</a></li>
+			<li>&#x26AB;</li>
+			<li ><a href="https://godidier.wordpress.com" title="Another blog &#x279A;">Another blog &#x279A;</a></li>
+			<li>&#x26AB;</li>
+          </ul>
+          <ul>
+            <li>
+              <a href="https://twitter.com/godidier" target="_blank" title="twitter">
+                <i class="fab fa-twitter-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/godidier" target="_blank" title="github">
+                <i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/godidier/" target="_blank" title="linkedin">
+                <i class="fab fa-linkedin-square"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="ending-message">
+        <p>&copy; Didier Gohourou. Powered by <a href="http://getpelican.com" target="_blank">Pelican</a>, Theme is using <a href="https://github.com/laughk/pelican-hss" target="_blank">HSS</a>. </p>
+      </div>
+    </footer>
+</body>
+</html>
