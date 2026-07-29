@@ -3,16 +3,16 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="../theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="../favicon.ico">
+  <link rel="stylesheet" type="text/css" href="../theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/hatena-bookmark-icon.css">
   <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 
@@ -25,7 +25,7 @@
 <meta name="keywords" content="">
 
   <title>
-    Didier Gohourou's Blog
+    The Didier Gohourou's Blog
 &ndash; Create Your First TORCS Racing AI Bot - Part 05: Recovering  </title>
 
 </head>
@@ -34,27 +34,29 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="https://godidier.github.io">Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
+        <a href="..">The Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
       </div>
       <p>Tutorials, Research and Thoughts</p>
       <p>
       <!--
-        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+        <a href="../archives.html"><i class="fas fa-archive"></i> Archive</a>
       -->
 
       </p>
 	    <ul class="menuitems">   
-          <li><a href="https://godidier.github.io/">Home</a></li>
-          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
+          <li><a href="../">Home</a></li>
+          <li><a href="../categories.html">Categories</a></li>
+          <li><a href="../category/tutorials.html">Tutorials</a></li>
+          <li><a href="../category/thoughts.html">Thoughts</a></li>
+          <li class="menupage"><a href="../pages/about.html">About</a></li>
+          <li class="menupage"><a href="../pages/projects.html">Projects</a></li>
+          <li class="menupage"><a href="../pages/resume.html">Resume</a></li>
 	    </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-05.html">Create Your First TORCS Racing AI Bot - Part 05: Recovering</a></h1>
+    <h1><a href="../drafts/torcs-ai-tuto-05.html">Create Your First TORCS Racing AI Bot - Part 05: Recovering</a></h1>
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: Tue 11 December 2018</p>
@@ -62,7 +64,7 @@
   </div>
   <div class="article__text">
     <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-00.html#table_of_contents">Table of Contents</a></li>
+<li><a href="../torcs-ai-tuto-00.html#table_of_contents">Table of Contents</a></li>
 </ul>
 <p id="introduction"></p>
 <h1>Introduction</h1>
@@ -179,7 +181,7 @@ the car is no more stuck).</p>
 <p>[compile and test ? how to check? collision ?]</p>
 <p>Below is a illustration to help us get our head wrapped around a situation of 
 getting stuck.</p>
-<p><img alt="Getting Stuck 1" src="https://godidier.github.io/images/2019-11/getting-stuck-1.svg"></p>
+<p><img alt="Getting Stuck 1" src="../images/2019-11/getting-stuck-1.svg"></p>
 <p>This approach is simple and get the job done in most case. Yet, there is an 
 edge case we have to take into account.</p>
 <p id="better_recovery"></p>
@@ -194,7 +196,7 @@ figure below representing that situation, we don't need to get 'unstuck' i.e
 back off is such situation. We can simply drive forward to come back on the track.
 This is mainly because the front of our car point toward the middle of the track 
 (or looks inside the track). </p>
-<p><img alt="Getting Stuck 2" src="https://godidier.github.io/images/2019-11/getting-stuck-2.svg"></p>
+<p><img alt="Getting Stuck 2" src="../images/2019-11/getting-stuck-2.svg"></p>
 <p>To detect if the car points to the middle of the track or not, we will use 
 the angle formed by the car and the tangent to the track, and the car 
 position relatively to the middle of the track. The angle formed by the car 
@@ -206,7 +208,7 @@ conclude that if the 'angle fo the car' times the 'position to the middle' is
 positive, we are looking toward the middle of the track. The figure below 
 illustrate the different values used as criteria and the case where the car 
 (in red) look outside the track and the car (in blue) looks inside the track.</p>
-<p><img alt="Look inside criteria" src="https://godidier.github.io/images/2019-11/look-inside.svg"></p>
+<p><img alt="Look inside criteria" src="../images/2019-11/look-inside.svg"></p>
 <p>We will just drive forward if <code>fabs(angle) &lt; MAX_UNSTUCK_ANGLE</code>. Else, we are 
 looking outward and it the <code>stuck_counter</code> is already big enough, <code>IsStuck()</code> 
 returns true. Otherwise If <code>stuck_counter</code> is less, we increment it.</p>
@@ -258,8 +260,8 @@ speed to be below a certain threshold. </p>
 
 <p>[Download and Test drive]</p>
 <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-04.html">Previous: Steering and Trajectory</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-06.html">Next: Collision avoidance and Overtaking</a></li>
+<li><a href="../torcs-ai-tuto-04.html">Previous: Steering and Trajectory</a></li>
+<li><a href="../drafts/torcs-ai-tuto-06.html">Next: Collision avoidance and Overtaking</a></li>
 </ul>
   </div>
 
@@ -273,7 +275,7 @@ speed to be below a certain threshold. </p>
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <a href="../pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">

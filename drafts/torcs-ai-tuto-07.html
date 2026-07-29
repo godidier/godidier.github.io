@@ -3,16 +3,16 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="../theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="../favicon.ico">
+  <link rel="stylesheet" type="text/css" href="../theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/hatena-bookmark-icon.css">
   <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 
@@ -25,7 +25,7 @@
 <meta name="keywords" content="">
 
   <title>
-    Didier Gohourou's Blog
+    The Didier Gohourou's Blog
 &ndash; Create Your First TORCS Racing AI Bot - Part 07: Pit Stops  </title>
 
 </head>
@@ -34,27 +34,29 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="https://godidier.github.io">Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
+        <a href="..">The Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
       </div>
       <p>Tutorials, Research and Thoughts</p>
       <p>
       <!--
-        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+        <a href="../archives.html"><i class="fas fa-archive"></i> Archive</a>
       -->
 
       </p>
 	    <ul class="menuitems">   
-          <li><a href="https://godidier.github.io/">Home</a></li>
-          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
+          <li><a href="../">Home</a></li>
+          <li><a href="../categories.html">Categories</a></li>
+          <li><a href="../category/tutorials.html">Tutorials</a></li>
+          <li><a href="../category/thoughts.html">Thoughts</a></li>
+          <li class="menupage"><a href="../pages/about.html">About</a></li>
+          <li class="menupage"><a href="../pages/projects.html">Projects</a></li>
+          <li class="menupage"><a href="../pages/resume.html">Resume</a></li>
 	    </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="https://godidier.github.io/drafts/torcs-ai-tuto-07.html">Create Your First TORCS Racing AI Bot - Part 07: Pit Stops</a></h1>
+    <h1><a href="../drafts/torcs-ai-tuto-07.html">Create Your First TORCS Racing AI Bot - Part 07: Pit Stops</a></h1>
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: Thu 13 December 2018</p>
@@ -62,7 +64,7 @@
   </div>
   <div class="article__text">
     <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-00.html#table_of_contents">Table of Contents</a></li>
+<li><a href="../torcs-ai-tuto-00.html#table_of_contents">Table of Contents</a></li>
 </ul>
 <h1>Introduction</h1>
 <p>During the race, our car consumes fuel, and is likely to endure damages 
@@ -186,7 +188,7 @@ Put the following code into a new file named <em>pit.h</em>. </p>
 designate base point (p0 to p6) to compute the path. We choose the points 
 such thta our x-axis is the middle line along the track, so the slope at 
 the base points is zero (parallel to the track). </p>
-<p><img alt="Path to the PIT" src="https://godidier.github.io/images/2020-02/path-to-pit.svg"></p>
+<p><img alt="Path to the PIT" src="../images/2020-02/path-to-pit.svg"></p>
 <p>Let's implement the methods of our pit class. We compute the base points of 
 the spline in the constructor. </p>
 <p>[Eggsplain the spline point ?]</p>
@@ -196,8 +198,8 @@ the spline in the constructor. </p>
 <h1>The Pit strategy</h1>
 <h1>The Pit Brake filter</h1>
 <ul>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-06.html">Previous: Collision avoidance and Overtaking</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-08.html">Next: Customizing the car settings and appearance</a></li>
+<li><a href="../drafts/torcs-ai-tuto-06.html">Previous: Collision avoidance and Overtaking</a></li>
+<li><a href="../drafts/torcs-ai-tuto-08.html">Next: Customizing the car settings and appearance</a></li>
 </ul>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
@@ -273,7 +275,7 @@ the spline in the constructor. </p>
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <a href="../pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">

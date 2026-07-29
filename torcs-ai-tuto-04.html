@@ -3,16 +3,16 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="https://godidier.github.io/theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="./theme/css/style.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="icon" type="image/vnd.microsoft.icon" href="https://godidier.github.io/favicon.ico">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/pygments.css">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="./favicon.ico">
+  <link rel="stylesheet" type="text/css" href="./theme/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="./theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="./theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/fontawesome-all.min.css">
-  <link rel="stylesheet" type="text/css" href="https://godidier.github.io/theme/css/hatena-bookmark-icon.css">
+  <link rel="stylesheet" type="text/css" href="./theme/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="./theme/css/hatena-bookmark-icon.css">
   <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 
@@ -25,7 +25,7 @@
 <meta name="keywords" content="">
 
   <title>
-    Didier Gohourou's Blog
+    The Didier Gohourou's Blog
 &ndash; Create Your First TORCS Racing AI Bot - Part 04: Steering and Trajectory  </title>
 
 </head>
@@ -34,27 +34,29 @@
   <main>
     <header>
       <div class="site-name">
-        <a href="https://godidier.github.io">Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
+        <a href=".">The Didier Gohourou's Blog  <!--<br/> Tutorials, Research and Thoughts--></a>
       </div>
       <p>Tutorials, Research and Thoughts</p>
       <p>
       <!--
-        <a href="https://godidier.github.io/archives.html"><i class="fas fa-archive"></i> Archive</a>
+        <a href="./archives.html"><i class="fas fa-archive"></i> Archive</a>
       -->
 
       </p>
 	    <ul class="menuitems">   
-          <li><a href="https://godidier.github.io/">Home</a></li>
-          <li><a href="https://godidier.github.io/categories.html">Categories</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/about.html">About</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/projects.html">Projects</a></li>
-          <li class="menupage"><a href="https://godidier.github.io/pages/resume.html">Resume</a></li>
+          <li><a href="./">Home</a></li>
+          <li><a href="./categories.html">Categories</a></li>
+          <li><a href="./category/tutorials.html">Tutorials</a></li>
+          <li><a href="./category/thoughts.html">Thoughts</a></li>
+          <li class="menupage"><a href="./pages/about.html">About</a></li>
+          <li class="menupage"><a href="./pages/projects.html">Projects</a></li>
+          <li class="menupage"><a href="./pages/resume.html">Resume</a></li>
 	    </ul>
     </header>
 
 <article>
   <div class="article__title">
-    <h1><a href="https://godidier.github.io/torcs-ai-tuto-04.html">Create Your First TORCS Racing AI Bot - Part 04: Steering and Trajectory</a></h1>
+    <h1><a href="./torcs-ai-tuto-04.html">Create Your First TORCS Racing AI Bot - Part 04: Steering and Trajectory</a></h1>
   </div>
   <div class="article__meta">
     <p class="article__meta__post-date">Posted on: Tue 11 December 2018</p>
@@ -62,7 +64,7 @@
   </div>
   <div class="article__text">
     <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-00.html#table_of_contents">Table of Contents</a></li>
+<li><a href="./torcs-ai-tuto-00.html#table_of_contents">Table of Contents</a></li>
 </ul>
 <p>This is the fifth chapter of a tutorial for building an AI agent for the racing 
 game TORCS. In this chapter, we improve the steering angle of our AI Agent. We will 
@@ -296,7 +298,7 @@ following code in the newly created file.</p>
 from driving in the middle of the track, we designate a target point ahead of 
 the car toward which we point the wheels. This result in greater turn radius 
 of the car. The figure below give an idea of what goes on.</p>
-<p><img alt="Steering trajectory" src="https://godidier.github.io/images/2019-01/steering-heuristic.png"></p>
+<p><img alt="Steering trajectory" src="./images/2019-01/steering-heuristic.png"></p>
 <p>Although the overall path of the car will improve greatly, we have to note 
 that we are still far away from a good trajectory, since we cannot take a turn 
 with the biggest possible radius, starting and ending onthe middle of the track.</p>
@@ -397,7 +399,7 @@ We consider short turns, turns with a small angle (see the figure below).
 We will use a heuristic, which is just a an approach to reach an immediate goal 
 (going fast in short turns in our case), without worrying too much about 
 optimization, logic, or rationality.</p>
-<p><img alt="Illustration of short turns in contrast to long turns" src="https://godidier.github.io/torcs-ai-tuto-04.html"></p>
+<p><img alt="Illustration of short turns in contrast to long turns" src="./torcs-ai-tuto-04.html"></p>
 <p>In our heuristic approximation, we take the outside radius of the first segment 
 of the turn <code>segment-&gt;radius + segment-&gt;width/2.0</code>, and we divide it by the 
 square root of the angle (represented by <code>arc</code>) of the turn. Remember this is 
@@ -543,8 +545,8 @@ some geometric approches (e.g. to find splines points in a trajectory),
 we can also use Machine Learning techniques where we can find a lot of 
 models we can creatively use to help us find a good racing trajectories.</p>
 <ul>
-<li><a href="https://godidier.github.io/torcs-ai-tuto-03.html">Previous: Aerodynamics and Stability Controls</a></li>
-<li><a href="https://godidier.github.io/drafts/torcs-ai-tuto-05.html">Next: Recovering</a></li>
+<li><a href="./torcs-ai-tuto-03.html">Previous: Aerodynamics and Stability Controls</a></li>
+<li><a href="./drafts/torcs-ai-tuto-05.html">Next: Recovering</a></li>
 </ul>
   </div>
 
@@ -558,7 +560,7 @@ models we can creatively use to help us find a good racing trajectories.</p>
       </div>
       <section class="author">
         <div class="author__name">
-          <a href="https://godidier.github.io/pages/about.html">Didier Gohourou</a>
+          <a href="./pages/about.html">Didier Gohourou</a>
           <p></p>
         </div>
         <div class="author__link">
